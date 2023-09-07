@@ -1,5 +1,7 @@
+import 'package:ezys/cart_screen.dart';
 import 'package:ezys/main_screen.dart';
 import 'package:ezys/product_detail_screen.dart';
+import 'package:ezys/wishlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -42,7 +44,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
               style: TextButton.styleFrom(minimumSize: Size(25, 25)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>WishList()));
+              },
               child: Image.asset(
                 'assets/icons/heart.png',
                 height: 25,
@@ -50,7 +54,9 @@ class _HomePageState extends State<HomePage> {
               )),
           TextButton(
               style: TextButton.styleFrom(minimumSize: Size(25, 25)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+              },
               child: Image.asset(
                 'assets/icons/shoppingbag.png',
                 height: 25,
@@ -64,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           SliverAppBar(
             elevation: 0,
             automaticallyImplyLeading: false,
-            expandedHeight: 360,
+            expandedHeight: 380,
             floating: false,
             pinned: true,
             stretch: true,
@@ -78,15 +84,15 @@ class _HomePageState extends State<HomePage> {
                     "Best Selling Products",
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
                     'See more',
                     style: TextStyle(
                         color: Colors.green,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600),
                   )
                 ],
               ),
@@ -154,7 +160,8 @@ class _HomePageState extends State<HomePage> {
                                      
                                     ],
                                   ),
-                                  )
+                                  ),
+                                  SizedBox(height: 10,)
                 ],
               ),
                              
@@ -169,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 15,
                     crossAxisCount: 2,
-                    mainAxisExtent: 230),
+                    mainAxisExtent: 250),
                 itemBuilder: ((context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -203,9 +210,16 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(
                                 height: 5,
                               ),
+                              Text('T-shirt',style: TextStyle(color: Colors.grey)),
+                              SizedBox(height: 3),
                               Text("Tiger Image EZYE – Tees for Men"),
-                              SizedBox(height: 5),
-                              Text('₹399.00')
+                              SizedBox(height: 3),
+                              Row(
+                                children: [
+                                  Text('₹799',style: TextStyle(decoration: TextDecoration.lineThrough,color: Colors.green[800],decorationColor: Colors.green[800],decorationThickness: 2),),SizedBox(width: 5),
+                                  Text('- ₹399'),
+                                ],
+                              )
                             ],
                           ),
                           Positioned(

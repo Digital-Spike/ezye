@@ -32,8 +32,10 @@ class _MainScreenState extends State<MainScreen> {
 
      
       bottomNavigationBar: BottomNavigationBar(
-          elevation: 10,
+          elevation: 1,
           // backgroundColor: Color(0xffF5E6C2),
+         selectedItemColor: Colors.black,
+         
           currentIndex: _bottomNavIndex ?? 0,
           onTap: (index) =>
             switchScreen(index),

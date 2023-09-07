@@ -1,4 +1,5 @@
 import 'package:ezys/home.dart';
+import 'package:ezys/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Proxima Nova',
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }
