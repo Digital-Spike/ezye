@@ -1,4 +1,5 @@
 import 'package:ezys/home.dart';
+import 'package:ezys/home2.dart';
 import 'package:ezys/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,12 +23,12 @@ class MyApp extends StatelessWidget {
       title: 'Ezye',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-       
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+        
+        primarySwatch: Colors.blueGrey,
+        // brightness: Brightness.light,
         fontFamily: 'Proxima Nova',
       ),
-      home: const LoginPage(),
+      home: const HomePage(),
     );
   }
 }

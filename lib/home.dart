@@ -18,6 +18,25 @@ class _HomePageState extends State<HomePage> {
     'assets/1.png',
 
   ];
+   List<String> imageUrls = [
+  'assets/t-shirt.png',
+  'assets/pants.png',
+  'assets/dress.png',
+  'assets/shirt.png',
+  'assets/pants.png',
+  // Add more image URLs as needed.
+];
+final List<String> imageNames = [
+    'T-shirts',
+    'Pants',
+    'Dress',
+    'shirts',
+     'Pants',
+   
+    
+     
+    // Add more image names corresponding to the URLs.
+  ];
   @override
   Widget build(BuildContext context) {
     return MainScreen(
@@ -68,9 +87,10 @@ class _HomePageState extends State<HomePage> {
         slivers: [
           // sliver app bar
           SliverAppBar(
+            backgroundColor: Colors.white,
             elevation: 0,
             automaticallyImplyLeading: false,
-            expandedHeight: 380,
+            expandedHeight: 390,
             floating: false,
             pinned: true,
             stretch: true,
@@ -118,50 +138,50 @@ class _HomePageState extends State<HomePage> {
                                   viewportFraction: 1.09,
                                  
                                   autoPlay: true)),
-                                  Container(height: 80,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                       Padding(
-                                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                                         child: Text('Categories',style: TextStyle(fontWeight: FontWeight.w600),),
-                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                   Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                         
-                                          Column(
-                                            children: [
-                                              Image.asset('assets/Men.png',height: 40,width: 40,),
-                                              Text('Men')
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Image.asset('assets/Women.png',height: 40,width: 40,),
-                                              Text('Women')
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Image.asset('assets/Junior.png',height: 40,width: 40,),
-                                              Text('Juniors')
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Image.asset('assets/Kids.png',height: 40,width: 40,),
-                                              Text('Kids')
-                                            ],
-                                          ),
-                                          
+                                          Text('Category',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                          Text('See all',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),)
                                         ],
                                       ),
-                                     
-                                    ],
-                                  ),
-                                  ),
-                                  SizedBox(height: 10,)
+                                    ),
+                                    Container(
+              height: 70, // Adjust the height as needed
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: imageUrls.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+                    child: Column(
+                     
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.brown[100],
+                            shape: BoxShape.circle,
+                            // image: DecorationImage(
+                            //   image: Image.asset(imageUrls[index]),
+                            //   fit: BoxFit.cover,
+                            // ),
+                          ),
+                          child: Image.asset(imageUrls[index],),
+                        ),
+                        SizedBox(height: 5), // Space between image and name
+                        Text(imageNames[index]),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),       
+                                  SizedBox(height: 0,)
                 ],
               ),
                              

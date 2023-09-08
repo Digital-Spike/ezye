@@ -11,7 +11,11 @@ class _WishListState extends State<WishList> {
   Widget build(BuildContext context) {
     return Scaffold(
        backgroundColor: const Color(0xfff1f1f2),
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: BackButton(color: Colors.black,),
+      ),
       body: Center(),
     );
   }
