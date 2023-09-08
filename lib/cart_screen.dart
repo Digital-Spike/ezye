@@ -44,6 +44,7 @@ int counter = 0;
     return Scaffold(
       backgroundColor: const Color(0xfff1f1f2),
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.white,
         title: Text('My Cart',style: TextStyle(color: Colors.black),),
         elevation: 0,
