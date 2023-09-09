@@ -1,5 +1,5 @@
 
-import 'package:ezys/homescreens/payment_screen.dart';
+import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

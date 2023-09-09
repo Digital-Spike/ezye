@@ -1,7 +1,7 @@
 import 'package:ezys/homescreens/home_screen.dart';
 import 'package:ezys/homescreens/profile_screen.dart';
-import 'package:ezys/homescreens/voucher_screen.dart';
-import 'package:ezys/homescreens/wallet_screen.dart';
+import 'package:ezys/paymentScreens/voucher_screen.dart';
+import 'package:ezys/paymentScreens/wallet_screen.dart';
 
 import 'package:flutter/material.dart';
 
