@@ -1,4 +1,4 @@
-import 'package:ezys/checkout_screen.dart';
+import 'package:ezys/homescreens/checkout_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -35,6 +35,20 @@ int counter = 0;
     } else {
       if (counter == 1) {
         counter = 0; // Set counter to 0 when showing the "Add" text
+        if (counter == 0) {
+          // Display the bottom modal sheet when counter becomes zero
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                // Customize your modal sheet here
+                child: Center(
+                  child: Text('Your bottom modal sheet content goes here.'),
+                ),
+              );
+            },
+          );
+        }
       }
     }
   });
@@ -53,109 +67,136 @@ int counter = 0;
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
+            
             Expanded(
               child: ListView.builder(
-                itemCount: 1,
+                itemCount: 2,
                 itemBuilder: (context, index) {
                 return Slidable(
-                   endActionPane: ActionPane(motion: const BehindMotion(), children: [SlidableAction(onPressed: ((context){}),icon: Icons.delete,backgroundColor: Colors.red,)]),
+                  
+                   endActionPane: ActionPane(motion: const BehindMotion(), children: [SlidableAction(onPressed: ((context){}),icon: CupertinoIcons.delete,backgroundColor: Colors.red.shade300,label: 'Remove')]),
+                  
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: EdgeInsets.symmetric(vertical: 2),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(0),color: Colors.white),
-                    child: Row(
-                      
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
                       children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),image: DecorationImage(image: AssetImage('assets/image1.jpeg'),fit: BoxFit.cover,)),
-                          
-                        ),SizedBox(width: 20),
-                    Column(
-                     mainAxisAlignment: MainAxisAlignment.start,
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                  Text('Tiger Image EZYE',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                  SizedBox(height: 5),
-                          Text('T-shirt',style: TextStyle(color: Colors.grey[600]),),
-                          SizedBox(height: 5),
-                          Text('Size: XL',style: TextStyle(color: Colors.grey[600]),),
-                           SizedBox(height: 15),
-                          Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  
-                  children: [
-                    Text('Price: ₹399',style: TextStyle(fontWeight: FontWeight.bold),),SizedBox(width: 60),
-                    Container(
-                                            height: 35,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(7),
-                                              border: Border.all(width: 0.5,color: Colors.grey.shade200)
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    decrementCounter();
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(5),
-                                                        color: Colors.grey[300]),
-                                                    child: Icon(
-                                                      CupertinoIcons.minus,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5),
-                                                Text(
-                                                  '$counter',
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.black),
-                                                ),
-                                                SizedBox(width: 5),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    incrementCounter();
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(5),
-                                                        color: Colors.brown[300]),
-                                                    child: Icon(
-                                                      CupertinoIcons.add,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                         
-                  ],
-                          )
-                                    
+                            Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),image: DecorationImage(image: AssetImage('assets/image1.jpeg'),fit: BoxFit.cover,)),
+                              
+                            ),SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                           mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                          Text('Tiger Image EZYE',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                          SizedBox(height: 5),
+                                Text('T-shirt',style: TextStyle(color: Colors.grey[600]),),
+                                SizedBox(height: 5),
+                                Text('Size: XL',style: TextStyle(color: Colors.grey[600]),),
+                                 SizedBox(height: 15),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Price: ₹399',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              height: 35,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                border: Border.all(width: 0.5, color: Colors.grey.shade200),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      decrementCounter();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.grey[300],
+                                      ),
+                                      child: Icon(
+                                        CupertinoIcons.minus,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    '$counter',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  GestureDetector(
+                                    onTap: () {
+                                      incrementCounter();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.brown[300],
+                                      ),
+                                      child: Icon(
+                                        CupertinoIcons.add,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
-                    )
+                        )
+                        
+                                          
+                                ],
+                          ),
+                        )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),border: Border.all(width: 0.5,color: Colors.grey.shade400)),child: Text('View Similar Products',style: TextStyle(fontWeight: FontWeight.bold),),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),border: Border.all(width: 0.5,color: Colors.grey.shade400)),child: Text('Save For Later',style: TextStyle(fontWeight: FontWeight.bold),),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 );
               }),
             ),
-            Spacer(),
+            
              Padding(
                padding: const EdgeInsets.symmetric(horizontal: 15),
                child: ElevatedButton(
@@ -241,7 +282,7 @@ int counter = 0;
                     
                   
                 },
-                 child: Text('View Price Break Up',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)),
+                 child: Text('Checkout',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)),
              ),
              SizedBox(height: 30)
           ],

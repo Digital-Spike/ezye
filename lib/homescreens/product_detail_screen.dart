@@ -1,5 +1,6 @@
-import 'package:ezys/main_screen.dart';
-import 'package:ezys/multiselectchoicechip.dart';
+import 'package:ezys/homescreens/cart_screen.dart';
+import 'package:ezys/homescreens/main_screen.dart';
+import 'package:ezys/multiselectchoicechip_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +16,15 @@ class _ProductDetailState extends State<ProductDetail> {
   int counter = 0;
   bool showOriginalContainer = false;
   String? sizes;
-  int selectedColorIndex = -1; // Initialize with -1, meaning no color selected
-  String selectedColorName = '';
+  int selectedColorIndex = 0; // Initialize with -1, meaning no color selected
+  String? selectedColorName;
+  bool isLiked=false;
 
   List<String> clothingImages = [
-    'assets/image.jpeg',
-    'assets/image1.jpeg',
-    'assets/image.jpeg',
-    'assets/image1.jpeg',
+    'assets/t.jpg',
+    'assets/t1.jpg',
+    'assets/t2.jpg',
+    'assets/t3.jpg',
   ];
   List<Color> colors = [
     Colors.red,
@@ -61,54 +63,68 @@ class _ProductDetailState extends State<ProductDetail> {
     });
   }
 
-  void toggleContainer() {
-    setState(() {
-      showOriginalContainer = !showOriginalContainer;
-      if (showOriginalContainer) {
+ void toggleContainer() {
+  setState(() {
+    showOriginalContainer = !showOriginalContainer;
+    if (showOriginalContainer) {
+      if (counter == 0) {
+        counter = 1; // Set counter to 1 when showing the original container
+      }
+    } else {
+      if (counter == 1) {
+        counter = 0; // Set counter to 0 when showing the "Add" text
         if (counter == 0) {
-          counter = 1; // Set counter to 1 when showing the original container
-        }
-      } else {
-        if (counter == 1) {
-          counter = 0; // Set counter to 0 when showing the "Add" text
+          // Display the bottom modal sheet
+          _showModalSheet();
         }
       }
+    }
+  });
+}
 
-      // Check if "Add" button is tapped and show the modal sheet
-    
-    });
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set the initial selected color to the first color in the list
+    selectedColorName = colorNames[selectedColorIndex];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: const Color(0xfff1f1f2),
         appBar: AppBar(
+          title: Text('Product Details',style: TextStyle(color: Colors.black),),
           leading: BackButton(
             color: Colors.black,
           ),
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           actions: [
             TextButton(
-                onPressed: () {},
+              style: TextButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                onPressed: () {
+                  setState(() {
+                    isLiked=!isLiked;
+                  });
+                },
                 child: Image.asset(
-                  'assets/icons/heart.png',
-                  height: 25,
-                  width: 25,
+                  isLiked?
+                                      'assets/icons/heart (2).png':'assets/icons/love.png',
+                  height: 27,
+                  width: 27,
                 )),
             TextButton(
+              style: TextButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                 onPressed: () {},
                 child: Icon(
                   Icons.share,
                   color: Colors.black,
                 )),
-            TextButton(
-                onPressed: () {},
-                child: Image.asset(
-                  'assets/icons/shoppingbag.png',
-                  height: 25,
-                  width: 25,
-                ))
+           
           ],
         ),
         bottomNavigationBar: Container(
@@ -117,7 +133,7 @@ class _ProductDetailState extends State<ProductDetail> {
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               border: Border.all(width: 0.5, color: Colors.grey),
               //     boxShadow: [
               //   BoxShadow(
@@ -152,15 +168,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                       minimumSize: Size(150, 45)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+                  },
                   child: Row(
                     children: [
-                      Icon(Icons.shopping_bag_outlined),
+                      Icon(CupertinoIcons.cart_fill_badge_plus),
                       SizedBox(
                         width: 10,
                       ),
                       Text(
-                        'Check Out',
+                        'Add to Cart',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       )
@@ -376,6 +394,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         padding: const EdgeInsets.symmetric(vertical: 0),
                         child: Wrap(spacing: 10, children: [
                           ChoiceChip(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
                             selectedColor: Colors.blueGrey,
                             label: const Text(
@@ -390,6 +409,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
                             selectedColor: Colors.blueGrey,
                             label: const Text(
@@ -404,6 +424,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
                             selectedColor: Colors.blueGrey,
                             label: const Text(
@@ -418,6 +439,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
                             selectedColor: Colors.blueGrey,
                             label: const Text(
@@ -432,6 +454,8 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
+                            
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
                             selectedColor: Colors.blueGrey,
                             label: const Text(
@@ -453,7 +477,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           Text('Selected Color: ',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
-                          Text(selectedColorName,
+                          Text(selectedColorName.toString(),
                               style: TextStyle(fontSize: 16))
                         ],
                       ),
@@ -554,6 +578,19 @@ class _ProductDetailState extends State<ProductDetail> {
           ),
         ));
   }
+void _showModalSheet() {
+  showModalBottomSheet<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text('Your bottom modal sheet content goes here.'),
+        ),
+      );
+    },
+  );
+}
 
  
 }

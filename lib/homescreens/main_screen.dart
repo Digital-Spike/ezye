@@ -1,7 +1,7 @@
-import 'package:ezys/home.dart';
-import 'package:ezys/profile.dart';
-import 'package:ezys/voucher.dart';
-import 'package:ezys/wallet.dart';
+import 'package:ezys/homescreens/home_screen.dart';
+import 'package:ezys/homescreens/profile_screen.dart';
+import 'package:ezys/homescreens/voucher_screen.dart';
+import 'package:ezys/homescreens/wallet_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -45,23 +45,23 @@ class _MainScreenState extends State<MainScreen> {
           type: BottomNavigationBarType.fixed,
           items:  <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/home.png',height: 25,width: 25,),
-                activeIcon: Image.asset('assets/icons/homefilled.png',height: 25,width: 25,),
+                icon: Image.asset('assets/icons/home.png',height: 23,width: 23,),
+                activeIcon: Image.asset('assets/icons/homefilled.png',height: 23,width: 23,),
                 label: 'Home',
                 ),
             BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/voucher.png',height: 25,width: 25,),
-                activeIcon: Image.asset('assets/icons/voucherfilled.png',height: 25,width: 25,),
+                icon: Image.asset('assets/icons/voucher.png',height: 23,width: 23,),
+                activeIcon: Image.asset('assets/icons/voucherfilled.png',height: 23,width: 23,),
                 label: 'Vouchers',
                ),
             BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/wallet.png',height: 25,width: 25,),
-                activeIcon: Image.asset('assets/icons/walletfilled.png',height: 25,width: 25,),
+                icon: Image.asset('assets/icons/wallet.png',height: 23,width: 23,),
+                activeIcon: Image.asset('assets/icons/walletfilled.png',height: 23,width: 23,),
                 label: 'Wallet',
                 ),
             BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/user.png',height: 25,width: 25,),
-                activeIcon: Image.asset('assets/icons/userfill.png',height: 25,width: 25,),
+                icon: Image.asset('assets/icons/user.png',height: 23,width: 23,),
+                activeIcon: Image.asset('assets/icons/userfill.png',height: 23,width: 23,),
                 label: 'Profile',
                ),
           ]),

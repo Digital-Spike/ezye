@@ -1,9 +1,9 @@
-import 'package:ezys/home.dart';
+import 'package:ezys/homescreens/home_screen.dart';
 import 'package:ezys/home2.dart';
-import 'package:ezys/login.dart';
+import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'Auth_screen/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         // brightness: Brightness.light,
         fontFamily: 'Proxima Nova',
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }

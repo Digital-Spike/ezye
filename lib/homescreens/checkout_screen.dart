@@ -1,4 +1,5 @@
-import 'package:ezys/payment_screen.dart';
+
+import 'package:ezys/homescreens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -50,6 +51,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
         title: Text('Checkout',style: TextStyle(color: Colors.black),),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -100,12 +102,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            
+            child: Text('Order List',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 5),
            Expanded(
                   child: ListView.builder(
                     itemCount: 1,
                     itemBuilder: (context, index) {
                     return Slidable(
-                       endActionPane: ActionPane(motion: const BehindMotion(), children: [SlidableAction(onPressed: ((context){}),icon: Icons.delete,backgroundColor: Colors.red,)]),
+                       endActionPane: ActionPane(motion: const BehindMotion(), children: [SlidableAction(onPressed: ((context){}),icon: CupertinoIcons.delete,backgroundColor: Colors.red.shade300,label: 'Remove',)]),
                       child: Container(
                         padding: EdgeInsets.all(10),
                         margin: EdgeInsets.symmetric(vertical: 5),
@@ -120,80 +128,83 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),image: DecorationImage(image: AssetImage('assets/image1.jpeg'),fit: BoxFit.cover,)),
                               
                             ),SizedBox(width: 20),
-                        Column(
-                         mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                      Text('Tiger Image EZYE',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                      SizedBox(height: 5),
-                              Text('T-shirt',style: TextStyle(color: Colors.grey[600]),),
-                              SizedBox(height: 5),
-                              Text('Size: XL',style: TextStyle(color: Colors.grey[600]),),
-                               SizedBox(height: 15),
-                              Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      
-                      children: [
-                        Text('Price: ₹399',style: TextStyle(fontWeight: FontWeight.bold),),SizedBox(width: 60),
-                        Container(
-                                                height: 35,
-                                                width: 100,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(7),
-                                                  border: Border.all(width: 0.5,color: Colors.grey.shade200)
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        decrementCounter();
-                                                      },
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(4),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.circular(5),
-                                                            color: Colors.grey[300]),
-                                                        child: Icon(
-                                                          CupertinoIcons.minus,
-                                                          color: Colors.black,
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                           mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                              Text('Tiger Image EZYE',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                              SizedBox(height: 5),
+                                Text('T-shirt',style: TextStyle(color: Colors.grey[600]),),
+                                SizedBox(height: 5),
+                                Text('Size: XL',style: TextStyle(color: Colors.grey[600]),),
+                                 SizedBox(height: 15),
+                                Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              
+                                              children: [
+                          Text('Price: ₹399',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Container(
+                                                  height: 35,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(7),
+                                                    border: Border.all(width: 0.5,color: Colors.grey.shade200)
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          decrementCounter();
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets.all(4),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(5),
+                                                              color: Colors.grey[300]),
+                                                          child: Icon(
+                                                            CupertinoIcons.minus,
+                                                            color: Colors.black,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    Text(
-                                                      '$counter',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.black),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        incrementCounter();
-                                                      },
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(4),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.circular(5),
-                                                            color: Colors.brown[300]),
-                                                        child: Icon(
-                                                          CupertinoIcons.add,
-                                                          color: Colors.black,
+                                                      SizedBox(width: 5),
+                                                      Text(
+                                                        '$counter',
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            color: Colors.black),
+                                                      ),
+                                                      SizedBox(width: 5),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          incrementCounter();
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets.all(4),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(5),
+                                                              color: Colors.brown[300]),
+                                                          child: Icon(
+                                                            CupertinoIcons.add,
+                                                            color: Colors.black,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                             
-                      ],
-                              )
-                                        
-                              ],
+                                               
+                                              ],
+                                )
+                                          
+                                ],
+                          ),
                         )
                           ],
                         ),
@@ -203,7 +214,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 ),
                 Spacer(),
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   height: 100,color: Colors.white,
                 child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,  
