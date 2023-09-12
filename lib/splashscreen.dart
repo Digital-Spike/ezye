@@ -28,8 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Image.asset(
           'assets/Ezyelogo.png',
-          height: 350, // Adjust the height as needed
-          width: 300, // Adjust the width as needed
+          height: 180, // Adjust the height as needed
+          width: double.infinity, // Adjust the width as needed
         ),
       ),
     );

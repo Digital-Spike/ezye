@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        minimumSize: Size(double.infinity, 48),
+        minimumSize: Size(double.infinity, 50),
         elevation: 0,
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),

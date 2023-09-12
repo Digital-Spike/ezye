@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
               BottomNavigationBar(
               elevation: 1,
-              // backgroundColor: Color(0xffF5E6C2),
+              
            selectedItemColor: Colors.black,
            
               currentIndex: _bottomNavIndex ?? 0,

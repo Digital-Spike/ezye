@@ -1,3 +1,4 @@
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelectChoiceChips extends StatefulWidget {
@@ -31,8 +32,10 @@ class _MultiSelectChoiceChipsState extends State<MultiSelectChoiceChips> {
       spacing: 10,
       children: widget.options.map((option) {
         return ChoiceChip(
-          selectedColor: Colors.blueGrey,
-          backgroundColor: Colors.grey,
+          showCheckmark: true,
+          checkmarkColor: Colors.white,
+          selectedColor: buttonColor,
+          backgroundColor: Colors.grey[500],
           label: Text(
             option,
             style: TextStyle(color: Colors.white),
