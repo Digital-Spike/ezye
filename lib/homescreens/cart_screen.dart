@@ -1,3 +1,4 @@
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/paymentScreens/checkout_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,34 +26,7 @@ int counter = 0;
       }
     });
   }
-   void toggleContainer() {
-  setState(() {
-    showOriginalContainer = !showOriginalContainer;
-    if (showOriginalContainer) {
-      if (counter == 0) {
-        counter = 1; // Set counter to 1 when showing the original container
-      }
-    } else {
-      if (counter == 1) {
-        counter = 0; // Set counter to 0 when showing the "Add" text
-        if (counter == 0) {
-          // Display the bottom modal sheet when counter becomes zero
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                // Customize your modal sheet here
-                child: Center(
-                  child: Text('Your bottom modal sheet content goes here.'),
-                ),
-              );
-            },
-          );
-        }
-      }
-    }
-  });
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +34,7 @@ int counter = 0;
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        title: Text('My Cart',style: TextStyle(color: Colors.black),),
+        title: Text('My Cart',style: apptitle),
         elevation: 0,
         leading: BackButton(color: Colors.black),
       ),
@@ -95,16 +69,16 @@ int counter = 0;
                               
                             ),SizedBox(width: 20),
                         Expanded(
-                          child: Column(
+                          child:  Column(
                             mainAxisSize: MainAxisSize.max,
                            mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                          Text('Tiger Image EZYE',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                          Text('Tiger Image EZYE',style: subtitle),
                                           SizedBox(height: 5),
-                                Text('T-shirt',style: TextStyle(color: Colors.grey[600]),),
+                                Text('T-shirt',style: content,),
                                 SizedBox(height: 5),
-                                Text('Size: XL',style: TextStyle(color: Colors.grey[600]),),
+                                Text('Size: XL',style: content,),
                                  SizedBox(height: 15),
                                Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +88,7 @@ int counter = 0;
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Container(
-                              height: 35,
+                             
                               width: 100,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7),
@@ -128,7 +102,7 @@ int counter = 0;
                                       decrementCounter();
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: EdgeInsets.all(2),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: Colors.grey[300],
@@ -153,14 +127,14 @@ int counter = 0;
                                       incrementCounter();
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: EdgeInsets.all(2),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
-                                        color: Colors.brown[300],
+                                        color: buttonColor,
                                       ),
                                       child: Icon(
                                         CupertinoIcons.add,
-                                        color: Colors.black,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
@@ -200,7 +174,9 @@ int counter = 0;
              Padding(
                padding: const EdgeInsets.symmetric(horizontal: 15),
                child: ElevatedButton(
-                style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),minimumSize: Size(380, 50)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: buttonColor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),minimumSize: Size(380, 50)),
                 onPressed: (){
                   showModalBottomSheet(
                               elevation: 5,
@@ -235,7 +211,9 @@ int counter = 0;
                                                     suffixIcon: Padding(
                                                       padding: const EdgeInsets.all(3.0),
                                                       child: ElevatedButton(
-                                                        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),minimumSize: Size(80, 40)),
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: buttonColor,
+                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),minimumSize: Size(80, 40)),
                                                         onPressed: (){}, child: Text('Apply',style: TextStyle(fontWeight: FontWeight.bold),)),
                                                     ),
                                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
@@ -257,6 +235,7 @@ int counter = 0;
                                            SizedBox(height: 20),
                                       ElevatedButton(
                                       style: ElevatedButton.styleFrom(
+                                        backgroundColor: buttonColor,
                                           minimumSize: const Size(400, 50),
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
@@ -284,7 +263,7 @@ int counter = 0;
                 },
                  child: Text('Checkout',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)),
              ),
-             SizedBox(height: 30)
+             SizedBox(height: 20)
           ],
         ),
       ),
