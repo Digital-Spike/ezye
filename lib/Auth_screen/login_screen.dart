@@ -1,4 +1,6 @@
 
+import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/homescreens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -62,19 +64,21 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                    height: 50,
-                    width: 220,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Enter OTP',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )),
+                Expanded(
+                  child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Enter OTP',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                      )),
+                ),
                 SizedBox(width: 20),
                 OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      
+                      side: BorderSide(width: 0.5),
                         minimumSize: Size(100, 50),
                         shape: RoundedRectangleBorder(
                           
@@ -84,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text(
                       'Get OTP',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: subtitle,
                     )),
               ],
             ),
@@ -94,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         minimumSize: Size(380, 50),
-                        backgroundColor: Colors.black,
+                        backgroundColor: buttonColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12))),
                     onPressed: () {

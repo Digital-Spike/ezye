@@ -1,6 +1,8 @@
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/homescreens/cart_screen.dart';
 import 'package:ezys/homescreens/main_screen.dart';
-import 'package:ezys/multiselectchoicechip_widget.dart';
+import 'package:ezys/homescreens/wishlist_screen.dart';
+import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,7 @@ class _ProductDetailState extends State<ProductDetail> {
   String? sizes;
   int selectedColorIndex = 0; // Initialize with -1, meaning no color selected
   String? selectedColorName;
-  bool isLiked=false;
+  bool isLiked = false;
 
   List<String> clothingImages = [
     'assets/t.jpg',
@@ -63,26 +65,24 @@ class _ProductDetailState extends State<ProductDetail> {
     });
   }
 
- void toggleContainer() {
-  setState(() {
-    showOriginalContainer = !showOriginalContainer;
-    if (showOriginalContainer) {
-      if (counter == 0) {
-        counter = 1; // Set counter to 1 when showing the original container
-      }
-    } else {
-      if (counter == 1) {
-        counter = 0; // Set counter to 0 when showing the "Add" text
+  void toggleContainer() {
+    setState(() {
+      showOriginalContainer = !showOriginalContainer;
+      if (showOriginalContainer) {
         if (counter == 0) {
-          // Display the bottom modal sheet
-          _showModalSheet();
+          counter = 1; // Set counter to 1 when showing the original container
+        }
+      } else {
+        if (counter == 1) {
+          counter = 0; // Set counter to 0 when showing the "Add" text
+          if (counter == 0) {
+            // Display the bottom modal sheet
+            _showModalSheet();
+          }
         }
       }
-    }
-  });
-}
-
-
+    });
+  }
 
   @override
   void initState() {
@@ -95,9 +95,12 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xfff1f1f2),
+        // backgroundColor: const Color(0xfff1f1f2),
         appBar: AppBar(
-          title: Text('Product Details',style: TextStyle(color: Colors.black),),
+          title: Text(
+            'Product Details',
+            style: apptitle,
+          ),
           leading: BackButton(
             color: Colors.black,
           ),
@@ -105,26 +108,46 @@ class _ProductDetailState extends State<ProductDetail> {
           backgroundColor: Colors.white,
           actions: [
             TextButton(
-              style: TextButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  minimumSize: Size(30, 30),
+                ),
                 onPressed: () {
-                  setState(() {
-                    isLiked=!isLiked;
-                  });
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WishList()));
                 },
                 child: Image.asset(
-                  isLiked?
-                                      'assets/icons/heart (2).png':'assets/icons/love.png',
+                  'assets/icons/love.png',
                   height: 27,
                   width: 27,
                 )),
             TextButton(
-              style: TextButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  minimumSize: Size(30, 30),
+                ),
                 onPressed: () {},
                 child: Icon(
                   Icons.share,
                   color: Colors.black,
                 )),
-           
+            TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  minimumSize: Size(30, 30),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartScreen()));
+                },
+                child: Image.asset(
+                  'assets/icons/shoppingbag.png',
+                  height: 27,
+                  width: 27,
+                )),
           ],
         ),
         bottomNavigationBar: Container(
@@ -165,11 +188,13 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
                       minimumSize: Size(150, 45)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()));
                   },
                   child: Row(
                     children: [
@@ -241,6 +266,27 @@ class _ProductDetailState extends State<ProductDetail> {
                       }).toList(),
                     ),
                   ),
+                  Positioned(
+                      top: 10,
+                      right: 10,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isLiked = !isLiked;
+                          });
+                        },
+                        child: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey[300],
+                            ),
+                            padding: EdgeInsets.all(10),
+                            child: Image.asset(isLiked
+                                ? 'assets/icons/heart (2).png'
+                                : 'assets/icons/love.png')),
+                      ))
                 ],
               ),
               Divider(
@@ -261,7 +307,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         children: [
                           Text(
                             'T-shirt',
-                            style: TextStyle(color: Colors.grey[700]),
+                            style: content,
                           ),
                           Row(
                             children: [
@@ -281,16 +327,11 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: Text(
-                          'Tiger Image EZYE – Tees for Men',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
+                        child: Text('Tiger Image EZYE – Tees for Men',
+                            style: title),
                       ),
                       SizedBox(height: 5),
-                      Text('Price',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600)),
+                      Text('Price', style: subtitle),
                       SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -303,7 +344,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     decoration: TextDecoration.lineThrough,
                                     color: Colors.green[800],
                                     decorationColor: Colors.green[800],
-                                    decorationThickness: 2),
+                                    decorationThickness: 3),
                               ),
                               Text('- ₹399'),
                               SizedBox(width: 10),
@@ -312,81 +353,83 @@ class _ProductDetailState extends State<ProductDetail> {
                           SizedBox(width: 5),
                           GestureDetector(
                               onTap: toggleContainer,
-                              child: showOriginalContainer
-                                  ? Container(
-                                      height: 35,
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7),
-                                        border: Border.all(width: 0.5,color: Colors.grey.shade200)
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              decrementCounter();
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: Colors.grey[300]),
-                                              child: Icon(
-                                                CupertinoIcons.minus,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            '$counter',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          ),
-                                          SizedBox(width: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              incrementCounter();
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: Colors.brown[300]),
-                                              child: Icon(
-                                                CupertinoIcons.add,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : Container(
-                                      height: 35,
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                              width: 0.5,
-                                              color: Colors.grey.shade400)),
-                                      child: Center(
-                                        child: Text(
-                                          counter == 0 ? "Add" : "$counter",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.green[600]),
+                              child: Container(
+                               
+                                width: 110,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    border: Border.all(
+                                        width: 0.5,
+                                        color: Colors.grey.shade200)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        decrementCounter();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.grey[300]),
+                                        child: Icon(
+                                          CupertinoIcons.minus,
+                                          color: Colors.black,
                                         ),
                                       ),
-                                    )),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      '$counter',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(width: 5),
+                                    GestureDetector(
+                                      onTap: () {
+                                        incrementCounter();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: buttonColor),
+                                        child: Icon(
+                                          CupertinoIcons.add,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              // : Container(
+                              //     height: 35,
+                              //     width: 110,
+                              //     decoration: BoxDecoration(
+                              //         color: Colors.grey[200],
+                              //         borderRadius:
+                              //             BorderRadius.circular(12),
+                              //         border: Border.all(
+                              //             width: 0.5,
+                              //             color: Colors.grey.shade400)),
+                              //     child: Center(
+                              //       child: Text(
+                              //         counter == 0 ? "Add" : "$counter",
+                              //         style: TextStyle(
+                              //             fontSize: 16,
+                              //             fontWeight: FontWeight.w900,
+                              //             color: Colors.green[600]),
+                              //       ),
+                              //     ),
+                              //   )
+
+                              ),
                         ],
                       ),
                       SizedBox(height: 10),
@@ -394,9 +437,10 @@ class _ProductDetailState extends State<ProductDetail> {
                         padding: const EdgeInsets.symmetric(vertical: 0),
                         child: Wrap(spacing: 10, children: [
                           ChoiceChip(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
-                            selectedColor: Colors.blueGrey,
+                            selectedColor: buttonColor,
                             label: const Text(
                               'S',
                               style: TextStyle(color: Colors.white),
@@ -409,9 +453,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
-                            selectedColor: Colors.blueGrey,
+                            selectedColor: buttonColor,
                             label: const Text(
                               'M',
                               style: TextStyle(color: Colors.white),
@@ -424,9 +469,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
-                            selectedColor: Colors.blueGrey,
+                            selectedColor: buttonColor,
                             label: const Text(
                               'L',
                               style: TextStyle(color: Colors.white),
@@ -439,9 +485,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
-                            selectedColor: Colors.blueGrey,
+                            selectedColor: buttonColor,
                             label: const Text(
                               'XL',
                               style: TextStyle(color: Colors.white),
@@ -454,10 +501,10 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                           ),
                           ChoiceChip(
-                            
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
                             backgroundColor: Colors.grey,
-                            selectedColor: Colors.blueGrey,
+                            selectedColor: buttonColor,
                             label: const Text(
                               'XXL',
                               style: TextStyle(color: Colors.white),
@@ -578,19 +625,18 @@ class _ProductDetailState extends State<ProductDetail> {
           ),
         ));
   }
-void _showModalSheet() {
-  showModalBottomSheet<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text('Your bottom modal sheet content goes here.'),
-        ),
-      );
-    },
-  );
-}
 
- 
+  void _showModalSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('Your bottom modal sheet content goes here.'),
+          ),
+        );
+      },
+    );
+  }
 }

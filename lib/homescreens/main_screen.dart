@@ -1,6 +1,6 @@
 import 'package:ezys/homescreens/home_screen.dart';
-import 'package:ezys/homescreens/profile_screen.dart';
-import 'package:ezys/paymentScreens/voucher_screen.dart';
+import 'package:ezys/profilescreens/profile_screen.dart';
+import 'package:ezys/paymentScreens/coupan_screen.dart';
 import 'package:ezys/paymentScreens/wallet_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -19,6 +19,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final double indicatorWidth = 40.0; // Adjust the width as needed
+  final double indicatorHeight = 4.0; // Adjust the height as needed
+  final Color indicatorColor = Color(0xffb22024);
   static int? _bottomNavIndex;
 
   @override
@@ -31,40 +34,58 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(child: widget.mainChild),
 
      
-      bottomNavigationBar: BottomNavigationBar(
-          elevation: 1,
-          // backgroundColor: Color(0xffF5E6C2),
-         selectedItemColor: Colors.black,
-         
-          currentIndex: _bottomNavIndex ?? 0,
-          onTap: (index) =>
-            switchScreen(index),
+      bottomNavigationBar: Stack(
+
+        children: [
+              BottomNavigationBar(
+              elevation: 1,
+              // backgroundColor: Color(0xffF5E6C2),
+           selectedItemColor: Colors.black,
            
-          landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
-          
-          type: BottomNavigationBarType.fixed,
-          items:  <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/home.png',height: 23,width: 23,),
-                activeIcon: Image.asset('assets/icons/homefilled.png',height: 23,width: 23,),
-                label: 'Home',
-                ),
-            BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/voucher.png',height: 23,width: 23,),
-                activeIcon: Image.asset('assets/icons/voucherfilled.png',height: 23,width: 23,),
-                label: 'Vouchers',
-               ),
-            BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/wallet.png',height: 23,width: 23,),
-                activeIcon: Image.asset('assets/icons/walletfilled.png',height: 23,width: 23,),
-                label: 'Wallet',
-                ),
-            BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/user.png',height: 23,width: 23,),
-                activeIcon: Image.asset('assets/icons/userfill.png',height: 23,width: 23,),
-                label: 'Profile',
-               ),
-          ]),
+              currentIndex: _bottomNavIndex ?? 0,
+              onTap: (index) =>
+                switchScreen(index),
+               
+              landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+              
+              type: BottomNavigationBarType.fixed,
+              items:  <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Image.asset('assets/icons/home.png',height: 23,width: 23,),
+                    activeIcon: Image.asset('assets/icons/homefilled.png',height: 23,width: 23,),
+                    label: 'Home',
+                    ),
+                BottomNavigationBarItem(
+                    icon: Image.asset('assets/icons/voucher.png',height: 23,width: 23,),
+                    activeIcon: Image.asset('assets/icons/voucherfilled.png',height: 23,width: 23,),
+                    label: 'Coupons',
+                   ),
+                BottomNavigationBarItem(
+                    icon: Image.asset('assets/icons/wallet.png',height: 23,width: 23,),
+                    activeIcon: Image.asset('assets/icons/walletfilled.png',height: 23,width: 23,),
+                    label: 'Wallet',
+                    ),
+                BottomNavigationBarItem(
+                    icon: Image.asset('assets/icons/user.png',height: 23,width: 23,),
+                    activeIcon: Image.asset('assets/icons/userfill.png',height: 23,width: 23,),
+                    label: 'Profile',
+                   ),
+              ]),
+             Positioned(
+            top: 0, // Adjust the top position as needed
+            left: (MediaQuery.of(context).size.width / 4) *
+                (_bottomNavIndex ?? 0) +
+                (MediaQuery.of(context).size.width / 8) -
+                (indicatorWidth / 2), // Calculate the position based on the selected index
+            child: Container(
+              width: indicatorWidth,
+              height: indicatorHeight,
+              
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5)),color: indicatorColor,),
+            ),
+          ),
+            ],
+      ),
     );
   }
 
@@ -83,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const VoucherPage(),
+            builder: (context) => const CoupanPage(),
           ),
         );
         break;
