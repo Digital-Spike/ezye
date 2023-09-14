@@ -1,19 +1,20 @@
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class CustomButton extends StatelessWidget {
   final String title1;
   
-   final IconData leadingIcon;
+  final String svgPath;
   
   final IconData trailingIcon;
   final VoidCallback onPressed;
 
-  CustomButton({
+  const CustomButton({super.key, 
     required this.title1,
    
-    required this.leadingIcon,
+    required this.svgPath,
     required this.trailingIcon,
     required this.onPressed,
   });
@@ -23,7 +24,7 @@ class CustomButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: Size(double.infinity, 40),
         elevation: 0,
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
@@ -32,7 +33,7 @@ class CustomButton extends StatelessWidget {
       ),
       child: Row(
         children: [
-        Icon(leadingIcon,color: Colors.black,size: 26,),
+        SvgPicture.asset(svgPath,height: 30,width: 30,),
           SizedBox(width: 16),
           Text(
             title1,

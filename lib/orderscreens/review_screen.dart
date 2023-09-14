@@ -19,6 +19,7 @@ class _ReviewPageState extends State<ReviewPage> {
         elevation: 0,
         leading: BackButton(color: buttonColor,),
         title: Text('Leave Review',style: apptitle,),
+        centerTitle: true,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(border: Border(top: BorderSide(width: 0.5,color: Colors.grey.shade400))),

@@ -23,9 +23,9 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Column(
        
         children: [
-          CustomButton(title1: 'Notification Settings', leadingIcon: CupertinoIcons.person, trailingIcon: CupertinoIcons.forward, onPressed: (){}),
-          SizedBox(height: 10),
-            CustomButton(title1: 'Delete Account', leadingIcon: CupertinoIcons.creditcard, trailingIcon: CupertinoIcons.forward, onPressed: (){}),
+        //   CustomButton(title1: 'Notification Settings', leadingIcon: CupertinoIcons.person, trailingIcon: CupertinoIcons.forward, onPressed: (){}),
+        //   SizedBox(height: 10),
+        //     CustomButton(title1: 'Delete Account', leadingIcon: CupertinoIcons.creditcard, trailingIcon: CupertinoIcons.forward, onPressed: (){}),
         ],
       ),
     );

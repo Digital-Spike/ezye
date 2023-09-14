@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
         ),
         mainChild: Container(
+          height: double.infinity,
           color: Colors.white,
           child: SingleChildScrollView(
             child: Column(
@@ -61,21 +62,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
+                Text('User name',style: title,),
                 CustomButton(
                     title1: 'Edit Profile',
-                    leadingIcon: Icons.edit,
+                   svgPath: 'assets/icons/Edit (1).svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {}),
                 divider,
                 CustomButton(
                     title1: 'Payment Methods',
-                    leadingIcon: CupertinoIcons.creditcard,
+                   svgPath: 'assets/icons/Card.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {}),
                 divider,
                 CustomButton(
                     title1: 'My Orders',
-                    leadingIcon: CupertinoIcons.cube_box,
+                   svgPath: 'assets/icons/Order.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>MyOrderPage()));
@@ -83,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 divider,
                 CustomButton(
                     title1: 'Settings',
-                    leadingIcon: Icons.settings_outlined,
+                   svgPath: 'assets/icons/Settings (1).svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
@@ -91,25 +93,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 divider,
                 CustomButton(
                     title1: 'Help Center',
-                    leadingIcon: Icons.help_outline,
+                    svgPath: 'assets/icons/Help Center.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {}),
                 divider,
                 CustomButton(
                     title1: 'Privacy Policy',
-                    leadingIcon: Icons.privacy_tip_outlined,
+                   svgPath: 'assets/icons/Privacy Policy.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {}),
                 divider,
                 CustomButton(
                     title1: 'Invite Friends',
-                    leadingIcon: CupertinoIcons.share,
+                   svgPath: 'assets/icons/Invite.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {}),
                 divider,
                 CustomButton(
                     title1: 'Log out',
-                    leadingIcon: Icons.logout_sharp,
+                   svgPath: 'assets/icons/logout.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
                        showModalBottomSheet(
@@ -143,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 Expanded(
                                                   child: OutlinedButton(
                                                     style: OutlinedButton.styleFrom(elevation: 0,backgroundColor: Colors.grey[300],minimumSize: Size(double.infinity, 50),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-                                                    onPressed: (){}, child: Text('Cancel',style: subtitle1,)),
+                                                    onPressed: (){Navigator.of(context).pop(); }, child: Text('Cancel',style: subtitle1,)),
                                                 ),
                                                 SizedBox(width: 10),
                                                   Expanded(

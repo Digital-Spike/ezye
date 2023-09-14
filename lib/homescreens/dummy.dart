@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
+
 
 class DummyPage extends StatefulWidget {
   const DummyPage({super.key});
@@ -9,76 +9,33 @@ class DummyPage extends StatefulWidget {
 }
 
 class _DummyPageState extends State<DummyPage> {
-  int selectedThumbnailIndex = 0;
-
-  List<String> clothingImages = [
-    'assets/t.jpg',
-    'assets/t1.jpg',
-    'assets/t2.jpg',
-    'assets/t3.jpg',
-  ];
+ int _index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Stack(
-        children: [
-          // Main clothing image (swipeable)
-          Container(
-            width: double.infinity,
-            height: 400,
-            child: GestureDetector(
-              onTap: () {
-                // Handle tapping on the main image (optional)
-              },
-              
-              child: PhotoView(
-                imageProvider: AssetImage(
-                  clothingImages[selectedThumbnailIndex],
-                ),
-              ),
-            ),
-          ),
-          // Small thumbnail images stacked on top-left
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: clothingImages.asMap().entries.map((entry) {
-                final index = entry.key;
-                final imagePath = entry.value;
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedThumbnailIndex = index;
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: selectedThumbnailIndex == index
-                            ? Colors.orange
-                            : Colors.transparent,
-                        width: 2,
-                      ),
-                    ),
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
+      body: Stepper(
+      currentStep: _index,
+      onStepCancel: () {
+      },
+      onStepContinue: () {
+      },
+      onStepTapped: (int index) {
+      },
+      steps: <Step>[
+        Step(
+          title: const Text('Step 1 title'),
+          content: Container(
+              alignment: Alignment.centerLeft,
+              child: const Text('Content for Step 1')),
+        ),
+        const Step(
+          title: Text('Step 2 title'),
+          content: Text('Content for Step 2'),
+        ),
+      ],
+    )
     );
   }
 }
