@@ -29,12 +29,12 @@ class CustomButton extends StatelessWidget {
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
        
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
       ),
       child: Row(
         children: [
         SvgPicture.asset(svgPath,height: 30,width: 30,),
-          SizedBox(width: 16),
+          SizedBox(width: 20),
           Text(
             title1,
             style: title,

@@ -12,11 +12,11 @@ class MyAddress extends StatefulWidget {
 
 class _MyAddressState extends State<MyAddress> {
   int? _selectedValue; // Store the selected radio button value
-
+  String? canCall;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xfff1f1f2),
+      backgroundColor: const Color(0xfff1f1f2),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: BackButton(color: Colors.black),
@@ -24,119 +24,132 @@ class _MyAddressState extends State<MyAddress> {
         title: Text('Shipping Address', style: apptitle),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 2,
-                      itemBuilder: ((context, index) {
-                        return Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(5),
-                          child: Column(
-                            children: [
-                              ListTile(
-                                leading: Radio<int>(
-                                  value:
-                                      index, // Set the value of this radio button
-                                  groupValue:
-                                      _selectedValue, // Current selected value
-                                  onChanged: (int? value) {
-                                    setState(() {
-                                      _selectedValue =
-                                          value; // Update the selected value
-                                    });
-                                  },
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Row(
-                                      children: [
-                                        Icon(CupertinoIcons.placemark,color: buttonColor,),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Home',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011',
-                                        style: TextStyle(color: Colors.grey[600]),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: Divider(
-                                    thickness: 0.5, color: Colors.grey[400]),
-                              )
-                            ],
-                          ),
-                        );
-                      })),
+      bottomNavigationBar: Container(
+        height: 80,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    minimumSize: Size(380, 50)),
+                onPressed: () {},
+                child: const Text('Apply',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Radio<String>(
+                    value: 'Home',
+                    // Use 'YES' as the value for the "YES" option
+                    groupValue: canCall,
+                    onChanged: (value) {
+                      setState(() {
+                        canCall = value!;
+                      });
+                    },
+                  ),
+                  Text('Home'),
+                  Radio<String>(
+                    value: 'Work',
+                    // Use 'NO' as the value for the "NO" option
+                    groupValue: canCall,
+                    onChanged: (value) {
+                      setState(() {
+                        canCall = value!;
+                      });
+                    },
+                  ),
+                  Text('Work'),
+                  Radio<String>(
+                    value: 'Others',
+                    // Use 'NO' as the value for the "NO" option
+                    groupValue: canCall,
+                    onChanged: (value) {
+                      setState(() {
+                        canCall = value!;
+                      });
+                    },
+                  ),
+                  Text('Others'),
+                ],
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Full Name',
+
+                  // border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                 ),
-              Container(
-  height: 60,
-  width: double.infinity,
-  
-    
-   
-    
-  ),
-   DottedBorder(
-    borderPadding: EdgeInsets.symmetric(horizontal: 15),
-
-dashPattern: [5,3],
-    strokeCap: StrokeCap.butt,
-    strokeWidth: 1,
-    radius: Radius.circular(20),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: TextButton(
-       style: TextButton.styleFrom(
-       padding: EdgeInsets.all(12),
-       backgroundColor: Colors.grey[300]
-       ),
-        onPressed: (){}, child:  Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(CupertinoIcons.add,color: Color(0xffb22024),),SizedBox(width: 5),Text('Add New Shipping Address',style: subtitle1,)
-        ],
-      ),),
-    ) ),
-
-
-              ],
-            ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'House/Flat/Door No',
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Landmark/Street/Nearby',
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Your City',
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Pincode',
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Your State',
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Your Email',
+                ),
+              ),
+              SizedBox(height: 14),
+              TextField(
+                 maxLength: 10,
+                decoration: InputDecoration(
+                  hintText: 'Phone number',
+                ),
+              ),
+             
+              TextField(
+                maxLength: 10,
+                decoration: InputDecoration(
+                  hintText: 'Alternate Phone',
+                ),
+              ),
+            ],
           ),
-          
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: buttonColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  minimumSize: Size(380, 50)),
-              onPressed: () {},
-              child: const Text('Apply',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            ),
-          ),
-          SizedBox(height: 20)
-        ],
+        ),
       ),
     );
   }

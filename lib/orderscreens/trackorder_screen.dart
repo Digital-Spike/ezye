@@ -118,7 +118,7 @@ class _TrackOrderState extends State<TrackOrder> {
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     duration: Duration(seconds: 2),
-    content: CustomSnack(snackcontent: 'Text copied to clipboard.', imagePath: 'assets/Snack Bar 4.png',)
+    content: CustomSnack(snackcontent: 'ID copied to clipboard.', imagePath: 'assets/Snack Bar 4.png',)
   ),
 );
 

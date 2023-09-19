@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ezys/homescreens/search_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:ezys/custom_widgets/constants.dart';
@@ -47,15 +48,14 @@ class _HomePageState extends State<HomePage> {
     'assets/pants.png',
     'assets/dress.png',
     'assets/shirt.png',
-    'assets/pants.png',
+
     // Add more image URLs as needed.
   ];
   final List<String> imageNames = [
-    'T-shirts',
-    'Pants',
-    'Dress',
-    'shirts',
-    'Pants',
+    'Men',
+    'Kid',
+    'Women',
+    'Junior',
 
     // Add more image names corresponding to the URLs.
   ];
@@ -85,25 +85,51 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
-        title:  Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-              child: SizedBox(
-                height: 47,
-                width: double.infinity,
-                child: TextField(
-                  decoration: InputDecoration(
-                      isDense: true,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: SvgPicture.asset('assets/icons/Search.svg',height: 20,width: 20,),
-                      ),
-                      prefixIconConstraints:
-                          BoxConstraints(minHeight: 28, minWidth: 28),
-                      hintText: 'Search Your Favorite...',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)))),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchPage()));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  height: 40,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: bgcolor,
+                      borderRadius: BorderRadius.circular(10),
+                      border:
+                          Border.all(width: 1, color: Colors.grey.shade800)),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/Search.svg',
+                          height: 20, width: 20, color: Colors.grey[800]),
+                      SizedBox(width: 10),
+                      Text(
+                        'Search Your Favorite...',
+                        style: content1,
+                      )
+                    ],
+                  ),
+                  // child: TextField(
+                  //   readOnly: true,
+                  //   decoration: InputDecoration(
+                  //     fillColor: bgcolor,
+                  //     filled: true,
+                  //       isDense: true,
+                  //       prefixIcon: Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 10),
+                  //         child: SvgPicture.asset('assets/icons/Search.svg',height: 20,width: 20,),
+                  //       ),
+                  //       prefixIconConstraints:
+                  //           BoxConstraints(minHeight: 28, minWidth: 28),
+                  //       hintText: 'Search Your Favorite...',
+                  //       border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.all(Radius.circular(8)))),
+                  // ),
                 ),
               ),
             ),
@@ -125,7 +151,7 @@ class _HomePageState extends State<HomePage> {
               style: TextButton.styleFrom(minimumSize: Size(25, 25)),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
+                    MaterialPageRoute(builder: (context) => CartScreen(image: '', title: '', size: '', price: '', counter: 0,)));
               },
               child: Image.asset(
                 'assets/icons/shoppingbag.png',
@@ -153,22 +179,25 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CarouselSlider(
-                      items: carouselItems.map((item) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                          margin: EdgeInsets.symmetric(horizontal: 25),
-                          child: Center(
-                            child: Image.network(
-                              item.imageUrl,
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                            ),
+                    items: imgList.map((item) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 25),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            item,
+                            fit: BoxFit.contain,
+                            width: double.infinity,
                           ),
-                        );
-                      }).toList(),
-                      options: CarouselOptions(
-                          viewportFraction: 1.09, autoPlay: true)),
+                        ),
+                      );
+                    }).toList(),
+                    options: CarouselOptions(
+                      viewportFraction: 1.09,
+                      
+                      autoPlay: true,
+                    ),
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -296,22 +325,48 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProductDetail()));
-                              },
-                              child: Container(
-                                height: 150,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                        image: AssetImage('assets/image1.jpeg'),
-                                        fit: BoxFit.cover)),
-                              ),
-                            ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetail()));
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Container(
+                                    height: 150,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Image.asset(
+                                          'assets/image.jpeg',
+                                          fit: BoxFit.cover,
+                                          height: 150,
+                                          width: double.infinity,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            gradient: LinearGradient(
+                                              // stops: [0,5],
+                                              begin: Alignment.topRight,
+                                              end: Alignment.bottomLeft,
+                                              colors: [
+                                                Colors.black26,
+                                                Colors.transparent
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
                             SizedBox(
                               height: 5,
                             ),
@@ -337,15 +392,15 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Positioned(
-                            top: 5,
-                            right: 5,
+                            top: 0,
+                            right: 0,
                             child: Column(
                               children: [
                                 Container(
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
+                                    shape: BoxShape.circle,
+                                  ),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -354,28 +409,28 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     child: Image.asset(
                                       isLiked
-                                          ? 'assets/icons/heart (2).png'
-                                          : 'assets/icons/love.png',
-                                      height: 17,
-                                      width: 17,
+                                          ? 'assets/icons/Comp 232.gif'
+                                          : 'assets/icons/White heart.png',
+                                      height: 30,
+                                      width: 30,
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10),
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Image.asset(
-                                      'assets/icons/shoppingbag.png',
-                                      height: 17,
-                                      width: 17,
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   padding: EdgeInsets.all(5),
+                                //   decoration: BoxDecoration(
+                                //       shape: BoxShape.circle,
+                                //       color: Colors.white),
+                                //   child: GestureDetector(
+                                //     onTap: () {},
+                                //     child: Image.asset(
+                                //       'assets/icons/shoppingbag.png',
+                                //       height: 17,
+                                //       width: 17,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             )),
                       ],

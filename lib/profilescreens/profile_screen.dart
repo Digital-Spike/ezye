@@ -2,9 +2,11 @@ import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/profile_button.dart';
 import 'package:ezys/homescreens/main_screen.dart';
 import 'package:ezys/orderscreens/myorder_screen.dart';
+import 'package:ezys/profilescreens/editprofile.dart';
 import 'package:ezys/profilescreens/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -51,24 +53,24 @@ class _ProfilePageState extends State<ProfilePage> {
                           bottom: 0,
                           left: 200,
                           right: 120,
-                          child: Container(
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 2, color: Colors.white),
-                                  color: Colors.grey,
-                                  shape: BoxShape.circle),
-                              child: Icon(Icons.edit)))
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
+                            },
+                            child: Container(
+                                padding: EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(width: 2, color: Colors.white),
+                                    color: Colors.grey,
+                                    shape: BoxShape.circle),
+                                child:  SvgPicture.asset('assets/icons/Edit (1).svg',height: 20,width: 20,) ),
+                          ))
                     ],
                   ),
                 ),
                 Text('User name',style: title,),
-                CustomButton(
-                    title1: 'Edit Profile',
-                   svgPath: 'assets/icons/Edit (1).svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {}),
-                divider,
+               SizedBox(height: 15),
                 CustomButton(
                     title1: 'Payment Methods',
                    svgPath: 'assets/icons/Card.svg',
@@ -111,10 +113,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 divider,
                 CustomButton(
                     title1: 'Log out',
-                   svgPath: 'assets/icons/logout.svg',
+                   svgPath: 'assets/icons/logout 2.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
                        showModalBottomSheet(
+                       
                                 elevation: 5,
                                 isScrollControlled: true,
                                 shape: const RoundedRectangleBorder(

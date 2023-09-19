@@ -141,7 +141,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CartScreen()));
+                      MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: sizes ?? 'Not selected', price: '₹399', counter: counter,)));
                 },
                 child: Image.asset(
                   'assets/icons/shoppingbag.png',
@@ -194,7 +194,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       minimumSize: Size(150, 45)),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen()));
+                        MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: sizes ?? 'Not selected', price: '₹399', counter: counter,)));
                   },
                   child: Row(
                     children: [

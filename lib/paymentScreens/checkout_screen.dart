@@ -13,6 +13,8 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+  int?_selectedValue;
+  String?canCall;
 //   int counter = 0;
 //   bool showOriginalContainer = false;
 //     void incrementCounter() {
@@ -53,6 +55,49 @@ class _CheckOutPageState extends State<CheckOutPage> {
         title: Text('Checkout',style: apptitle),
         centerTitle: true,
       ),
+      bottomNavigationBar:  Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                  height: 100,color: Colors.white,
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,  
+                  children: [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Price',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  ),
+                  SizedBox(height: 10),
+                  Text('₹399',
+                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                  SizedBox(
+                    height: 15,
+                  )
+                ],
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      minimumSize: Size(150, 45)),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage()));
+                  },
+                  child: Row(
+                   
+                    children: [
+                     
+                      Text(
+                        'Continue to Payment',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  ),
+                  ],),),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -77,7 +122,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     children: [
                       Expanded(child: Text('64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011 ',style: TextStyle(color: Colors.grey[600],fontSize: 14.5),)),SizedBox(width: 40,),GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
+                          _address();
+                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
                         },child: Container(margin: EdgeInsets.all(5),padding: EdgeInsets.all(5),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),border: Border.all(width: 0.5,color: Colors.grey.shade400)),child: Text('CHANGE',style: TextStyle(color: Colors.green),),))
                     ],
                   ),
@@ -222,50 +268,152 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     );
                   }),
                 ),
-                Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  height: 100,color: Colors.white,
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,  
-                  children: [Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Total Price',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                GestureDetector(
+                  onTap: () {
+                    
+                  },
+                  child: Container(
+                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                   width: double.infinity,
+                   decoration: BoxDecoration(border: Border.all(width: 0.25,color: Colors.grey.shade400),color: Colors.white),
+                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    Text('Add More Items',style: subtitle,),Icon(CupertinoIcons.add_circled)
+                   ],),
                   ),
-                  SizedBox(height: 10),
-                  Text('₹399',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
-                  SizedBox(
-                    height: 15,
-                  )
-                ],
-              ),
-              ElevatedButton(
+                )
+                
+               
+        ],
+      ),
+    );
+  }
+   void _address() {
+    showModalBottomSheet(
+      showDragHandle: true,
+        elevation: 5,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Container(
+                height: 350,
+                padding: EdgeInsets.all(20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10),
+                        Center(
+                          child: Text(
+                            'Shipping Address',
+                            style: title,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        devider,
+                        SizedBox(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: ((context, index) {
+                        return Container(
+                                  
+                         
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Radio<int>(
+                                  value:
+                                      index, // Set the value of this radio button
+                                  groupValue:
+                                      _selectedValue, // Current selected value
+                                  onChanged: (int? value) {
+                                    setState(() {
+                                      _selectedValue =
+                                          value; // Update the selected value
+                                    });
+                                  },
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.placemark,
+                                          color: buttonColor,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: Text(
+                                        '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011',
+                                        style:
+                                            TextStyle(color: Colors.grey[600]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
+                                child: Divider(
+                                    thickness: 0.5, color: Colors.grey[400]),
+                              )
+                            ],
+                          ),
+                        );
+                      })),
+                     ) ,
+                    
+                      ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
-                      minimumSize: Size(150, 45)),
+                      minimumSize: Size(double.infinity, 50)),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
                   },
                   child: Row(
-                   
+                   mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      
                       Text(
-                        'Continue to Payment',
+                        'Add New Shipping Address',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       )
                     ],
-                  ))],),)
-        ],
-      ),
-    );
+                  ),
+                  ),
+                     ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+        });
   }
 }

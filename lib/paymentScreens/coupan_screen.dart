@@ -1,4 +1,5 @@
 import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezys/custom_widgets/snackbar.dart';
 import 'package:ezys/homescreens/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +82,10 @@ class _CoupanPageState extends State<CoupanPage> {
                await Clipboard.setData(ClipboardData(text: "WELCOME200",));
                ScaffoldMessenger.of(context).showSnackBar(
                SnackBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
                  duration: Duration(seconds: 1),
-                 content: Text("Text copied to clipboard."),
+                 content: CustomSnack(snackcontent: 'Code Applied Successfully', imagePath: 'assets/Snack Bar 6.png', )
                ),
                );
                
@@ -94,7 +97,7 @@ class _CoupanPageState extends State<CoupanPage> {
                             width: double.infinity,
                            
                             decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20)), color: Colors.grey[400],),
-                            child: Center(child: Text('COPY CODE',style: title,)),
+                            child: Center(child: Text('APPLY CODE',style: title,)),
                            ),
                          )
                         ],
