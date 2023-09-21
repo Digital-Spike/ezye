@@ -14,6 +14,8 @@ const TextStyle subtitle =TextStyle(fontSize: 16,fontWeight: FontWeight.w700,col
 
 const TextStyle subtitle1 =TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color(0xffb22024));
 
+const TextStyle subtitle2 =TextStyle(color: Color(0xffb22024));
+
 final TextStyle content1 =TextStyle(fontSize: 16,color: Colors.grey[600]);
 
 final TextStyle content2 =TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.grey[600]);

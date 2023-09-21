@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/homescreens/cart_screen.dart';
 import 'package:ezys/homescreens/main_screen.dart';
@@ -5,7 +7,7 @@ import 'package:ezys/homescreens/wishlist_screen.dart';
 import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 class ProductDetail extends StatefulWidget {
   const ProductDetail({super.key});
 
@@ -14,10 +16,24 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+   bool _showCircle = false;
+   String?name,
+   category,
+   subCategory,
+   MRP,
+   sellingPrice,
+   productId,
+   description,
+   fullDescription,
+   imageUrl,
+   size,
+   color,
+   stock_status,
+   stock_number;
   int selectedThumbnailIndex = 0; // Track the selected thumbnail index
   int counter = 0;
   bool showOriginalContainer = false;
-  String? sizes;
+  
   int selectedColorIndex = 0; // Initialize with -1, meaning no color selected
   String? selectedColorName;
   bool isLiked = false;
@@ -77,7 +93,7 @@ class _ProductDetailState extends State<ProductDetail> {
           counter = 0; // Set counter to 0 when showing the "Add" text
           if (counter == 0) {
             // Display the bottom modal sheet
-            _showModalSheet();
+            
           }
         }
       }
@@ -141,7 +157,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: sizes ?? 'Not selected', price: '₹399', counter: counter,)));
+                      MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: size ?? 'Not selected', price: '₹399', counter: counter,)));
                 },
                 child: Image.asset(
                   'assets/icons/shoppingbag.png',
@@ -194,7 +210,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       minimumSize: Size(150, 45)),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: sizes ?? 'Not selected', price: '₹399', counter: counter,)));
+                        MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: size ?? 'Not selected', price: '₹399', counter: counter,)));
                   },
                   child: Row(
                     children: [
@@ -339,14 +355,14 @@ class _ProductDetailState extends State<ProductDetail> {
                           Row(
                             children: [
                               Text(
-                                '₹799',
+                                sellingPrice.toString(),
                                 style: TextStyle(
                                     decoration: TextDecoration.lineThrough,
                                     color: Colors.green[800],
                                     decorationColor: Colors.green[800],
                                     decorationThickness: 3),
                               ),
-                              Text('- ₹399'),
+                              Text('- ${MRP}'),
                               SizedBox(width: 10),
                             ],
                           ),
@@ -445,10 +461,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               'S',
                               style: TextStyle(color: Colors.white),
                             ),
-                            selected: sizes == 'S',
+                            selected: size == 'S',
                             onSelected: (selected) {
                               setState(() {
-                                sizes = selected ? 'S' : '';
+                                size = selected ? 'S' : '';
                               });
                             },
                           ),
@@ -461,10 +477,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               'M',
                               style: TextStyle(color: Colors.white),
                             ),
-                            selected: sizes == 'M',
+                            selected: size == 'M',
                             onSelected: (selected) {
                               setState(() {
-                                sizes = selected ? 'M' : '';
+                                size = selected ? 'M' : '';
                               });
                             },
                           ),
@@ -477,10 +493,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               'L',
                               style: TextStyle(color: Colors.white),
                             ),
-                            selected: sizes == 'L',
+                            selected: size == 'L',
                             onSelected: (selected) {
                               setState(() {
-                                sizes = selected ? 'L' : '';
+                                size = selected ? 'L' : '';
                               });
                             },
                           ),
@@ -493,10 +509,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               'XL',
                               style: TextStyle(color: Colors.white),
                             ),
-                            selected: sizes == 'XL',
+                            selected: size == 'XL',
                             onSelected: (selected) {
                               setState(() {
-                                sizes = selected ? 'XL' : '';
+                                size = selected ? 'XL' : '';
                               });
                             },
                           ),
@@ -509,10 +525,10 @@ class _ProductDetailState extends State<ProductDetail> {
                               'XXL',
                               style: TextStyle(color: Colors.white),
                             ),
-                            selected: sizes == 'XXL',
+                            selected: size == 'XXL',
                             onSelected: (selected) {
                               setState(() {
-                                sizes = selected ? 'XXL' : '';
+                                size = selected ? 'XXL' : '';
                               });
                             },
                           ),
@@ -524,7 +540,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           Text('Selected Color: ',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
-                          Text(selectedColorName.toString(),
+                          Text(color.toString(),
                               style: TextStyle(fontSize: 16))
                         ],
                       ),
@@ -625,18 +641,40 @@ class _ProductDetailState extends State<ProductDetail> {
           ),
         ));
   }
+Future<void> fetchData() async {
+  const url = 'https://ezys.in/customerApp/getProductDetails.php'; // Replace with your API URL
 
-  void _showModalSheet() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Your bottom modal sheet content goes here.'),
-          ),
-        );
-      },
-    );
+  try {
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response here and assign values to your variables.
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      setState(() {
+        name = data['name'];
+        category = data['category'];
+        subCategory = data['subCategory'];
+        MRP = data['MRP'];
+        sellingPrice = data['sellingPrice'];
+        productId = data['productId'];
+        description = data['description'];
+        fullDescription = data['fullDescription'];
+        imageUrl = data['imageUrl'];
+        size = data['size'];
+        color = data['color'];
+        stock_status = data['stock_status'];
+        stock_number = data['stock_number'];
+      });
+    } else {
+      // Handle errors if the API request was not successful.
+      // You can show an error message or perform other actions here.
+    }
+  } catch (error) {
+    // Handle exceptions if any occur during the API request.
+    print('Error: $error');
   }
+}
+
+ 
 }

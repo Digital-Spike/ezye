@@ -1,117 +1,189 @@
-
-import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/homescreens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sms_autofill/sms_autofill.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String? phoneNumber;
-  bool isSignIn = false;
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  bool otpVisibility = false;
+  User? user;
+  String verificationID = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '* Log in using Mobile Number',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            SizedBox(height: 10),
-            IntlPhoneField(
-              decoration: const InputDecoration(
-                isDense: true,
-                labelText: 'Phone Number',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12))),
-              ),
-              initialCountryCode: 'IN',
-              onChanged: (phone) {
-                setState(() {
-                  phoneNumber = phone.completeNumber;
-                  isSignIn = (phone.number.length == 10) ? true : false;
-                });
-              },
-              onCountryChanged: (country) {
-                if (country.dialCode != "91") {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                            'Currently our service available only in India')),
-                  );
-                }
-              },
-            ),
-            SizedBox(height: 20),
-            Text(
-              '* Enter OTP',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+     resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: SafeArea(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Enter OTP',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                      )),
+                
+                Image.asset('assets/animation.gif'),
+                SizedBox(height: 40),
+                Text('* Log in using Mobile Number',style: title),
+                SizedBox(height: 20),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: 'Phone Number',
+                    prefix: Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Text('+91'),
+                    ),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
+                  ),
+                  maxLength: 10,
+                  keyboardType: TextInputType.phone,
                 ),
-                SizedBox(width: 20),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 0.5),
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
+                Visibility(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('* Enter OTP',style: title),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: otpController,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          hintText: 'OTP',
+                          prefix: Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(''),
+                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))
+                        ),
+                        maxLength: 6,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
+                  ),
+                  visible: otpVisibility,
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                ElevatedButton(
+                  
+                  style: ElevatedButton.styleFrom(elevation: 5,minimumSize: Size(double.infinity, 45),backgroundColor: buttonColor,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                 
+                  onPressed: () {
+                    if (otpVisibility) {
+                      verifyOTP();
+                    } else {
+                      loginWithPhone();
+                    }
+                  },
+                  child: Text(
+                    otpVisibility ? "Verify" : "Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40),
+                Row(
+                  children: [
+                    Text( "By continuing, you agree to Ezye's ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700),),GestureDetector(
+                      onTap: () {
+                        
+                      },
+                      child: Text('Terms of Use ',style: TextStyle(fontSize: 12,color: indicator,fontWeight: FontWeight.bold),)),
+                      Text('and ',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),),
+                      GestureDetector(
+                        onTap: () {
                           
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {
-                      
-                    },
-                    child: Text(
-                      'Get OTP',
-                      style: subtitle,
-                    )),
+                        },
+                        child: Text('Privacy Policy',style: TextStyle(fontSize: 12,color: indicator,fontWeight: FontWeight.bold),))
+                  ],
+                )
               ],
             ),
-            SizedBox(height: 40),
-            Center(
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        minimumSize: Size(380, 50),
-                        backgroundColor: buttonColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                    },
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    )))
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  void loginWithPhone() async {
+    auth.verifyPhoneNumber(
+      phoneNumber: "+91" + phoneController.text,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential).then((value) {
+          print("You are logged in successfully");
+        });
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.message);
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        otpVisibility = true;
+        verificationID = verificationId;
+        setState(() {});
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  void verifyOTP() async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationID, smsCode: otpController.text);
+
+    await auth.signInWithCredential(credential).then(
+      (value) {
+        setState(() {
+          user = FirebaseAuth.instance.currentUser;
+        });
+      },
+    ).whenComplete(
+      () {
+        if (user != null) {
+          Fluttertoast.showToast(
+            msg: "You are logged in successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.greenAccent,
+            textColor: Colors.black,
+            fontSize: 16.0,
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "your login is failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      },
     );
   }
 }
