@@ -29,6 +29,13 @@
             {
               "client_id": "580882988255-ivh81okn39dnhmcnfiovj4isc6klim2h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "580882988255-gcoj3la3q25i753scjp1pc2f0le9938u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ezys"
+              }
             }
           ]
         }

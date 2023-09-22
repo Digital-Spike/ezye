@@ -13,6 +13,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+   bool isLoggedIn = false;
   int?_selectedValue;
   String?canCall;
 //   int counter = 0;
@@ -291,7 +292,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
   }
    void _address() {
     showModalBottomSheet(
-      showDragHandle: true,
+     
         elevation: 5,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
@@ -304,10 +305,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                height: 350,
-                padding: EdgeInsets.all(20),
+                height: 300,
+                padding: EdgeInsets.all(0),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -333,18 +334,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           child: Column(
                             children: [
                               ListTile(
-                                leading: Radio<int>(
-                                  value:
-                                      index, // Set the value of this radio button
-                                  groupValue:
-                                      _selectedValue, // Current selected value
-                                  onChanged: (int? value) {
-                                    setState(() {
-                                      _selectedValue =
-                                          value; // Update the selected value
-                                    });
-                                  },
-                                ),
+                                leading: Radio<String>(
+                    value: 'Home',
+                    // Use 'NO' as the value for the "NO" option
+                    
+                    groupValue: canCall,
+                    onChanged: (value) {
+                      setState(() {
+                        canCall = value!;
+                      });
+                    },
+                    
+                  ),
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -376,7 +377,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 0),
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: Divider(
                                     thickness: 0.5, color: Colors.grey[400]),
                               )
@@ -385,28 +386,31 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         );
                       })),
                      ) ,
-                    
-                      ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      minimumSize: Size(double.infinity, 50)),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
-                  },
-                  child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                     
-                      Text(
-                        'Add New Shipping Address',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  ),
+                    SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: buttonColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        minimumSize: Size(double.infinity, 50)),
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
+                                        },
+                                        child: Row(
+                                         mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                           
+                        Text(
+                          'Add New Shipping Address',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )
+                                          ],
+                                        ),
+                                        ),
+                      ),
                      ],
                     ),
                   ),

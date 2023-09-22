@@ -21,7 +21,24 @@ class _LoginPageState extends State<LoginPage> {
   bool otpVisibility = false;
   User? user;
   String verificationID = "";
+  @override
+void initState() {
+    super.initState();
+    checkCurrentUser(); // Check if the user is already logged in
+  }
 
+  void checkCurrentUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // User is already logged in, navigate to HomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

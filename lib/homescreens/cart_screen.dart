@@ -1,6 +1,8 @@
+import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/paymentScreens/checkout_screen.dart';
 import 'package:ezys/paymentScreens/coupan_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -28,6 +30,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  bool isLoggedIn = false;
 int counter = 0;
  List<Widget> cartItems = []; // List to store cart items
   ScrollController _scrollController = ScrollController();
@@ -55,7 +58,20 @@ void decrementCounter() {
       curve: Curves.easeOut,
     );
   }
+@override
+void initState() {
+  super.initState();
+  checkLoginStatus(); // Call this method in initState
+}
 
+void checkLoginStatus() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    setState(() {
+      isLoggedIn = true;
+    });
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,7 +328,15 @@ void decrementCounter() {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(30)))),
                                       onPressed: () {
-                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>CheckOutPage()));
+                                         if (isLoggedIn) {
+              // User is logged in, navigate to the payment page
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CheckOutPage()));
+            } else {
+              // User is not logged in, show the login dialog
+              _showLoginDialog();
+            }
+                                     
                                       },
                                       child: const Text(
                                         'Proceed to Checkout',
@@ -338,6 +362,32 @@ void decrementCounter() {
           ],
         ),
       ),
+    );
+  }
+   void _showLoginDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Login Required'),
+          content: Text('You need to log in to continue with the payment.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              },
+              child: Text('Log In'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

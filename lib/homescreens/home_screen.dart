@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                     }).toList(),
                     options: CarouselOptions(
                       viewportFraction: 1.09,
-                      
+                      enlargeCenterPage: true,
                       autoPlay: true,
                     ),
                   ),
