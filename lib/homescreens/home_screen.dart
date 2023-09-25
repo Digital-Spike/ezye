@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/homescreens/search_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:ezys/custom_widgets/constants.dart';
@@ -36,6 +38,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+   bool isLoggedIn = false;
   List<CarouselItem> carouselItems = [];
 
   List<String> subcategory = [];
@@ -71,13 +74,21 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+     checkLoginStatus(); 
     fetchCarouselData().then((items) {
       setState(() {
         carouselItems = items;
       });
     }); // Call the function to fetch carousel data
   }
-
+void checkLoginStatus() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    setState(() {
+      isLoggedIn = true;
+    });
+  }
+}
   @override
   Widget build(BuildContext context) {
     return MainScreen(
@@ -139,8 +150,15 @@ class _HomePageState extends State<HomePage> {
           TextButton(
               style: TextButton.styleFrom(minimumSize: Size(25, 25)),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WishList()));
+                  if (isLoggedIn) {
+              // User is logged in, navigate to the payment page
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WishList()));
+            } else {
+              // User is not logged in, show the login dialog
+              _showLoginDialog1();
+            }
+               
               },
               child: Image.asset(
                 'assets/icons/heart.png',
@@ -150,8 +168,15 @@ class _HomePageState extends State<HomePage> {
           TextButton(
               style: TextButton.styleFrom(minimumSize: Size(25, 25)),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen(image: '', title: '', size: '', price: '', counter: 0,)));
+                 if (isLoggedIn) {
+              // User is logged in, navigate to the payment page
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CartScreen(image: '', title: '', size: '', price: '', counter: 0,)));
+            } else {
+              // User is not logged in, show the login dialog
+              _showLoginDialog();
+            }
+              
               },
               child: Image.asset(
                 'assets/icons/shoppingbag.png',
@@ -455,5 +480,57 @@ class _HomePageState extends State<HomePage> {
     } else {
       throw Exception('Failed to load carousel data');
     }
+  }
+   void _showLoginDialog() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Login Required!',style: TextStyle(color: indicator)),
+          content: Text('You need to log in to continue to Check Cart.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              },
+              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+   void _showLoginDialog1() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Login Required!',style: TextStyle(color: indicator),),
+          content: Text('You need to log in to Check Your Wishlist.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              },
+              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -102,6 +102,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
 
     // Set the initial selected color to the first color in the list
@@ -172,7 +173,7 @@ class _ProductDetailState extends State<ProductDetail> {
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                  topLeft: Radius.circular(0), topRight: Radius.circular(0)),
               border: Border.all(width: 0.5, color: Colors.grey),
               //     boxShadow: [
               //   BoxShadow(
@@ -362,7 +363,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     decorationColor: Colors.green[800],
                                     decorationThickness: 3),
                               ),
-                              Text('- ${MRP}'),
+                              Text('- ${MRP.toString()}'),
                               SizedBox(width: 10),
                             ],
                           ),
@@ -669,12 +670,14 @@ Future<void> fetchData() async {
     } else {
       // Handle errors if the API request was not successful.
       // You can show an error message or perform other actions here.
+      print('API request failed with status code: ${response.statusCode}');
     }
   } catch (error) {
     // Handle exceptions if any occur during the API request.
     print('Error: $error');
   }
 }
+
 
  
 }

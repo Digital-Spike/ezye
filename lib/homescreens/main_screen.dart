@@ -1,7 +1,11 @@
+import 'package:ezys/Auth_screen/login_screen.dart';
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/homescreens/home_screen.dart';
 import 'package:ezys/profilescreens/profile_screen.dart';
 import 'package:ezys/paymentScreens/coupan_screen.dart';
 import 'package:ezys/paymentScreens/wallet_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,11 +24,26 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+   bool isLoggedIn = false;
   final double indicatorWidth = 40.0; // Adjust the width as needed
   final double indicatorHeight = 4.0; // Adjust the height as needed
   final Color indicatorColor = Color(0xffb22024);
   static int? _bottomNavIndex;
+  
+@override
+  void initState() {
+    checkLoginStatus();
+    super.initState();
+  }
 
+void checkLoginStatus() {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    setState(() {
+      isLoggedIn = true;
+    });
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,8 +86,8 @@ class _MainScreenState extends State<MainScreen> {
                     label: 'Wallet',
                     ),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset('assets/icons/Profile Fill.svg',height: 28,width: 28,),
-                    activeIcon: SvgPicture.asset('assets/icons/Profile.svg',height: 28,width: 28,),
+                    icon: SvgPicture.asset('assets/icons/Profile.svg',height: 28,width: 28,),
+                    activeIcon: SvgPicture.asset('assets/icons/Profile Fill.svg',height: 28,width: 28,),
                     label: 'Profile',
                    ),
               ]),
@@ -110,12 +129,20 @@ class _MainScreenState extends State<MainScreen> {
         );
         break;
       case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WalletPage(),
-          ),
-        );
+        if (isLoggedIn) {
+              // User is logged in, navigate to the payment page
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const WalletPage()));
+            } else {
+              // User is not logged in, show the login dialog
+              _showLoginDialog();
+            }
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const WalletPage(),
+        //   ),
+        // );
         break;
       case 3:
         Navigator.push(
@@ -126,5 +153,31 @@ class _MainScreenState extends State<MainScreen> {
         );
         break;
     }
+  }
+   void _showLoginDialog() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Login Required!',style: TextStyle(color: indicator)),
+          content: Text('You need to log in to continue to Check Cart.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+              },
+              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

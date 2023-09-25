@@ -13,32 +13,37 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late VideoPlayerController controller;
+  // late VideoPlayerController controller;
+  // @override
+  // void initState() {
+  //    navigateFunction();
+  //   super.initState();
+  //   controller = VideoPlayerController.asset('assets/ezyesplash.mp4')
+  //     ..initialize().then((_) {
+  //       setState(() {});
+  //     });
+  //   controller.setLooping(false);
+  //   controller.play();
+  // }
+  
   @override
   void initState() {
      navigateFunction();
     super.initState();
-    controller = VideoPlayerController.asset('assets/ezyesplash.mp4')
-      ..initialize().then((_) {
-        setState(() {});
-      });
-    controller.setLooping(false);
-    controller.play();
   }
-  
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Color(0xffF5E6C2),
-      body:  VideoPlayer(controller),
+      body: Center(child: Image.asset('assets/ezye sc.gif',height: 250,width: 250,),),
     );
   }
 
   Future<void> navigateFunction() async {
     
-    Timer(const Duration(milliseconds: 2000), () {
+    Timer(const Duration(milliseconds: 2600), () {
       
             Navigator.pushReplacement(
               context,

@@ -1,5 +1,6 @@
 
 import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezys/homescreens/home_screen.dart';
 import 'package:ezys/orderscreens/myaddress_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+   
    bool isLoggedIn = false;
   int?_selectedValue;
   String?canCall;
@@ -271,7 +273,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                   },
                   child: Container(
                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
@@ -294,7 +296,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
     showModalBottomSheet(
      
         elevation: 5,
-        isScrollControlled: true,
+       
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30))),
@@ -305,114 +307,112 @@ class _CheckOutPageState extends State<CheckOutPage> {
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                height: 300,
+                height: 350,
                 padding: EdgeInsets.all(0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 10),
-                        Center(
-                          child: Text(
-                            'Shipping Address',
-                            style: title,
-                          ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Center(
+                        child: Text(
+                          'Shipping Address',
+                          style: title,
                         ),
-                        SizedBox(height: 5),
-                        devider,
-                        SizedBox(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 2,
-                      itemBuilder: ((context, index) {
-                        return Container(
-                                  
-                         
-                          child: Column(
-                            children: [
-                              ListTile(
-                                leading: Radio<String>(
-                    value: 'Home',
-                    // Use 'NO' as the value for the "NO" option
-                    
-                    groupValue: canCall,
-                    onChanged: (value) {
-                      setState(() {
-                        canCall = value!;
-                      });
-                    },
-                    
-                  ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.placemark,
-                                          color: buttonColor,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Home',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011',
-                                        style:
-                                            TextStyle(color: Colors.grey[600]),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Divider(
-                                    thickness: 0.5, color: Colors.grey[400]),
-                              )
-                            ],
-                          ),
-                        );
-                      })),
-                     ) ,
-                    SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: buttonColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        minimumSize: Size(double.infinity, 50)),
-                                        onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
-                                        },
-                                        child: Row(
-                                         mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                           
-                        Text(
-                          'Add New Shipping Address',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )
-                                          ],
-                                        ),
-                                        ),
                       ),
-                     ],
+                      SizedBox(height: 5),
+                      devider,
+                      SizedBox(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 2,
+                    itemBuilder: ((context, index) {
+                      return Container(
+                                
+                       
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Radio<String>(
+                  value: 'Home',
+                  // Use 'NO' as the value for the "NO" option
+                  
+                  groupValue: canCall,
+                  onChanged: (value) {
+                    setState(() {
+                      canCall = value!;
+                    });
+                  },
+                  
+                  ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.placemark,
+                                        color: buttonColor,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Home',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011',
+                                      style:
+                                          TextStyle(color: Colors.grey[600]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Divider(
+                                  thickness: 0.5, color: Colors.grey[400]),
+                            )
+                          ],
+                        ),
+                      );
+                    })),
+                   ) ,
+                  
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      minimumSize: Size(double.infinity, 50)),
+                                      onPressed: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
+                                      },
+                                      child: Row(
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                         
+                      Text(
+                        'Add New Shipping Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                                        ],
+                                      ),
+                                      ),
                     ),
+                   ],
                   ),
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/profile_button.dart';
 import 'package:ezys/homescreens/main_screen.dart';
 import 'package:ezys/orderscreens/myorder_screen.dart';
+import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:ezys/profilescreens/editprofile.dart';
 import 'package:ezys/profilescreens/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,7 +88,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     title1: 'Payment Methods',
                     svgPath: 'assets/icons/Card.svg',
                     trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {}),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage()));
+                    }),
                 divider,
                 CustomButton(
                     title1: 'My Orders',

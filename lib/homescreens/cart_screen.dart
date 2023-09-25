@@ -61,7 +61,7 @@ void decrementCounter() {
 @override
 void initState() {
   super.initState();
-  checkLoginStatus(); // Call this method in initState
+  checkLoginStatus(); 
 }
 
 void checkLoginStatus() {
@@ -365,25 +365,25 @@ void checkLoginStatus() {
     );
   }
    void _showLoginDialog() {
-    showDialog(
+    showAdaptiveDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Login Required'),
-          content: Text('You need to log in to continue with the payment.'),
+        return CupertinoAlertDialog(
+          title: Text('Login Required!',style: TextStyle(color: indicator)),
+          content: Text('You need to log in to continue with the Checkout.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
             ),
             TextButton(
               onPressed: () {
                 // Navigate to the login screen
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
               },
-              child: Text('Log In'),
+              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
             ),
           ],
         );
