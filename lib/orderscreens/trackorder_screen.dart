@@ -24,7 +24,7 @@ class _TrackOrderState extends State<TrackOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: bgcolor,
+      backgroundColor: bgcolor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -134,10 +134,10 @@ class _TrackOrderState extends State<TrackOrder> {
                      const SizedBox(height: 20),
                      const Text('Order Status',style: title,),
                      
-                    const MyTimeLine(isFirst: true, isLast: false, isPast: true, status: Status(heading: 'Order Placed', subtitle: '23/04/2023, 04:45 PM', trailingIcon: CupertinoIcons.square_favorites_fill),),
-                    const MyTimeLine(isFirst: false, isLast: false, isPast: true, status: Status(heading: 'In Progress', subtitle: '23/04/2023, 08:50 PM', trailingIcon: CupertinoIcons.cube_box),),
-                    const MyTimeLine(isFirst: false, isLast: false, isPast: false, status: Status(heading: 'Shipped', subtitle: 'Expected 25/04/2023', trailingIcon: CupertinoIcons.cube_box_fill),),
-                    const MyTimeLine(isFirst: false, isLast: true, isPast: false, status: Status(heading: 'Delivered', subtitle: 'Expected 26/04/2023', trailingIcon: CupertinoIcons.cube_fill),),
+                    const MyTimeLine(isFirst: true, isLast: false, isPast: true, status: Status(heading: 'Order Placed', subtitle: '23/04/2023, 04:45 PM', svgpath: 'assets/icons/Order Placed.svg',) ),
+                    const MyTimeLine(isFirst: false, isLast: false, isPast: true, status: Status(heading: 'In Progress', subtitle: '23/04/2023, 08:50 PM', svgpath: 'assets/icons/In transit.svg',) ),
+                    const MyTimeLine(isFirst: false, isLast: false, isPast: false, status: Status(heading: 'Shipped', subtitle: 'Expected 25/04/2023', svgpath: 'assets/icons/Order.svg',) ),
+                    const MyTimeLine(isFirst: false, isLast: true, isPast: false, status: Status(heading: 'Delivered', subtitle: 'Expected 26/04/2023', svgpath: 'assets/icons/delivered.svg',) ),
                   
                   
                

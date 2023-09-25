@@ -17,15 +17,15 @@ class _EditProfileState extends State<EditProfile> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: BackButton(color: buttonColor),
-        title: Text('Edit Profile',style: apptitle),
+        title: Text('Edit Your Profile',style: apptitle),
         centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           SizedBox(height: 40),
-          Center(child: Text('Edit Your Profile',style: title,)),
+          
+        
           SizedBox(height: 40),
           Stack(
                   children: [

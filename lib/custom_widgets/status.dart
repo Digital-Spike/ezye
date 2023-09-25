@@ -1,10 +1,12 @@
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 class Status extends StatelessWidget {
   final String heading;
   final String subtitle;
-  final IconData trailingIcon;
-  const Status({super.key,required this.heading,required this.subtitle,required this.trailingIcon});
+  final String svgpath;
+  
+  const Status({super.key,required this.heading,required this.subtitle, required this.svgpath,});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class Status extends StatelessWidget {
               Text(subtitle)
             ],
           ),
-          Icon(trailingIcon)
+         SvgPicture.asset(svgpath,height: 25,width: 25,)
         ],
       ),
     );
