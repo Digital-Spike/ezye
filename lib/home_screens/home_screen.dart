@@ -1,20 +1,21 @@
 import 'dart:convert';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ezys/Auth_screen/login_screen.dart';
-import 'package:ezys/homescreens/search_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:ezys/custom_widgets/persistentheader.dart';
-import 'package:ezys/homescreens/cart_screen.dart';
-import 'package:ezys/homescreens/category_screen.dart';
-import 'package:ezys/homescreens/main_screen.dart';
-import 'package:ezys/homescreens/product_detail_screen.dart';
-import 'package:ezys/homescreens/wishlist_screen.dart';
+import 'package:ezys/home_screens/cart_screen.dart';
+import 'package:ezys/home_screens/category_screen.dart';
+import 'package:ezys/home_screens/main_screen.dart';
+import 'package:ezys/home_screens/product_detail_screen.dart';
+import 'package:ezys/home_screens/search_screen.dart';
+import 'package:ezys/home_screens/wishlist_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 class CarouselItem {
   final String imageUrl;
@@ -38,7 +39,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   bool isLoggedIn = false;
+  bool isLoggedIn = false;
   List<CarouselItem> carouselItems = [];
 
   List<String> subcategory = [];
@@ -71,24 +72,27 @@ class _HomePageState extends State<HomePage> {
     'Boys',
     'Girls',
   ];
+
   @override
   void initState() {
     super.initState();
-     checkLoginStatus(); 
+    checkLoginStatus();
     fetchCarouselData().then((items) {
       setState(() {
         carouselItems = items;
       });
     }); // Call the function to fetch carousel data
   }
-void checkLoginStatus() {
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    setState(() {
-      isLoggedIn = true;
-    });
+
+  void checkLoginStatus() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return MainScreen(
@@ -102,11 +106,13 @@ void checkLoginStatus() {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SearchPage()));
                 },
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   height: 40,
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -118,29 +124,13 @@ void checkLoginStatus() {
                     children: [
                       SvgPicture.asset('assets/icons/Search.svg',
                           height: 20, width: 20, color: Colors.grey[800]),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         'Search Your Favorite...',
                         style: content1,
                       )
                     ],
                   ),
-                  // child: TextField(
-                  //   readOnly: true,
-                  //   decoration: InputDecoration(
-                  //     fillColor: bgcolor,
-                  //     filled: true,
-                  //       isDense: true,
-                  //       prefixIcon: Padding(
-                  //         padding: const EdgeInsets.symmetric(horizontal: 10),
-                  //         child: SvgPicture.asset('assets/icons/Search.svg',height: 20,width: 20,),
-                  //       ),
-                  //       prefixIconConstraints:
-                  //           BoxConstraints(minHeight: 28, minWidth: 28),
-                  //       hintText: 'Search Your Favorite...',
-                  //       border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.all(Radius.circular(8)))),
-                  // ),
                 ),
               ),
             ),
@@ -148,17 +138,18 @@ void checkLoginStatus() {
         ),
         actions: [
           TextButton(
-              style: TextButton.styleFrom(minimumSize: Size(25, 25)),
+              style: TextButton.styleFrom(minimumSize: const Size(25, 25)),
               onPressed: () {
-                  if (isLoggedIn) {
-              // User is logged in, navigate to the payment page
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WishList()));
-            } else {
-              // User is not logged in, show the login dialog
-              _showLoginDialog1();
-            }
-               
+                if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WishList()));
+                } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog1();
+                }
               },
               child: Image.asset(
                 'assets/icons/heart.png',
@@ -166,17 +157,24 @@ void checkLoginStatus() {
                 width: 25,
               )),
           TextButton(
-              style: TextButton.styleFrom(minimumSize: Size(25, 25)),
+              style: TextButton.styleFrom(minimumSize: const Size(25, 25)),
               onPressed: () {
-                 if (isLoggedIn) {
-              // User is logged in, navigate to the payment page
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartScreen(image: '', title: '', size: '', price: '', counter: 0,)));
-            } else {
-              // User is not logged in, show the login dialog
-              _showLoginDialog();
-            }
-              
+                if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CartScreen(
+                                image: '',
+                                title: '',
+                                size: '',
+                                price: '',
+                                counter: 0,
+                              )));
+                } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog();
+                }
               },
               child: Image.asset(
                 'assets/icons/shoppingbag.png',
@@ -197,7 +195,8 @@ void checkLoginStatus() {
             pinned: false,
             stretch: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              titlePadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               collapseMode: CollapseMode.parallax,
               title: Container(),
               background: Column(
@@ -206,7 +205,7 @@ void checkLoginStatus() {
                   CarouselSlider(
                     items: imgList.map((item) {
                       return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 25),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
@@ -229,15 +228,16 @@ void checkLoginStatus() {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Category', style: subtitle),
+                        const Text('Category', style: subtitle),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CategoryPage()));
+                                      builder: (context) =>
+                                          const CategoryPage()));
                             },
-                            child: Text(
+                            child: const Text(
                               'See all',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -246,10 +246,10 @@ void checkLoginStatus() {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: Container(
+                    child: SizedBox(
                       height: 70, // Adjust the height as needed
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -261,7 +261,7 @@ void checkLoginStatus() {
                             child: Column(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   height: 50,
                                   width: 50,
                                   decoration: BoxDecoration(
@@ -278,7 +278,7 @@ void checkLoginStatus() {
                                     imageUrls[index],
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     height: 5), // Space between image and name
                                 Text(imageNames[index]),
                               ],
@@ -298,7 +298,7 @@ void checkLoginStatus() {
             delegate: PersistentHeader(
               widget: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
+                child: SizedBox(
                     width: double.infinity,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -326,10 +326,10 @@ void checkLoginStatus() {
           ),
 
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             sliver: SliverGrid.builder(
                 itemCount: 8,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 15,
                   crossAxisCount: 2,
@@ -337,7 +337,7 @@ void checkLoginStatus() {
                 ),
                 itemBuilder: ((context, index) {
                   return Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(width: 0.25, color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
@@ -355,7 +355,7 @@ void checkLoginStatus() {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ProductDetail()));
+                                              const ProductDetail()));
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
@@ -377,7 +377,7 @@ void checkLoginStatus() {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(12),
-                                            gradient: LinearGradient(
+                                            gradient: const LinearGradient(
                                               // stops: [0,5],
                                               begin: Alignment.topRight,
                                               end: Alignment.bottomLeft,
@@ -392,14 +392,14 @@ void checkLoginStatus() {
                                     ),
                                   ),
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
-                            Text('T-shirt',
+                            const Text('T-shirt',
                                 style: TextStyle(color: Colors.grey)),
-                            SizedBox(height: 5),
-                            Text("Tiger Image EZYE – Tees for Men"),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
+                            const Text("Tiger Image EZYE – Tees for Men"),
+                            const SizedBox(height: 5),
                             Row(
                               children: [
                                 Text(
@@ -410,8 +410,8 @@ void checkLoginStatus() {
                                       decorationColor: Colors.green[800],
                                       decorationThickness: 3),
                                 ),
-                                SizedBox(width: 5),
-                                Text('- ₹399'),
+                                const SizedBox(width: 5),
+                                const Text('- ₹399'),
                               ],
                             )
                           ],
@@ -422,8 +422,8 @@ void checkLoginStatus() {
                             child: Column(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
                                   child: GestureDetector(
@@ -441,7 +441,7 @@ void checkLoginStatus() {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 // Container(
                                 //   padding: EdgeInsets.all(5),
                                 //   decoration: BoxDecoration(
@@ -481,52 +481,68 @@ void checkLoginStatus() {
       throw Exception('Failed to load carousel data');
     }
   }
-   void _showLoginDialog() {
+
+  void _showLoginDialog() {
     showAdaptiveDialog(
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Text('Login Required!',style: TextStyle(color: indicator)),
-          content: Text('You need to log in to continue to Check Cart.'),
+          title:
+              const Text('Login Required!', style: TextStyle(color: indicator)),
+          content: const Text('You need to log in to continue to Check Cart.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
             TextButton(
               onPressed: () {
                 // Navigate to the login screen
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
-              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
             ),
           ],
         );
       },
     );
   }
-   void _showLoginDialog1() {
+
+  void _showLoginDialog1() {
     showAdaptiveDialog(
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Text('Login Required!',style: TextStyle(color: indicator),),
-          content: Text('You need to log in to Check Your Wishlist.'),
+          title: const Text(
+            'Login Required!',
+            style: TextStyle(color: indicator),
+          ),
+          content: const Text('You need to log in to Check Your Wishlist.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.w700),),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
             TextButton(
               onPressed: () {
                 // Navigate to the login screen
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
-              child: Text('Log In',style: TextStyle(fontWeight: FontWeight.w700)),
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
             ),
           ],
         );

@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/homescreens/cart_screen.dart';
-import 'package:ezys/homescreens/main_screen.dart';
-import 'package:ezys/homescreens/wishlist_screen.dart';
-import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
+import 'package:ezys/home_screens/cart_screen.dart';
+import 'package:ezys/home_screens/wishlist_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 class ProductDetail extends StatefulWidget {
   const ProductDetail({super.key});
 
@@ -16,24 +15,23 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-   bool _showCircle = false;
-   String?name,
-   category,
-   subCategory,
-   MRP,
-   sellingPrice,
-   productId,
-   description,
-   fullDescription,
-   imageUrl,
-   size,
-   color,
-   stock_status,
-   stock_number;
+  String? name,
+      category,
+      subCategory,
+      MRP,
+      sellingPrice,
+      productId,
+      description,
+      fullDescription,
+      imageUrl,
+      size,
+      color,
+      stock_status,
+      stock_number;
   int selectedThumbnailIndex = 0; // Track the selected thumbnail index
   int counter = 0;
   bool showOriginalContainer = false;
-  
+
   int selectedColorIndex = 0; // Initialize with -1, meaning no color selected
   String? selectedColorName;
   bool isLiked = false;
@@ -93,7 +91,6 @@ class _ProductDetailState extends State<ProductDetail> {
           counter = 0; // Set counter to 0 when showing the "Add" text
           if (counter == 0) {
             // Display the bottom modal sheet
-            
           }
         }
       }
@@ -114,11 +111,11 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
         // backgroundColor: const Color(0xfff1f1f2),
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Product Details',
             style: apptitle,
           ),
-          leading: BackButton(
+          leading: const BackButton(
             color: Colors.black,
           ),
           elevation: 0,
@@ -128,11 +125,13 @@ class _ProductDetailState extends State<ProductDetail> {
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-                  minimumSize: Size(30, 30),
+                  minimumSize: const Size(30, 30),
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WishList()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WishList()));
                 },
                 child: Image.asset(
                   'assets/icons/love.png',
@@ -143,10 +142,10 @@ class _ProductDetailState extends State<ProductDetail> {
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-                  minimumSize: Size(30, 30),
+                  minimumSize: const Size(30, 30),
                 ),
                 onPressed: () {},
-                child: Icon(
+                child: const Icon(
                   Icons.share,
                   color: Colors.black,
                 )),
@@ -154,11 +153,19 @@ class _ProductDetailState extends State<ProductDetail> {
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-                  minimumSize: Size(30, 30),
+                  minimumSize: const Size(30, 30),
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: size ?? 'Not selected', price: '₹399', counter: counter,)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CartScreen(
+                                image: clothingImages[selectedThumbnailIndex],
+                                title: 'Tiger Image EZYE – Tees for Men',
+                                size: size ?? 'Not selected',
+                                price: '₹399',
+                                counter: counter,
+                              )));
                 },
                 child: Image.asset(
                   'assets/icons/shoppingbag.png',
@@ -168,11 +175,11 @@ class _ProductDetailState extends State<ProductDetail> {
           ],
         ),
         bottomNavigationBar: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           height: 100,
           width: double.infinity,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(0), topRight: Radius.circular(0)),
               border: Border.all(width: 0.5, color: Colors.grey),
               //     boxShadow: [
@@ -195,10 +202,10 @@ class _ProductDetailState extends State<ProductDetail> {
                     'Total Price',
                     style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 10),
-                  Text('₹399',
+                  const SizedBox(height: 10),
+                  const Text('₹399',
                       style: TextStyle(fontSize: 16, color: Colors.black)),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   )
                 ],
@@ -208,12 +215,20 @@ class _ProductDetailState extends State<ProductDetail> {
                       backgroundColor: buttonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30)),
-                      minimumSize: Size(150, 45)),
+                      minimumSize: const Size(150, 45)),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen(image: clothingImages[selectedThumbnailIndex], title: 'Tiger Image EZYE – Tees for Men', size: size ?? 'Not selected', price: '₹399', counter: counter,)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CartScreen(
+                                  image: clothingImages[selectedThumbnailIndex],
+                                  title: 'Tiger Image EZYE – Tees for Men',
+                                  size: size ?? 'Not selected',
+                                  price: '₹399',
+                                  counter: counter,
+                                )));
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(CupertinoIcons.cart_fill_badge_plus),
                       SizedBox(
@@ -263,7 +278,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.only(bottom: 8),
+                            margin: const EdgeInsets.only(bottom: 8),
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
@@ -299,7 +314,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               shape: BoxShape.circle,
                               color: Colors.grey[300],
                             ),
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Image.asset(isLiked
                                 ? 'assets/icons/heart (2).png'
                                 : 'assets/icons/love.png')),
@@ -318,7 +333,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -326,7 +341,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             'T-shirt',
                             style: content,
                           ),
-                          Row(
+                          const Row(
                             children: [
                               Icon(
                                 Icons.star,
@@ -342,14 +357,14 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
                         child: Text('Tiger Image EZYE – Tees for Men',
                             style: title),
                       ),
-                      SizedBox(height: 5),
-                      Text('Price', style: subtitle),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
+                      const Text('Price', style: subtitle),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -364,14 +379,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                     decorationThickness: 3),
                               ),
                               Text('- ${MRP.toString()}'),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                             ],
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           GestureDetector(
                               onTap: toggleContainer,
                               child: Container(
-                               
                                 width: 110,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(7),
@@ -387,36 +401,36 @@ class _ProductDetailState extends State<ProductDetail> {
                                         decrementCounter();
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.all(2),
+                                        padding: const EdgeInsets.all(2),
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             color: Colors.grey[300]),
-                                        child: Icon(
+                                        child: const Icon(
                                           CupertinoIcons.minus,
                                           color: Colors.black,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     Text(
                                       '$counter',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black),
                                     ),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     GestureDetector(
                                       onTap: () {
                                         incrementCounter();
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.all(2),
+                                        padding: const EdgeInsets.all(2),
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             color: buttonColor),
-                                        child: Icon(
+                                        child: const Icon(
                                           CupertinoIcons.add,
                                           color: Colors.white,
                                         ),
@@ -449,7 +463,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 0),
                         child: Wrap(spacing: 10, children: [
@@ -535,18 +549,18 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ]),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
-                          Text('Selected Color: ',
+                          const Text('Selected Color: ',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           Text(color.toString(),
-                              style: TextStyle(fontSize: 16))
+                              style: const TextStyle(fontSize: 16))
                         ],
                       ),
-                      SizedBox(height: 5),
-                      Container(
+                      const SizedBox(height: 5),
+                      SizedBox(
                         height: 50, // Adjust the height as needed
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -557,8 +571,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                 selectColor(index);
                               },
                               child: Container(
-                                padding: EdgeInsets.all(0),
-                                margin: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(0),
+                                margin: const EdgeInsets.all(8),
                                 width: 40,
                                 height: 50,
                                 decoration: BoxDecoration(
@@ -578,9 +592,9 @@ class _ProductDetailState extends State<ProductDetail> {
                           },
                         ),
                       ),
-                      SizedBox(height: 10),
-                      SizedBox(height: 5),
-                      DefaultTabController(
+                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
+                      const DefaultTabController(
                           length: 2, // Number of tabs
                           child: Column(children: [
                             TabBar(
@@ -595,10 +609,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                 Tab(text: 'Reviews'), // Second tab
                               ],
                             ),
-                            Container(
+                            SizedBox(
                               height:
                                   200, // Set the height of the TabBarView as needed
-                              child: const TabBarView(
+                              child: TabBarView(
                                 children: [
                                   SingleChildScrollView(
                                       child: Column(
@@ -642,42 +656,41 @@ class _ProductDetailState extends State<ProductDetail> {
           ),
         ));
   }
-Future<void> fetchData() async {
-  const url = 'https://ezys.in/customerApp/getProductDetails.php'; // Replace with your API URL
 
-  try {
-    final response = await http.get(Uri.parse(url));
+  Future<void> fetchData() async {
+    const url =
+        'https://ezys.in/customerApp/getProductDetails.php'; // Replace with your API URL
 
-    if (response.statusCode == 200) {
-      // Parse the JSON response here and assign values to your variables.
-      final Map<String, dynamic> data = json.decode(response.body);
+    try {
+      final response = await http.get(Uri.parse(url));
 
-      setState(() {
-        name = data['name'];
-        category = data['category'];
-        subCategory = data['subCategory'];
-        MRP = data['MRP'];
-        sellingPrice = data['sellingPrice'];
-        productId = data['productId'];
-        description = data['description'];
-        fullDescription = data['fullDescription'];
-        imageUrl = data['imageUrl'];
-        size = data['size'];
-        color = data['color'];
-        stock_status = data['stock_status'];
-        stock_number = data['stock_number'];
-      });
-    } else {
-      // Handle errors if the API request was not successful.
-      // You can show an error message or perform other actions here.
-      print('API request failed with status code: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        // Parse the JSON response here and assign values to your variables.
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        setState(() {
+          name = data['name'];
+          category = data['category'];
+          subCategory = data['subCategory'];
+          MRP = data['MRP'];
+          sellingPrice = data['sellingPrice'];
+          productId = data['productId'];
+          description = data['description'];
+          fullDescription = data['fullDescription'];
+          imageUrl = data['imageUrl'];
+          size = data['size'];
+          color = data['color'];
+          stock_status = data['stock_status'];
+          stock_number = data['stock_number'];
+        });
+      } else {
+        // Handle errors if the API request was not successful.
+        // You can show an error message or perform other actions here.
+        print('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle exceptions if any occur during the API request.
+      print('Error: $error');
     }
-  } catch (error) {
-    // Handle exceptions if any occur during the API request.
-    print('Error: $error');
   }
-}
-
-
- 
 }

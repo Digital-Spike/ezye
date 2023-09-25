@@ -1,7 +1,7 @@
 import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/profile_button.dart';
-import 'package:ezys/homescreens/main_screen.dart';
+import 'package:ezys/home_screens/main_screen.dart';
 import 'package:ezys/orderscreens/myorder_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:ezys/profilescreens/editprofile.dart';
@@ -25,8 +25,8 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAppBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: BackButton(color: buttonColor),
-          title: Text(
+          leading: const BackButton(color: buttonColor),
+          title: const Text(
             'Profile',
             style: apptitle,
           ),
@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Stack(
                     children: [
-                      Center(
+                      const Center(
                         child: CircleAvatar(
                           minRadius: 55,
                           child: Icon(
@@ -61,10 +61,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => EditProfile()));
+                                      builder: (context) =>
+                                          const EditProfile()));
                             },
                             child: Container(
-                                padding: EdgeInsets.all(7),
+                                padding: const EdgeInsets.all(7),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 2, color: Colors.white),
@@ -79,17 +80,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                Text(
+                const Text(
                   'User name',
                   style: title,
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 CustomButton(
                     title1: 'Payment Methods',
                     svgPath: 'assets/icons/Card.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PaymentPage()));
                     }),
                 divider,
                 CustomButton(
@@ -100,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyOrderPage()));
+                              builder: (context) => const MyOrderPage()));
                     }),
                 divider,
                 CustomButton(
@@ -111,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SettingsPage()));
+                              builder: (context) => const SettingsPage()));
                     }),
                 divider,
                 CustomButton(
@@ -147,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         context: context,
                         builder: (context) => Padding(
                           padding: MediaQuery.of(context).viewInsets,
-                          child: Container(
+                          child: SizedBox(
                             height: 200,
                             child: Padding(
                               padding:
@@ -156,18 +160,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Logout',
                                     style: title,
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   divider,
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Text(
                                     'Are you sure you want to log out?',
                                     style: content1,
                                   ),
-                                  SizedBox(height: 15),
+                                  const SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -178,8 +182,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 elevation: 0,
                                                 backgroundColor:
                                                     Colors.grey[300],
-                                                minimumSize:
-                                                    Size(double.infinity, 50),
+                                                minimumSize: const Size(
+                                                    double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -187,19 +191,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text(
+                                            child: const Text(
                                               'Cancel',
                                               style: subtitle1,
                                             )),
                                       ),
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       Expanded(
                                         child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 elevation: 0,
                                                 backgroundColor: buttonColor,
-                                                minimumSize:
-                                                    Size(double.infinity, 50),
+                                                minimumSize: const Size(
+                                                    double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -211,11 +215,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      LoginPage(),
+                                                      const LoginPage(),
                                                 ),
                                               );
                                             },
-                                            child: Text(
+                                            child: const Text(
                                               'Yes, Logout',
                                               style: TextStyle(
                                                   color: Colors.white,

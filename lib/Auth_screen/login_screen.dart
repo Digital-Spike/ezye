@@ -1,10 +1,8 @@
 import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/homescreens/home_screen.dart';
+import 'package:ezys/home_screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   User? user;
   String verificationID = "";
   @override
-void initState() {
+  void initState() {
     super.initState();
     checkCurrentUser(); // Check if the user is already logged in
   }
@@ -39,69 +37,72 @@ void initState() {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 Image.asset('assets/animation.gif'),
-                SizedBox(height: 40),
-                Text('* Log in using Mobile Number',style: title),
-                SizedBox(height: 20),
+                const SizedBox(height: 40),
+                const Text('* Log in using Mobile Number', style: title),
+                const SizedBox(height: 20),
                 TextField(
                   controller: phoneController,
                   decoration: InputDecoration(
-                    isDense: true,
-                    hintText: 'Phone Number',
-                    prefix: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Text('+91'),
-                    ),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
-                  ),
+                      isDense: true,
+                      hintText: 'Phone Number',
+                      prefix: const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Text('+91'),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12))),
                   maxLength: 10,
                   keyboardType: TextInputType.phone,
                 ),
                 Visibility(
+                  visible: otpVisibility,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('* Enter OTP',style: title),
-                      SizedBox(height: 20),
+                      const Text('* Enter OTP', style: title),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: otpController,
                         decoration: InputDecoration(
-                          isDense: true,
-                          hintText: 'OTP',
-                          prefix: Padding(
-                            padding: EdgeInsets.all(4),
-                            child: Text(''),
-                          ),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))
-                        ),
+                            isDense: true,
+                            hintText: 'OTP',
+                            prefix: const Padding(
+                              padding: EdgeInsets.all(4),
+                              child: Text(''),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
                         maxLength: 6,
                         keyboardType: TextInputType.number,
                       ),
                     ],
                   ),
-                  visible: otpVisibility,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 ElevatedButton(
-                  
-                  style: ElevatedButton.styleFrom(elevation: 5,minimumSize: Size(double.infinity, 45),backgroundColor: buttonColor,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                 
+                  style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      minimumSize: const Size(double.infinity, 45),
+                      backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
                     if (otpVisibility) {
                       verifyOTP();
@@ -111,26 +112,43 @@ void initState() {
                   },
                   child: Text(
                     otpVisibility ? "Verify" : "Login",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Row(
                   children: [
-                    Text( "By continuing, you agree to Ezye's ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700),),GestureDetector(
-                      onTap: () {
-                        
-                      },
-                      child: Text('Terms of Use ',style: TextStyle(fontSize: 12,color: indicator,fontWeight: FontWeight.bold),)),
-                      Text('and ',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),),
-                      GestureDetector(
-                        onTap: () {
-                          
-                        },
-                        child: Text('Privacy Policy',style: TextStyle(fontSize: 12,color: indicator,fontWeight: FontWeight.bold),))
+                    const Text(
+                      "By continuing, you agree to Ezye's ",
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
+                    GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Terms of Use ',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: indicator,
+                              fontWeight: FontWeight.bold),
+                        )),
+                    const Text(
+                      'and ',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    ),
+                    GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Privacy Policy',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: indicator,
+                              fontWeight: FontWeight.bold),
+                        ))
                   ],
                 )
               ],
@@ -143,7 +161,7 @@ void initState() {
 
   void loginWithPhone() async {
     auth.verifyPhoneNumber(
-      phoneNumber: "+91" + phoneController.text,
+      phoneNumber: "+91${phoneController.text}",
       verificationCompleted: (PhoneAuthCredential credential) async {
         await auth.signInWithCredential(credential).then((value) {
           print("You are logged in successfully");
