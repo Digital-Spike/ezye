@@ -93,7 +93,8 @@ class _WishListState extends State<WishList> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const ProductDetail()));
+                                                const ProductDetail(
+                                                    productId: "")));
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),

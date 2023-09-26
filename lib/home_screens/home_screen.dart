@@ -363,7 +363,9 @@ class _HomePageState extends State<HomePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const ProductDetail()));
+                                                    const ProductDetail(
+                                                        productId:
+                                                            "ezysp001")));
                                       },
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
