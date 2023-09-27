@@ -26,6 +26,7 @@ class _ProductDetailState extends State<ProductDetail> {
   String? selectedColorName;
   bool isLiked = false;
   List<Product> products = [];
+  Product? product;
   String size = '';
 
   List<String> clothingImages = [
@@ -111,7 +112,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         builder: (context) => CartScreen(
                               image: clothingImages[selectedThumbnailIndex],
                               title: 'Tiger Image EZYE – Tees for Men',
-                              size: size ?? 'Not selected',
+                              size: size,
                               price: '₹399',
                               counter: counter,
                             )));
@@ -157,17 +158,25 @@ class _ProductDetailState extends State<ProductDetail> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                     minimumSize: const Size(150, 45)),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CartScreen(
-                                image: clothingImages[selectedThumbnailIndex],
-                                title: 'Tiger Image EZYE – Tees for Men',
-                                size: size ?? 'Not selected',
-                                price: '₹399',
-                                counter: counter,
-                              )));
+                onPressed: () async {
+                  showProcessingDialogue();
+                  bool isAddedToCart = await addToCart();
+                  if (!mounted) {
+                    return;
+                  }
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(isAddedToCart
+                          ? "Item added to cart successfully.."
+                          : "Something went wrong. please try again later.."),
+                      backgroundColor:
+                          isAddedToCart ? Colors.green : Colors.redAccent,
+                      elevation: 10,
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(5),
+                    ),
+                  );
                 },
                 child: const Row(
                   children: [
@@ -189,7 +198,7 @@ class _ProductDetailState extends State<ProductDetail> {
           future: listItems,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              Product product = products.first;
+              product = products.first;
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -283,7 +292,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  product.name ?? '',
+                                  product?.name ?? '',
                                   style: content,
                                 ),
                                 const Row(
@@ -304,8 +313,8 @@ class _ProductDetailState extends State<ProductDetail> {
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
-                              child:
-                                  Text(product.description ?? "", style: title),
+                              child: Text(product?.description ?? "",
+                                  style: title),
                             ),
                             const SizedBox(height: 5),
                             const Text('Price', style: subtitle),
@@ -316,7 +325,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                 Row(
                                   children: [
                                     Text(
-                                      '₹${product.sellingPrice ?? ""}',
+                                      '₹${product?.sellingPrice ?? ""}',
                                       style: TextStyle(
                                           decoration:
                                               TextDecoration.lineThrough,
@@ -324,7 +333,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           decorationColor: Colors.green[800],
                                           decorationThickness: 3),
                                     ),
-                                    Text('- ₹${product.mrp}'),
+                                    Text('- ₹${product?.mrp}'),
                                     const SizedBox(width: 10),
                                   ],
                                 ),
@@ -521,8 +530,9 @@ class _ProductDetailState extends State<ProductDetail> {
                             const SizedBox(height: 10),
                             const SizedBox(height: 5),
                             DefaultTabController(
-                                length: 2, // Number of tabs
-                                child: Column(children: [
+                              length: 2, // Number of tabs
+                              child: Column(
+                                children: [
                                   const TabBar(
                                     labelColor: Colors.black,
                                     unselectedLabelColor: Colors.grey,
@@ -554,13 +564,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              product.description ?? '',
+                                              product?.description ?? '',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              product.fullDescription ?? '',
+                                              product?.fullDescription ?? '',
                                               textAlign: TextAlign.justify,
                                             )
                                           ],
@@ -573,7 +583,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                       ],
                                     ),
                                   )
-                                ]))
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -612,6 +624,33 @@ class _ProductDetailState extends State<ProductDetail> {
     return false;
   }
 
+  showProcessingDialogue() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      'Processing...',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   // Function to update the selected color
   void selectColor(int index) {
     setState(() {
@@ -648,5 +687,28 @@ class _ProductDetailState extends State<ProductDetail> {
         }
       }
     });
+  }
+
+  Future<bool> addToCart() async {
+    try {
+      var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
+      var response = await http.post(addToCartUrl, body: {
+        "userId": "123456",
+        "productId": widget.productId,
+        "productName": product?.name,
+        "size": product?.size,
+        "color": product?.color,
+        "amount": product?.sellingPrice,
+        "cartId": "cart123",
+        "quantity": "4"
+      });
+
+      if (response.statusCode == 200) {
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 }
