@@ -166,13 +166,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CartScreen(
-                                image: '',
-                                title: '',
-                                size: '',
-                                price: '',
-                                counter: 0,
-                              )));
+                          builder: (context) => const CartScreen()));
                 } else {
                   // User is not logged in, show the login dialog
                   _showLoginDialog();
