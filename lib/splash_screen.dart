@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'assets/ezye sc.gif',
+          'assets/EZYE SS.gif',
           height: 250,
           width: 250,
         ),
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigateFunction() async {
-    Timer(const Duration(milliseconds: 2600), () {
+    Timer(const Duration(milliseconds: 2650), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

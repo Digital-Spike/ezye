@@ -14,6 +14,7 @@ class _ActiveOrderState extends State<ActiveOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgcolor,
       body: Column(
         children: [
           Expanded(

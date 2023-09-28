@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         mainChild: Container(
           height: double.infinity,
-          color: Colors.white,
+          color: bgcolor,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

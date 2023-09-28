@@ -32,14 +32,19 @@ class _MultiSelectChoiceChipsState extends State<MultiSelectChoiceChips> {
       spacing: 10,
       children: widget.options.map((option) {
         return ChoiceChip(
+          side: BorderSide(width: 0.5),
           disabledColor: Colors.black,
           /*showCheckmark: true,
           checkmarkColor: Colors.white,*/
           selectedColor: buttonColor,
-          backgroundColor: Colors.grey[600],
+          backgroundColor: Colors.white,
           label: Text(
             option,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: selectedOptions.contains(option)
+                  ? Colors.white // Change text color when selected
+                  : Colors.black, // Change text color when not selected
+            ),
           ),
           selected: selectedOptions.contains(option),
           onSelected: (_) {

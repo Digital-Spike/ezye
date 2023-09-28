@@ -42,26 +42,31 @@ class _WalletPageState extends State<WalletPage> {
             ),
           ),
           SizedBox(height: 10),
-         Container(
-            padding: EdgeInsets.all(10),
-            width: double.infinity,
-            height: 100,
-            decoration: BoxDecoration(border: Border.all(width: 0.5,color: Colors.grey.shade400), color: Colors.white,),
-           
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Ezye Coins History',style: title1,),Icon(CupertinoIcons.forward,color: indicator,)
-                  ],
-                ),
-
-              ]
+         GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TransactionPage()));
+          },
+           child: Container(
+              padding: EdgeInsets.all(10),
+              width: double.infinity,
+              height: 100,
+              decoration: BoxDecoration(border: Border.all(width: 0.5,color: Colors.grey.shade400), color: Colors.white,),
+             
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Ezye Coins History',style: title1,),Icon(CupertinoIcons.forward,color: indicator,)
+                    ],
+                  ),
+                Text('You can Check all Your Ezye Coins Earn and Spent History here',style: content,)
+                ]
+              ),
             ),
-          ),
+         ),
           SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -69,6 +74,7 @@ class _WalletPageState extends State<WalletPage> {
           ),
           SizedBox(height: 10),
           ExpansionTile(
+            
           iconColor: Colors.black,
             backgroundColor: Colors.white,
             collapsedBackgroundColor: Colors.white,

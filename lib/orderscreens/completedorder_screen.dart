@@ -12,6 +12,7 @@ class _CompletedOrderState extends State<CompletedOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgcolor,
       body: Column(
         children: [
           Expanded(

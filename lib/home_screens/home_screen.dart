@@ -387,8 +387,8 @@ class _HomePageState extends State<HomePage> {
                                                   child: Image.asset(
                                                     'assets/image.jpeg',
                                                     height: 110,
-                                                    // width: double.infinity,
-                                                    fit: BoxFit.cover,
+                                                    width: double.infinity,
+                                                    fit: BoxFit.contain,
                                                   ),
                                                 ),
                                                 imageBuilder:
@@ -474,7 +474,8 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         );
-                      }),
+                      }
+                     ),
                     ),
                   ),
                 ],
@@ -485,8 +486,8 @@ class _HomePageState extends State<HomePage> {
               return const Text("Something went wrong. Please try again later");
             }
 
-            return const Center(
-              child: CircularProgressIndicator(),
+            return  Center(
+              child: Image.asset('assets/animation.gif',height: 150,width: 250,),
             );
           }),
     );
