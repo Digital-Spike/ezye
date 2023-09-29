@@ -225,13 +225,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                 'assets/image.jpeg',
                                 height: 110,
                                 width: double.infinity,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                               ),
                             ),
                             imageBuilder: (context, image) => Image(
                               image: image,
-                              height: 110,
-                              fit: BoxFit.cover,
+                              height: 400,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -312,7 +312,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               padding: const EdgeInsets.all(10),
                               child: Image.asset(isLiked
                                   ? 'assets/icons/heart (2).png'
-                                  : 'assets/icons/love.png'),
+                                                : 'assets/icons/heart.png',),
                             ),
                           ),
                         ),
