@@ -1,4 +1,8 @@
+
+import 'package:ezys/Auth_screen/login_screen.dart';
+import 'package:ezys/Auth_screen/signup_screen.dart';
 import 'package:ezys/splash_screen.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   'User name',
                   style: title,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 35),
                 CustomButton(
                     title1: 'Payment Methods',
                     svgPath: 'assets/icons/Card.svg',

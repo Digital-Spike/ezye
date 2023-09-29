@@ -80,7 +80,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     MaterialPageRoute(builder: (context) => const WishList()));
               },
               child: Image.asset(
-                'assets/icons/love.png',
+                'assets/icons/heart.png',
                 height: 27,
                 width: 27,
               )),
@@ -186,6 +186,7 @@ class _ProductDetailState extends State<ProductDetail> {
           future: listItems,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+               if (products.isNotEmpty) {
               product = products.first;
               if ((product?.image1Url ?? '').isNotEmpty) {
                 clothingImages.add(product?.image1Url ?? '');
@@ -635,7 +636,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   ],
                 ),
               );
+            }else {
+              return const Text("Product not found");
             }
+          }
 
             if (snapshot.hasError || snapshot.data == false) {
               return const Text("Something went wrong. Please try again later");

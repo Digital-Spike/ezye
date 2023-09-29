@@ -1,3 +1,4 @@
+import 'package:ezys/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
 class PersistentHeader extends SliverPersistentHeaderDelegate {
   final Widget widget;
@@ -12,7 +13,7 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
       height: 56.0,
       child: Card(
         margin: EdgeInsets.all(0),
-        color: Colors.white,
+        color: bgcolor,
         elevation: 0,
         child: Center(child: widget),
       ),

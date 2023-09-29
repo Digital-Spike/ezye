@@ -19,15 +19,15 @@ class _WalletPageState extends State<WalletPage> {
       mainAppBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: BackButton(color: Colors.black),
-        title: Text('Wallet',style: apptitle,),
+        leading: const BackButton(color: Colors.black),
+        title: const Text('Wallet',style: apptitle,),
         centerTitle: true,
       ),
       mainChild: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             width: double.infinity,
             height: 100,
             color: buttonColor,
@@ -35,28 +35,33 @@ class _WalletPageState extends State<WalletPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('0',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
-                SizedBox(height: 5),
-                Text('Total Ezye Coins balance',style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.w700),)
+                Row(
+                  children: [
+                    Image.asset('assets/icons/EZYE Coin black.png',height: 25,),const SizedBox(width: 5),
+                    const Text('0',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                const Text('Total Ezye Coins balance',style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.w700),)
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
          GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>TransactionPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>const TransactionPage()));
           },
            child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               width: double.infinity,
               height: 100,
-              decoration: BoxDecoration(border: Border.all(width: 0.5,color: Colors.grey.shade400), color: Colors.white,),
+              decoration: const BoxDecoration( color: Colors.white,),
              
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Ezye Coins History',style: title1,),Icon(CupertinoIcons.forward,color: indicator,)
@@ -67,23 +72,26 @@ class _WalletPageState extends State<WalletPage> {
               ),
             ),
          ),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text('Frequently Asked Questions',style: title,),
           ),
-          SizedBox(height: 10),
-          ExpansionTile(
-            
+          const SizedBox(height: 10),
+          const ExpansionTile(
+            expandedAlignment: Alignment.bottomLeft,
+            tilePadding: EdgeInsets.symmetric(horizontal: 10),
           iconColor: Colors.black,
             backgroundColor: Colors.white,
             collapsedBackgroundColor: Colors.white,
-            childrenPadding: EdgeInsets.all(10),
+            childrenPadding: EdgeInsets.symmetric(horizontal: 10),
             title: Text('What is Ezye Coins?',style: subtitle,),
             children: [
-              Text('1. Find Best Talents & Best JObs,Enter your mobile no to sign up')
+              Text('1. Find Best Talents & Best JObs,Enter your mobile no to sign up'),
+              SizedBox(height: 5,)
             ],
-            )
+            ),
+           
           ],
         ));
   }

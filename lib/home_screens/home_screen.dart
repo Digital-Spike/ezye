@@ -186,10 +186,10 @@ class _HomePageState extends State<HomePage> {
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: bgcolor,
                     elevation: 0,
                     automaticallyImplyLeading: false,
-                    expandedHeight: 330,
+                    expandedHeight: 337,
                     pinned: false,
                     stretch: true,
                     flexibleSpace: FlexibleSpaceBar(
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 25),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
                                     item,
                                     fit: BoxFit.contain,
@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 10),
                           Padding(
-                            padding: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: SizedBox(
                               height: 70, // Adjust the height as needed
                               child: ListView.builder(
@@ -256,13 +256,14 @@ class _HomePageState extends State<HomePage> {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 23, vertical: 0),
+                                        horizontal: 22, vertical: 0),
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           padding: const EdgeInsets.all(10),
-                                          height: 50,
-                                          width: 50,
+                                          // height: 50,
+                                          // width: 50,
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                                 width: 0.25,
@@ -275,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                                             // ),
                                           ),
                                           child: Image.asset(
-                                            imageUrls[index],
+                                            imageUrls[index],height: 30,
                                           ),
                                         ),
                                         const SizedBox(height: 5),
@@ -301,6 +302,7 @@ class _HomePageState extends State<HomePage> {
                         child: SizedBox(
                             width: double.infinity,
                             child: ListView.builder(
+                              
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 1,
                                 itemBuilder: (context, index) {
@@ -326,7 +328,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
+                        horizontal: 10, vertical: 10),
                     sliver: SliverGrid.builder(
                       itemCount: products.length,
                       gridDelegate:
