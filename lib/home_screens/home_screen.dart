@@ -357,9 +357,10 @@ class _HomePageState extends State<HomePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const ProductDetail(
+                                                    ProductDetail(
                                                         productId:
-                                                            "ezysp001")));
+                                                            product.productId ??
+                                                                '')));
                                       },
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
@@ -474,8 +475,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         );
-                      }
-                     ),
+                      }),
                     ),
                   ),
                 ],
@@ -486,8 +486,12 @@ class _HomePageState extends State<HomePage> {
               return const Text("Something went wrong. Please try again later");
             }
 
-            return  Center(
-              child: Image.asset('assets/animation.gif',height: 150,width: 250,),
+            return Center(
+              child: Image.asset(
+                'assets/animation.gif',
+                height: 150,
+                width: 250,
+              ),
             );
           }),
     );

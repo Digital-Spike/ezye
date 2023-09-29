@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/cart_screen.dart';
 import 'package:ezys/home_screens/wishlist_screen.dart';
@@ -29,12 +30,7 @@ class _ProductDetailState extends State<ProductDetail> {
   Product? product;
   String size = '';
 
-  List<String> clothingImages = [
-    'assets/t.jpg',
-    'assets/t1.jpg',
-    'assets/t2.jpg',
-    'assets/t3.jpg',
-  ];
+  List<String> clothingImages = [];
   List<Color> colors = [
     Colors.red,
     Colors.green,
@@ -191,6 +187,22 @@ class _ProductDetailState extends State<ProductDetail> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               product = products.first;
+              if ((product?.image1Url ?? '').isNotEmpty) {
+                clothingImages.add(product?.image1Url ?? '');
+              }
+              if ((product?.image2Url ?? '').isNotEmpty) {
+                clothingImages.add(product?.image2Url ?? '');
+              }
+              if ((product?.image3Url ?? '').isNotEmpty) {
+                clothingImages.add(product?.image3Url ?? '');
+              }
+              if ((product?.image4Url ?? '').isNotEmpty) {
+                clothingImages.add(product?.image4Url ?? '');
+              }
+              if ((product?.image5url ?? '').isNotEmpty) {
+                clothingImages.add(product?.image5url ?? '');
+              }
+
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -201,10 +213,25 @@ class _ProductDetailState extends State<ProductDetail> {
                           onTap: () {
                             // Handle tapping on the main image (optional)
                           },
-                          child: Image.asset(
-                            clothingImages[selectedThumbnailIndex],
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+                          child: CachedNetworkImage(
+                            imageUrl: '${ApiService.uploads}ezysp005547902.png',
+                            placeholder: (context, url) => const CircleAvatar(
+                              backgroundColor: Colors.white30,
+                            ),
+                            errorWidget: (context, url, error) => Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: Image.asset(
+                                'assets/image.jpeg',
+                                height: 110,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            imageBuilder: (context, image) => Image(
+                              image: image,
+                              height: 110,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         Positioned(
@@ -215,7 +242,6 @@ class _ProductDetailState extends State<ProductDetail> {
                             children:
                                 clothingImages.asMap().entries.map((entry) {
                               final index = entry.key;
-                              final imagePath = entry.value;
 
                               return GestureDetector(
                                 onTap: () {
@@ -235,9 +261,31 @@ class _ProductDetailState extends State<ProductDetail> {
                                       width: 2,
                                     ),
                                   ),
-                                  child: Image.asset(
-                                    imagePath,
-                                    fit: BoxFit.cover,
+                                  child: /*getImage(
+                                    imageName: entry.value,
+                                  ),*/
+                                      CachedNetworkImage(
+                                    imageUrl:
+                                        '${ApiService.uploads}ezysp005547901.png',
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
+                                      backgroundColor: Colors.white30,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Padding(
+                                      padding: const EdgeInsets.all(1.0),
+                                      child: Image.asset(
+                                        'assets/image.jpeg',
+                                        height: 110,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    imageBuilder: (context, image) => Image(
+                                      image: image,
+                                      height: 110,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               );
@@ -245,26 +293,28 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ),
                         Positioned(
-                            top: 10,
-                            right: 10,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isLiked = !isLiked;
-                                });
-                              },
-                              child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Image.asset(isLiked
-                                      ? 'assets/icons/heart (2).png'
-                                      : 'assets/icons/love.png')),
-                            ))
+                          top: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked;
+                              });
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[300],
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset(isLiked
+                                  ? 'assets/icons/heart (2).png'
+                                  : 'assets/icons/love.png'),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Divider(
@@ -701,6 +751,24 @@ class _ProductDetailState extends State<ProductDetail> {
       return false;
     } catch (e) {
       return false;
+    }
+  }
+
+  void imageList(Product? product) {
+    if ((product?.image1Url ?? '').isNotEmpty) {
+      clothingImages.add(product?.image1Url ?? '');
+    }
+    if ((product?.image2Url ?? '').isNotEmpty) {
+      clothingImages.add(product?.image2Url ?? '');
+    }
+    if ((product?.image3Url ?? '').isNotEmpty) {
+      clothingImages.add(product?.image3Url ?? '');
+    }
+    if ((product?.image4Url ?? '').isNotEmpty) {
+      clothingImages.add(product?.image4Url ?? '');
+    }
+    if ((product?.image5url ?? '').isNotEmpty) {
+      clothingImages.add(product?.image5url ?? '');
     }
   }
 }
