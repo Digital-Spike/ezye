@@ -389,7 +389,7 @@ class _HomePageState extends State<HomePage> {
                                                       const EdgeInsets.all(1.0),
                                                   child: Image.asset(
                                                     'assets/image.jpeg',
-                                                    height: 110,
+                                                    height: 150,
                                                     width: double.infinity,
                                                     fit: BoxFit.contain,
                                                   ),
@@ -397,8 +397,8 @@ class _HomePageState extends State<HomePage> {
                                                 imageBuilder:
                                                     (context, image) => Image(
                                                   image: image,
-                                                  height: 110,
-                                                  fit: BoxFit.fitWidth,
+                                                  height: 150,
+                                                  fit: BoxFit.contain,
                                                 ),
                                               ),
                                               Container(

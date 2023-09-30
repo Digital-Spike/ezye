@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,6 +20,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+   bool isLoggedIn = false;
+   @override
+  void initState() {
+    super.initState();
+   
+    checkLoginStatus(); // Call the function to fetch carousel data
+  }
+
+  void checkLoginStatus() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MainScreen(
@@ -101,10 +118,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     svgPath: 'assets/icons/Order.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyOrderPage()));
+                       if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyOrderPage()));
+                } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog1();
+                }
+                   
                     }),
                 divider,
                 CustomButton(
@@ -134,7 +158,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     title1: 'Invite Friends',
                     svgPath: 'assets/icons/Invite.svg',
                     trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {}),
+                    onPressed: () async {
+                       if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                   final box = context.findRenderObject() as RenderBox?;
+             await Share.share('check out this app',sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+);
+                } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog();
+                }
+                     
+                    }),
                 divider,
                 CustomButton(
                     title1: 'Log out',
@@ -240,5 +275,71 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ));
+  }
+  void _showLoginDialog() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title:
+              const Text('Login Required!', style: TextStyle(color: indicator)),
+          content: const Text('You need to log in to Invite Friends.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+   void _showLoginDialog1() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text(
+            'Login Required!',
+            style: TextStyle(color: indicator),
+          ),
+          content: const Text('You need to log in to Check Your Orders.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

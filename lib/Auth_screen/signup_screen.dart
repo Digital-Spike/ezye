@@ -1,3 +1,4 @@
+import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+   final formKey = GlobalKey<FormState>();
   var name = new TextEditingController();
   var email = new TextEditingController();
   var referral = new TextEditingController();
@@ -66,174 +68,218 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Icon(CupertinoIcons.clear),
                   ),
                 )),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                const Center(
-                    child: Text(
-                  'Create Your Account Now',
-                  style: apptitle,
-                )),
-                const SizedBox(
-                  height: 30,
-                ),
-                Stack(
-                  children: [
-                    const Center(
-                      child: CircleAvatar(
-                        minRadius: 55,
-                        child: Icon(
-                          CupertinoIcons.person,
-                          size: 60,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        left: 200,
-                        right: 120,
-                        child: Container(
-                            padding: const EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 2, color: Colors.white),
-                                color: Colors.grey,
-                                shape: BoxShape.circle),
-                            child: SvgPicture.asset(
-                              'assets/icons/Edit (1).svg',
-                              height: 20,
-                              width: 20,
-                            )))
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  const Center(
+                      child: Text(
+                    'Create Your Account Now',
+                    style: apptitle,
+                  )),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Stack(
                     children: [
-                      const Text(
-                        "Name",
-                        style: subtitle,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: name,
-                        decoration: InputDecoration(
-                            hintText: 'Enter Your Name',
-                            isDense: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15))),
-                      ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        "Phone Number",
-                        style: subtitle,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: phoneController,
-                        decoration: InputDecoration(
-                            isDense: true,
-                            hintText: 'Phone Number',
-                            prefix: const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text('+91'),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15))),
-                        maxLength: 10,
-                        keyboardType: TextInputType.phone,
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        "Email",
-                        style: subtitle,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            hintText: 'Enter Your Email',
-                            isDense: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15))),
-                      ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        "Referral Code",
-                        style: subtitle,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: referral,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            hintText: 'Referral Code',
-                            isDense: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15))),
-                      ),
-                      Visibility(
-                        visible: otpVisibility,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            const Text('* Enter OTP', style: subtitle),
-                            const SizedBox(height: 10),
-                            TextField(
-                              controller: otpController,
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  hintText: 'OTP',
-                                  prefix: const Padding(
-                                    padding: EdgeInsets.all(4),
-                                    child: Text(''),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15))),
-                              maxLength: 6,
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
+                      const Center(
+                        child: CircleAvatar(
+                          minRadius: 55,
+                          child: Icon(
+                            CupertinoIcons.person,
+                            size: 60,
+                          ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            minimumSize: const Size(double.infinity, 45),
-                            backgroundColor: buttonColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
-                          if (otpVisibility) {
-                            verifyOTP();
-                          } else {
-                            loginWithPhone();
-                            addUser( );
-                          }
-                        },
-                        child: Text(
-                          otpVisibility ? "Verify" : "Sign Up",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
+                      Positioned(
+                          bottom: 0,
+                          left: 200,
+                          right: 120,
+                          child: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 2, color: Colors.white),
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle),
+                              child: SvgPicture.asset(
+                                'assets/icons/Edit (1).svg',
+                                height: 20,
+                                width: 20,
+                              )))
                     ],
                   ),
-                )
-              ],
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Name",
+                          style: subtitle,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: name,
+                          decoration: InputDecoration(
+                              hintText: 'Enter Your Name',
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                                  validator: (value){
+                                    if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          
+                                  },
+                        ),
+                        const SizedBox(height: 15),
+                        const Text(
+                          "Phone Number",
+                          style: subtitle,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: phoneController,
+                          decoration: InputDecoration(
+                              isDense: true,
+                              hintText: 'Phone Number',
+                              prefix: const Padding(
+                                padding: EdgeInsets.all(4),
+                                child: Text('+91'),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                          maxLength: 10,
+                          keyboardType: TextInputType.phone,
+                           validator: (value){
+                                    if (value == null || value.isEmpty) {
+                              return 'Please enter phone number';
+                            }
+                            return null;
+                          
+                                  },
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Email",
+                          style: subtitle,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: email,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              hintText: 'Enter Your Email',
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                                   validator: (value){
+                                    if (value == null || value.isEmpty) {
+                                return 'Please Enter Email';
+                              } else if (!value.contains('@')) {
+                                return 'Please Enter Valid Email';
+                              }
+                              return null;
+                                  },
+                        ),
+                        const SizedBox(height: 15),
+                        const Text(
+                          "Referral Code",
+                          style: subtitle,
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: referral,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              hintText: 'Referral Code',
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                        ),
+                        Visibility(
+                          visible: otpVisibility,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 15),
+                              const Text('* Enter OTP', style: subtitle),
+                              const SizedBox(height: 10),
+                              TextFormField(
+                                controller: otpController,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'OTP',
+                                    prefix: const Padding(
+                                      padding: EdgeInsets.all(4),
+                                      child: Text(''),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15))),
+                                maxLength: 6,
+                                keyboardType: TextInputType.number,
+                                 validator: (value){
+                                    if (value == null || value.isEmpty) {
+                              return 'Please enter OTP';
+                            }
+                            return null;
+                          
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 5,
+                              minimumSize: const Size(double.infinity, 45),
+                              backgroundColor: buttonColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () {
+                             final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+                            if (otpVisibility) {
+                              verifyOTP();
+                            } else {
+                              loginWithPhone();
+                              addUser( );
+                            }
+                          },
+                          child: Text(
+                            otpVisibility ? "Verify" : "Sign Up",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                         Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("If you have account? please",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),),TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginPage()));}, child: const Text('Sign In',style: TextStyle(
+                                    fontSize: 14,
+                                    color: indicator,
+                                    fontWeight: FontWeight.bold),))
+                        ],
+                      ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

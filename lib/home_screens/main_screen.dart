@@ -155,20 +155,12 @@ class _MainScreenState extends State<MainScreen> {
         );
         break;
       case 2:
-        if (isLoggedIn) {
-          // User is logged in, navigate to the payment page
+        
+       
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const WalletPage()));
-        } else {
-          // User is not logged in, show the login dialog
-          _showLoginDialog();
-        }
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const WalletPage(),
-        //   ),
-        // );
+       
+     
         break;
       case 3:
         Navigator.push(
@@ -188,7 +180,7 @@ class _MainScreenState extends State<MainScreen> {
         return CupertinoAlertDialog(
           title:
               const Text('Login Required!', style: TextStyle(color: indicator)),
-          content: const Text('You need to log in to continue to Check Cart.'),
+          content: const Text('You need to log in to continue to Check Wallet.'),
           actions: [
             TextButton(
               onPressed: () {

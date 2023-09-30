@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/cart_screen.dart';
 import 'package:ezys/home_screens/wishlist_screen.dart';
 import 'package:ezys/model/product.dart';
 import 'package:ezys/services/api_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
 
 class ProductDetail extends StatefulWidget {
@@ -19,6 +22,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+   bool isLoggedIn = false;
   int selectedThumbnailIndex = 0; // Track the selected thumbnail index
   int counter = 0;
   bool showOriginalContainer = false;
@@ -53,6 +57,16 @@ class _ProductDetailState extends State<ProductDetail> {
     listItems = fetchData();
     super.initState();
     selectedColorName = colorNames[selectedColorIndex];
+     checkLoginStatus();
+  }
+
+  void checkLoginStatus() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
   }
 
   @override
@@ -76,8 +90,17 @@ class _ProductDetailState extends State<ProductDetail> {
                 minimumSize: const Size(30, 30),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const WishList()));
+                 if (isLoggedIn) {
+                 
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WishList()));
+                } else {
+                
+                  _showLoginDialog1();
+                }
+               
               },
               child: Image.asset(
                 'assets/icons/heart.png',
@@ -90,7 +113,11 @@ class _ProductDetailState extends State<ProductDetail> {
                     borderRadius: BorderRadius.circular(30)),
                 minimumSize: const Size(30, 30),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                final box = context.findRenderObject() as RenderBox?;
+             await Share.share('check out this product ',sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+);
+              },
               child: const Icon(
                 Icons.share,
                 color: Colors.black,
@@ -102,8 +129,17 @@ class _ProductDetailState extends State<ProductDetail> {
                 minimumSize: const Size(30, 30),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
+                 if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()));
+                } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog();
+                }
+                
               },
               child: Image.asset(
                 'assets/icons/shoppingbag.png',
@@ -696,7 +732,72 @@ class _ProductDetailState extends State<ProductDetail> {
       },
     );
   }
-
+ void _showLoginDialog() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title:
+              const Text('Login Required!', style: TextStyle(color: indicator)),
+          content: const Text('You need to log in to continue to Check Cart.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showLoginDialog1() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text(
+            'Login Required!',
+            style: TextStyle(color: indicator),
+          ),
+          content: const Text('You need to log in to Check Your Wishlist.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
   // Function to update the selected color
   void selectColor(int index) {
     setState(() {
@@ -775,4 +876,5 @@ class _ProductDetailState extends State<ProductDetail> {
       clothingImages.add(product?.image5url ?? '');
     }
   }
+
 }
