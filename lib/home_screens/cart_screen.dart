@@ -7,6 +7,7 @@ import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/paymentScreens/checkout_screen.dart';
 import 'package:ezys/paymentScreens/coupan_screen.dart';
 import 'package:ezys/services/api_service.dart';
+import 'package:ezys/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,8 @@ class _CartScreenState extends State<CartScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             image: const DecorationImage(
-                                              image: AssetImage( 'assets/error.png'),
+                                              image: AssetImage(
+                                                  'assets/error.png'),
                                               fit: BoxFit.contain,
                                             )),
                                       ),
@@ -299,7 +301,6 @@ class _CartScreenState extends State<CartScreen> {
                             minimumSize: const Size(380, 50)),
                         onPressed: () {
                           showModalBottomSheet(
-                           
                             backgroundColor: bgcolor,
                             elevation: 5,
                             isScrollControlled: true,
@@ -312,13 +313,11 @@ class _CartScreenState extends State<CartScreen> {
                               padding: MediaQuery.of(context).viewInsets,
                               child: Container(
                                 height: 350,
-                               
                                 decoration: BoxDecoration(
-                                   color: bgcolor,
-                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))
-                                ),
+                                    color: bgcolor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30))),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -361,7 +360,9 @@ class _CartScreenState extends State<CartScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
                                             child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Container(
                                                   padding:
@@ -389,10 +390,12 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                  child: const DashLine(color: Colors.grey),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  child: const DashLine(
+                                                      color: Colors.grey),
                                                 ),
-                                               
                                                 GestureDetector(
                                                   onTap: () {
                                                     Navigator.push(
@@ -417,7 +420,9 @@ class _CartScreenState extends State<CartScreen> {
                                                     ],
                                                   ),
                                                 ),
-                                               SizedBox(height: 5,)
+                                                SizedBox(
+                                                  height: 5,
+                                                )
                                               ],
                                             ),
                                           ),
@@ -483,8 +488,10 @@ class _CartScreenState extends State<CartScreen> {
                                             ],
                                           ),
                                           const SizedBox(height: 10),
-                                         const DashLine(color: Colors.grey,),
-                                         
+                                          const DashLine(
+                                            color: Colors.grey,
+                                          ),
+
                                           const SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:
@@ -575,7 +582,8 @@ class _CartScreenState extends State<CartScreen> {
   Future<bool> getCartItems() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
-      var response = await http.post(productUrl, body: {"cartId": "cart123"});
+      var response =
+          await http.post(productUrl, body: {"cartId": FirebaseUser.cartId});
 
       if (response.statusCode == 200) {
         cartItems = (json.decode(response.body) as List)
