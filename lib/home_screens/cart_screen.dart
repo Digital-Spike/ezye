@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezys/custom_widgets/dashed_line.dart';
 import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/paymentScreens/checkout_screen.dart';
 import 'package:ezys/paymentScreens/coupan_screen.dart';
@@ -125,7 +126,7 @@ class _CartScreenState extends State<CartScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             image: const DecorationImage(
-                                              image: AssetImage(""),
+                                              image: AssetImage( 'assets/error.png'),
                                               fit: BoxFit.contain,
                                             )),
                                       ),
@@ -298,7 +299,7 @@ class _CartScreenState extends State<CartScreen> {
                             minimumSize: const Size(380, 50)),
                         onPressed: () {
                           showModalBottomSheet(
-                            showDragHandle: true,
+                           
                             backgroundColor: bgcolor,
                             elevation: 5,
                             isScrollControlled: true,
@@ -311,7 +312,13 @@ class _CartScreenState extends State<CartScreen> {
                               padding: MediaQuery.of(context).viewInsets,
                               child: Container(
                                 height: 350,
-                                color: bgcolor,
+                               
+                                decoration: BoxDecoration(
+                                   color: bgcolor,
+                                   borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30))
+                                ),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -345,7 +352,7 @@ class _CartScreenState extends State<CartScreen> {
                                           //   ),
                                           // ),
                                           Container(
-                                            height: 90,
+                                            height: 100,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     width: 0.5,
@@ -354,6 +361,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
                                             child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(
                                                   padding:
@@ -380,10 +388,11 @@ class _CartScreenState extends State<CartScreen> {
                                                     ],
                                                   ),
                                                 ),
-                                                Divider(
-                                                  thickness: 0.5,
-                                                  color: Colors.grey[500],
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                  child: const DashLine(color: Colors.grey),
                                                 ),
+                                               
                                                 GestureDetector(
                                                   onTap: () {
                                                     Navigator.push(
@@ -407,7 +416,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       )
                                                     ],
                                                   ),
-                                                )
+                                                ),
+                                               SizedBox(height: 5,)
                                               ],
                                             ),
                                           ),
@@ -473,10 +483,8 @@ class _CartScreenState extends State<CartScreen> {
                                             ],
                                           ),
                                           const SizedBox(height: 10),
-                                          Divider(
-                                            thickness: 0.5,
-                                            color: Colors.grey[500],
-                                          ),
+                                         const DashLine(color: Colors.grey,),
+                                         
                                           const SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:

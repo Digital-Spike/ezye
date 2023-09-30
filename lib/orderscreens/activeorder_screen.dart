@@ -38,7 +38,7 @@ class _ActiveOrderState extends State<ActiveOrder> {
                             Container(
                               height: 100,
                               width: 100,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),image: DecorationImage(image: AssetImage('assets/image1.jpeg'),fit: BoxFit.cover,)),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),image: DecorationImage(image: AssetImage( 'assets/error.png'),fit: BoxFit.cover,)),
                               
                             ),SizedBox(width: 20),
                         Expanded(

@@ -681,8 +681,8 @@ class _ProductDetailState extends State<ProductDetail> {
               return const Text("Something went wrong. Please try again later");
             }
 
-            return const Center(
-              child: CircularProgressIndicator(),
+            return  Center(
+              child: Image.asset('assets/Ezye gif 4.gif',height: 300,width: 250,),
             );
           }),
     );

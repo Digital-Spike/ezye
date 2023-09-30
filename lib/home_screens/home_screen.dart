@@ -230,11 +230,7 @@ class _HomePageState extends State<HomePage> {
                                 const Text('Category', style: subtitle),
                                 GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const CategoryPage()));
+                                     
                                     },
                                     child: const Text(
                                       'See all',
@@ -247,41 +243,74 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 10),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            padding: const EdgeInsets.symmetric(horizontal: 0),
                             child: SizedBox(
-                              height: 70, // Adjust the height as needed
+                              height: 80, // Adjust the height as needed
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: imageUrls.length,
+                                itemCount: categories.length,
                                 itemBuilder: (context, index) {
+                                  final category= categories[index];
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 22, vertical: 0),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          // height: 50,
-                                          // width: 50,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 0.25,
-                                                color: Colors.grey),
-                                            color: Colors.grey[350],
-                                            shape: BoxShape.circle,
-                                            // image: DecorationImage(
-                                            //   image: Image.asset(imageUrls[index]),
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                          ),
-                                          child: Image.asset(
-                                            imageUrls[index],height: 30,
+                                        GestureDetector(
+                                          onTap: () {
+                                             Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                   CategoryPage(category: category.name??'',)));
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            // height: 50,
+                                            // width: 50,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 0.25,
+                                                  color: Colors.grey),
+                                              color: Colors.grey[350],
+                                              shape: BoxShape.circle,
+                                              // image: DecorationImage(
+                                              //   image: Image.asset(imageUrls[index]),
+                                              //   fit: BoxFit.cover,
+                                              // ),
+                                            ),
+                                            child: CachedNetworkImage(
+                                                  imageUrl: '',
+                                                  placeholder: (context, url) =>
+                                                      const CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white30,
+                                                  ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(0),
+                                                    child: Image.asset(
+                                                      'assets/ERROR1.png',
+                                                      height: 30,
+                                                      
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                  ),
+                                                  imageBuilder:
+                                                      (context, image) => Image(
+                                                    image: image,
+                                                    height: 30,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
                                           ),
                                         ),
                                         const SizedBox(height: 5),
                                         // Space between image and name
-                                        Text(imageNames[index]),
+                                        Text(category.name??''),
                                       ],
                                     ),
                                   );
@@ -367,11 +396,21 @@ class _HomePageState extends State<HomePage> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Container(
+                                          padding: EdgeInsets.all(5),
                                           height: 150,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(12),
+                                                gradient:
+                                                      LinearGradient(
+                                                    begin: Alignment.topRight,
+                                                    end: Alignment.bottomLeft,
+                                                    colors: [
+                                                      Colors.black.withOpacity(0.2),
+                                                      Colors.transparent
+                                                    ],
+                                                  ),
                                           ),
                                           child: Stack(
                                             children: [
@@ -388,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                                                   padding:
                                                       const EdgeInsets.all(1.0),
                                                   child: Image.asset(
-                                                    'assets/image.jpeg',
+                                                     'assets/ERROR1.png',
                                                     height: 150,
                                                     width: double.infinity,
                                                     fit: BoxFit.contain,
@@ -405,15 +444,7 @@ class _HomePageState extends State<HomePage> {
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(12),
-                                                  gradient:
-                                                      const LinearGradient(
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomLeft,
-                                                    colors: [
-                                                      Colors.black26,
-                                                      Colors.transparent
-                                                    ],
-                                                  ),
+                                                  
                                                 ),
                                               ),
                                             ],
@@ -427,7 +458,7 @@ class _HomePageState extends State<HomePage> {
                                       style:
                                           const TextStyle(color: Colors.grey)),
                                   const SizedBox(height: 5),
-                                  Text(product.fullDescription ?? ''),
+                                  Expanded(child: Text(product.fullDescription ?? '',overflow: TextOverflow.ellipsis,maxLines: 1,)),
                                   const SizedBox(height: 5),
                                   Row(
                                     children: [

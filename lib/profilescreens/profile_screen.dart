@@ -176,6 +176,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     svgPath: 'assets/icons/logout 2.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
+                       if (isLoggedIn) {
+                  // User is logged in, navigate to the payment page
+                 
                       showModalBottomSheet(
                         elevation: 5,
                         isScrollControlled: true,
@@ -270,6 +273,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       );
+                       } else {
+                  // User is not logged in, show the login dialog
+                  _showLoginDialog2();
+                }
                     }),
               ],
             ),
@@ -318,6 +325,40 @@ class _ProfilePageState extends State<ProfilePage> {
             style: TextStyle(color: indicator),
           ),
           content: const Text('You need to log in to Check Your Orders.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Log In',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+   void _showLoginDialog2() {
+    showAdaptiveDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text(
+            'Login Required!',
+            style: TextStyle(color: indicator),
+          ),
+          content: const Text('You need to log in to First.'),
           actions: [
             TextButton(
               onPressed: () {
