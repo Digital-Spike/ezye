@@ -302,391 +302,381 @@ class _ProductDetailState extends State<ProductDetail> {
                                     child: /*getImage(
                                     imageName: entry.value,
                                   ),*/
-                                        CachedNetworkImage(
-                                      imageUrl:
-                                          '${ApiService.uploads}ezysp005547901.png',
-                                      placeholder: (context, url) =>
-                                          const CircleAvatar(
-                                        backgroundColor: Colors.white30,
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Padding(
-                                        padding: const EdgeInsets.all(1.0),
-                                        child: Image.asset(
-                                          'assets/image.jpeg',
-                                          height: 110,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      imageBuilder: (context, image) => Image(
-                                        image: image,
+                                      CachedNetworkImage(
+                                    imageUrl:
+                                        '${ApiService.uploads}ezysp005547901.png',
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
+                                      backgroundColor: Colors.white30,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Padding(
+                                      padding: const EdgeInsets.all(1.0),
+                                      child: Image.asset(
+                                        'assets/image.jpeg',
                                         height: 110,
+                                        width: double.infinity,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
+                                    imageBuilder: (context, image) => Image(
+                                      image: image,
+                                      height: 110,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isLiked = !isLiked;
-                                });
-                              },
-                              child: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.grey[300],
                                 ),
-                                padding: const EdgeInsets.all(10),
-                                child: Image.asset(
-                                  isLiked
-                                      ? 'assets/icons/heart (2).png'
-                                      : 'assets/icons/heart.png',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        height: 0.25,
-                        color: Colors.grey[200],
-                      ),
-                      Container(
-                        color: Colors.white,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 15),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    product?.name ?? '',
-                                    style: content,
-                                  ),
-                                  const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text('4.9'),
-                                      SizedBox(width: 5),
-                                      Text('Ratings')
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                child: Text(product?.description ?? "",
-                                    style: title),
-                              ),
-                              const SizedBox(height: 5),
-                              const Text('Price', style: subtitle),
-                              const SizedBox(height: 5),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '₹${product?.mrp ?? ""}',
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                            color: Colors.green[800],
-                                            decorationColor: Colors.green[800],
-                                            decorationThickness: 3),
-                                      ),
-                                      Text('- ₹${product?.sellingPrice}'),
-                                      const SizedBox(width: 10),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 5),
-                                  GestureDetector(
-                                    onTap: toggleContainer,
-                                    child: Container(
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                          border: Border.all(
-                                              width: 0.5,
-                                              color: Colors.grey.shade200)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              decrementCounter();
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: Colors.grey[300]),
-                                              child: const Icon(
-                                                CupertinoIcons.minus,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            '$itemCount',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          GestureDetector(
-                                            onTap: () {
-                                              incrementCounter();
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: buttonColor),
-                                              child: const Icon(
-                                                CupertinoIcons.add,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 0),
-                                child: Wrap(spacing: 10, children: [
-                                  ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: Colors.grey,
-                                    selectedColor: buttonColor,
-                                    label: const Text(
-                                      'S',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    selected: size == 'S',
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        size = selected ? 'S' : '';
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: Colors.grey,
-                                    selectedColor: buttonColor,
-                                    label: const Text(
-                                      'M',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    selected: size == 'M',
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        size = selected ? 'M' : '';
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: Colors.grey,
-                                    selectedColor: buttonColor,
-                                    label: const Text(
-                                      'L',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    selected: size == 'L',
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        size = selected ? 'L' : '';
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: Colors.grey,
-                                    selectedColor: buttonColor,
-                                    label: const Text(
-                                      'XL',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    selected: size == 'XL',
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        size = selected ? 'XL' : '';
-                                      });
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    backgroundColor: Colors.grey,
-                                    selectedColor: buttonColor,
-                                    label: const Text(
-                                      'XXL',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    selected: size == 'XXL',
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        size = selected ? 'XXL' : '';
-                                      });
-                                    },
-                                  ),
-                                ]),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const Text('Selected Color: ',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                  Text(products.first.color ?? '',
-                                      style: const TextStyle(fontSize: 16))
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                height: 50, // Adjust the height as needed
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: colors.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        selectColor(index);
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(0),
-                                        margin: const EdgeInsets.all(8),
-                                        width: 40,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: colors[index],
-                                          border: selectedColorIndex == index
-                                              ? Border.all(
-                                                  color: Colors
-                                                      .black, // Add your desired stroke color
-                                                  width:
-                                                      2, // Adjust the stroke width as needed
-                                                )
-                                              : null, // No border when not selected
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const SizedBox(height: 5),
-                              DefaultTabController(
-                                length: 2, // Number of tabs
-                                child: Column(
-                                  children: [
-                                    const TabBar(
-                                      labelColor: Colors.black,
-                                      unselectedLabelColor: Colors.grey,
-                                      labelStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      tabs: [
-                                        Tab(text: 'About Item'), // First tab
-                                        Tab(text: 'Reviews'), // Second tab
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          200, // Set the height of the TabBarView as needed
-                                      child: TabBarView(
-                                        children: [
-                                          SingleChildScrollView(
-                                              child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 10),
-                                              const Text(
-                                                'DESCRIPTION',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                product?.description ?? '',
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                product?.fullDescription ?? '',
-                                                textAlign: TextAlign.justify,
-                                              )
-                                            ],
-                                          )),
-                                          const SingleChildScrollView(
-                                            child: Center(
-                                              child:
-                                                  Text('Reviews Tab Content'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                              );
+                            }).toList(),
                           ),
                         ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked;
+                              });
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[300],
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset(isLiked
+                                  ? 'assets/icons/heart (2).png'
+                                                : 'assets/icons/heart.png',),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 0.25,
+                      color: Colors.grey[200],
+                    ),
+                    Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product?.name ?? '',
+                                  style: content,
+                                ),
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text('4.9'),
+                                    SizedBox(width: 5),
+                                    Text('Ratings')
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: Text(product?.description ?? "",
+                                  style: title),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text('Price', style: subtitle),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '₹${product?.sellingPrice ?? ""}',
+                                      style: TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          color: Colors.green[800],
+                                          decorationColor: Colors.green[800],
+                                          decorationThickness: 3),
+                                    ),
+                                    Text('- ₹${product?.mrp}'),
+                                    const SizedBox(width: 10),
+                                  ],
+                                ),
+                                const SizedBox(width: 5),
+                                GestureDetector(
+                                  onTap: toggleContainer,
+                                  child: Container(
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(7),
+                                        border: Border.all(
+                                            width: 0.5,
+                                            color: Colors.grey.shade200)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            decrementCounter();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: Colors.grey[300]),
+                                            child: const Icon(
+                                              CupertinoIcons.minus,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          '$counter',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        GestureDetector(
+                                          onTap: () {
+                                            incrementCounter();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                color: buttonColor),
+                                            child: const Icon(
+                                              CupertinoIcons.add,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 0),
+                              child: Wrap(spacing: 10, children: [
+                                ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: Colors.grey,
+                                  selectedColor: buttonColor,
+                                  label: const Text(
+                                    'S',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  selected: size == 'S',
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      size = selected ? 'S' : '';
+                                    });
+                                  },
+                                ),
+                                ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: Colors.grey,
+                                  selectedColor: buttonColor,
+                                  label: const Text(
+                                    'M',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  selected: size == 'M',
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      size = selected ? 'M' : '';
+                                    });
+                                  },
+                                ),
+                                ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: Colors.grey,
+                                  selectedColor: buttonColor,
+                                  label: const Text(
+                                    'L',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  selected: size == 'L',
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      size = selected ? 'L' : '';
+                                    });
+                                  },
+                                ),
+                                ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: Colors.grey,
+                                  selectedColor: buttonColor,
+                                  label: const Text(
+                                    'XL',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  selected: size == 'XL',
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      size = selected ? 'XL' : '';
+                                    });
+                                  },
+                                ),
+                                ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  backgroundColor: Colors.grey,
+                                  selectedColor: buttonColor,
+                                  label: const Text(
+                                    'XXL',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  selected: size == 'XXL',
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      size = selected ? 'XXL' : '';
+                                    });
+                                  },
+                                ),
+                              ]),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Text('Selected Color: ',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(products.first.color ?? '',
+                                    style: const TextStyle(fontSize: 16))
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            SizedBox(
+                              height: 50, // Adjust the height as needed
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: colors.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      selectColor(index);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(0),
+                                      margin: const EdgeInsets.all(8),
+                                      width: 40,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: colors[index],
+                                        border: selectedColorIndex == index
+                                            ? Border.all(
+                                                color: Colors
+                                                    .black, // Add your desired stroke color
+                                                width:
+                                                    2, // Adjust the stroke width as needed
+                                              )
+                                            : null, // No border when not selected
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const SizedBox(height: 5),
+                            DefaultTabController(
+                              length: 2, // Number of tabs
+                              child: Column(
+                                children: [
+                                  const TabBar(
+                                    labelColor: Colors.black,
+                                    unselectedLabelColor: Colors.grey,
+                                    labelStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                    tabs: [
+                                      Tab(text: 'About Item'), // First tab
+                                      Tab(text: 'Reviews'), // Second tab
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height:
+                                        200, // Set the height of the TabBarView as needed
+                                    child: TabBarView(
+                                      children: [
+                                        SingleChildScrollView(
+                                            child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 10),
+                                            const Text(
+                                              'DESCRIPTION',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              product?.description ?? '',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              product?.fullDescription ?? '',
+                                              textAlign: TextAlign.justify,
+                                            )
+                                          ],
+                                        )),
+                                        const SingleChildScrollView(
+                                          child: Center(
+                                            child: Text('Reviews Tab Content'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                );
-              } else {
-                return const Text("Product not found");
-              }
+                    ),
+                  ],
+                ),
+              );
+            }else {
+              return const Center(child: const Text("Product not found"));
             }
+          }
 
             if (snapshot.hasError || snapshot.data == false) {
               return const Text("Something went wrong. Please try again later");

@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-580882988255-ios-2e65f6bb8770608a7d7d6a</string>
+				<string>app-1-580882988255-ios-50fce722a3ee270c7d7d6a</string>
 			</array>
 		</dict>
 		<dict>
@@ -47,7 +47,7 @@
 			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.ezys</string>
+				<string>com.shopin.ezye</string>
 			</array>
 		</dict>
 	</array>

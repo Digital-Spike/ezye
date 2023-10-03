@@ -86,6 +86,18 @@ class _CartScreenState extends State<CartScreen> {
         future: getCartFuture,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            if (cartItems.isEmpty) {
+            // Cart is empty, don't show the Checkout button
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  "Your cart is empty.",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          } else {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
@@ -565,7 +577,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             );
-          }
+          }}
 
           if (snapshot.hasError || snapshot.data == false) {
             return const Text("Something went wrong. Please try again later");

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:580882988255:android:39ca46dcf67538b17d7d6a",
+        "mobilesdk_app_id": "1:580882988255:android:af66863fd35762ae7d7d6a",
         "android_client_info": {
-          "package_name": "com.example.ezys"
+          "package_name": "com.shopin.ezye"
         }
       },
       "oauth_client": [

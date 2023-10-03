@@ -561,7 +561,7 @@ class _HomePageState extends State<HomePage> {
         return CupertinoAlertDialog(
           title:
               const Text('Login Required!', style: TextStyle(color: indicator)),
-          content: const Text('You need to log in to continue to Check Cart.'),
+          content: const Text('You have to log in to continue to Check Cart.'),
           actions: [
             TextButton(
               onPressed: () {
