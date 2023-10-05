@@ -179,6 +179,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     return;
                   }
                   Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(isAddedToCart

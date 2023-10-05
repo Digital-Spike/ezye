@@ -1,7 +1,8 @@
 import 'package:ezys/custom_widgets/constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
+
 
 class MyAddress extends StatefulWidget {
   const MyAddress({Key? key});
@@ -11,17 +12,53 @@ class MyAddress extends StatefulWidget {
 }
 
 class _MyAddressState extends State<MyAddress> {
-  int? _selectedValue; // Store the selected radio button value
-  String? canCall;
+
+  String? type;
+
+  var _name = new TextEditingController();
+  var _house = new TextEditingController();
+  var _street = new TextEditingController();
+  var _city = new TextEditingController();
+  var _pincode = new TextEditingController();
+  var _state = new TextEditingController();
+  var _email = new TextEditingController();
+  var _mobile = new TextEditingController();
+  var _mobile1 = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+ void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (_name.text.isEmpty &&
+         
+          _mobile.text.isEmpty &&
+          _email.text.isEmpty &&
+          _house.text.isEmpty &&
+          _street.text.isEmpty &&
+          _city.text.isEmpty && 
+          _mobile1.text.isEmpty &&
+          _pincode.text.isEmpty &&
+          _state.text.isEmpty&&
+          type!.isEmpty
+        ) {
+        // No data added, return without saving
+        return;
+      }
+    
+
+      // Call API to save user data
+      addUser();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff1f1f2),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: BackButton(color: Colors.black),
+        leading: const BackButton(color: Colors.black),
         elevation: 0,
-        title: Text('Shipping Address', style: apptitle),
+        title: const Text('Shipping Address', style: apptitle),
         centerTitle: true,
       ),
       bottomNavigationBar: Container(
@@ -35,14 +72,14 @@ class _MyAddressState extends State<MyAddress> {
                     backgroundColor: buttonColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    minimumSize: Size(380, 50)),
+                    minimumSize: const Size(380, 50)),
                 onPressed: () {},
-                child: const Text('Apply',
+                child: const Text('Save',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -56,94 +93,102 @@ class _MyAddressState extends State<MyAddress> {
                 children: [
                   Radio<String>(
                     value: 'Home',
-                    // Use 'YES' as the value for the "YES" option
-                    groupValue: canCall,
+                   
+                    groupValue: type,
                     onChanged: (value) {
                       setState(() {
-                        canCall = value!;
+                        type = value!;
                       });
                     },
                   ),
-                  Text('Home'),
+                  const Text('Home'),
                   Radio<String>(
                     value: 'Work',
-                    // Use 'NO' as the value for the "NO" option
-                    groupValue: canCall,
+                  
+                    groupValue: type,
                     onChanged: (value) {
                       setState(() {
-                        canCall = value!;
+                        type = value!;
                       });
                     },
                   ),
-                  Text('Work'),
+                  const Text('Work'),
                   Radio<String>(
                     value: 'Others',
-                    // Use 'NO' as the value for the "NO" option
-                    groupValue: canCall,
+                  
+                    groupValue: type,
                     onChanged: (value) {
                       setState(() {
-                        canCall = value!;
+                        type = value!;
                       });
                     },
                   ),
-                  Text('Others'),
+                  const Text('Others'),
                 ],
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _name,
+                decoration: const InputDecoration(
                   hintText: 'Enter Full Name',
 
                   // border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _house,
+                decoration: const InputDecoration(
                   hintText: 'House/Flat/Door No',
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _street,
+                decoration: const InputDecoration(
                   hintText: 'Landmark/Street/Nearby',
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _city,
+                decoration: const InputDecoration(
                   hintText: 'Enter Your City',
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _pincode,
+                decoration: const InputDecoration(
                   hintText: 'Enter Pincode',
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _state,
+                decoration: const InputDecoration(
                   hintText: 'Enter Your State',
                 ),
               ),
-              SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: _email,
+                decoration: const InputDecoration(
                   hintText: 'Enter Your Email',
                 ),
               ),
-              SizedBox(height: 14),
-              TextField(
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: _mobile,
                  maxLength: 10,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Phone number',
                 ),
               ),
-             
-              TextField(
+              TextFormField(
+                controller: _mobile1,
                 maxLength: 10,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Alternate Phone',
                 ),
               ),
@@ -153,4 +198,33 @@ class _MyAddressState extends State<MyAddress> {
       ),
     );
   }
+  Future<dynamic> addUser() async {
+    try {
+       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      final response = await http.post(
+        Uri.parse('https://ezys.in/customerApp/addAddress.php'),
+        body: {
+          'userId':userId,
+          'name': _name.text,
+          'house':_house.text,
+          'street':_street.text,
+          'city':_city.text,
+          'pincode':_pincode.text,
+          'state':_state.text,
+          'type': type,
+          'email': _email.text,
+          'phone': _mobile.text,
+          'phone1': _mobile1.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Address added successfully');
+      } else {
+        print('Failed to add Address. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+}
 }
