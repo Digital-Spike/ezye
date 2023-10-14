@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ezys/constants/string_util.dart';
 import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezys/home_screens/home_screen.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,12 @@ class _PaymentPageState extends State<PaymentPage> {
                 if (!mounted) {
                   return;
                 }
-                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HomePage()),
+                  ModalRoute.withName('/'),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(isOrderPlaced
