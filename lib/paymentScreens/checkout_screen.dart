@@ -1,5 +1,6 @@
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/orderscreens/myaddress_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CheckOutPage extends StatefulWidget {
-  const CheckOutPage({super.key});
+  final List<CartItem> cartItems;
+  final double cartTotal;
+
+  const CheckOutPage(
+      {super.key, required this.cartItems, required this.cartTotal});
 
   @override
   State<CheckOutPage> createState() => _CheckOutPageState();
@@ -16,6 +21,9 @@ class CheckOutPage extends StatefulWidget {
 class _CheckOutPageState extends State<CheckOutPage> {
   bool isLoggedIn = false;
   String? canCall;
+  String address =
+      '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011';
+
 //   int counter = 0;
 //   bool showOriginalContainer = false;
 //     void incrementCounter() {
@@ -72,8 +80,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 10),
-                const Text('₹399',
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                Text('₹${widget.cartTotal}',
+                    style: const TextStyle(fontSize: 16, color: Colors.black)),
                 const SizedBox(
                   height: 15,
                 )
@@ -89,7 +97,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PaymentPage()));
+                        builder: (context) => PaymentPage(
+                              address: address,
+                              totalAmount: widget.cartTotal.toString(),
+                            )));
               },
               child: const Row(
                 children: [
@@ -129,7 +140,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     children: [
                       Expanded(
                           child: Text(
-                        '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011 ',
+                        address,
                         style:
                             TextStyle(color: Colors.grey[600], fontSize: 14.5),
                       )),
@@ -215,8 +226,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
-                itemCount: 1,
+                itemCount: widget.cartItems.length,
                 itemBuilder: (context, index) {
+                  CartItem cartItem = widget.cartItems[index];
                   return Slidable(
                     endActionPane:
                         ActionPane(motion: const BehindMotion(), children: [
@@ -253,13 +265,14 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const Text('Tiger Image EZYE', style: subtitle),
+                                Text('${cartItem.name}', style: subtitle),
                                 const SizedBox(height: 5),
                                 Text('T-shirt', style: content),
                                 const SizedBox(height: 5),
                                 Row(
                                   children: [
-                                    Text('Size: XL', style: content),
+                                    Text('Size: ${cartItem.size}',
+                                        style: content),
                                     const SizedBox(width: 5),
                                     Container(
                                       height: 12,
@@ -268,19 +281,19 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
-                                      'Qty : 2',
+                                      'Qty : ${cartItem.quantity}',
                                       style: content,
                                     )
                                   ],
                                 ),
                                 const SizedBox(height: 15),
-                                const Row(
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Price: ₹399',
-                                      style: TextStyle(
+                                      'Price: ₹${cartItem.sellingPrice}',
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     // Container(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
@@ -12,12 +13,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/share_plus.dart';
+
 class ProductDetail extends StatefulWidget {
   final String productId;
-  const ProductDetail({super.key, required this.productId});
+  final String itemPrice;
+  const ProductDetail(
+      {super.key, required this.productId, required this.itemPrice});
   @override
   State<ProductDetail> createState() => _ProductDetailState();
 }
+
 class _ProductDetailState extends State<ProductDetail> {
   bool isLoggedIn = false;
   int selectedThumbnailIndex = 0; // Track the selected thumbnail index
@@ -52,6 +57,7 @@ class _ProductDetailState extends State<ProductDetail> {
     selectedColorName = colorNames[selectedColorIndex];
     checkLoginStatus();
   }
+
   void checkLoginStatus() {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -60,6 +66,7 @@ class _ProductDetailState extends State<ProductDetail> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,22 +221,6 @@ class _ProductDetailState extends State<ProductDetail> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (products.isNotEmpty) {
-                product = products.first;
-                if ((product?.image1Url ?? '').isNotEmpty) {
-                  clothingImages.add(product?.image1Url ?? '');
-                }
-                if ((product?.image2Url ?? '').isNotEmpty) {
-                  clothingImages.add(product?.image2Url ?? '');
-                }
-                if ((product?.image3Url ?? '').isNotEmpty) {
-                  clothingImages.add(product?.image3Url ?? '');
-                }
-                if ((product?.image4Url ?? '').isNotEmpty) {
-                  clothingImages.add(product?.image4Url ?? '');
-                }
-                if ((product?.image5url ?? '').isNotEmpty) {
-                  clothingImages.add(product?.image5url ?? '');
-                }
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -690,6 +681,7 @@ class _ProductDetailState extends State<ProductDetail> {
           }),
     );
   }
+
   Future<bool> fetchData() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}/getProductDetails.php');
@@ -699,6 +691,22 @@ class _ProductDetailState extends State<ProductDetail> {
         products = (json.decode(response.body) as List)
             .map((item) => Product.fromJson(item))
             .toList();
+        product = products.first;
+        if ((product?.image1Url ?? '').isNotEmpty) {
+          clothingImages.add(product?.image1Url ?? '');
+        }
+        if ((product?.image2Url ?? '').isNotEmpty) {
+          clothingImages.add(product?.image2Url ?? '');
+        }
+        if ((product?.image3Url ?? '').isNotEmpty) {
+          clothingImages.add(product?.image3Url ?? '');
+        }
+        if ((product?.image4Url ?? '').isNotEmpty) {
+          clothingImages.add(product?.image4Url ?? '');
+        }
+        if ((product?.image5url ?? '').isNotEmpty) {
+          clothingImages.add(product?.image5url ?? '');
+        }
       }
       return true;
     } catch (error) {
@@ -706,6 +714,7 @@ class _ProductDetailState extends State<ProductDetail> {
     }
     return false;
   }
+
   showProcessingDialogue() {
     showDialog(
       context: context,
@@ -732,6 +741,7 @@ class _ProductDetailState extends State<ProductDetail> {
       },
     );
   }
+
   void _showLoginDialog() {
     showAdaptiveDialog(
       context: context,
@@ -764,6 +774,7 @@ class _ProductDetailState extends State<ProductDetail> {
       },
     );
   }
+
   void _showLoginDialog1() {
     showAdaptiveDialog(
       context: context,
@@ -798,6 +809,7 @@ class _ProductDetailState extends State<ProductDetail> {
       },
     );
   }
+
   // Function to update the selected color
   void selectColor(int index) {
     setState(() {
@@ -805,11 +817,13 @@ class _ProductDetailState extends State<ProductDetail> {
       selectedColorName = colorNames[index];
     });
   }
+
   void incrementCounter() {
     setState(() {
       itemCount++;
     });
   }
+
   void decrementCounter() {
     setState(() {
       if (itemCount > 0) {
@@ -817,6 +831,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     });
   }
+
   void toggleContainer() {
     setState(() {
       showOriginalContainer = !showOriginalContainer;
@@ -832,10 +847,11 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     });
   }
+
   Future<bool> addToCart() async {
     try {
       var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
-      var response = await http.post(addToCartUrl, body: {
+      var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
         "productId": product?.productId,
         "productName": product?.name,
@@ -845,15 +861,20 @@ class _ProductDetailState extends State<ProductDetail> {
         "cartId": FirebaseUser.cartId,
         "quantity": itemCount.toString(),
         "imageUrl": product?.image1Url
-      });
+      };
+
+      print(jsonEncode(reqBody));
+      var response = await http.post(addToCartUrl, body: reqBody);
       if (response.statusCode == 200) {
         return !jsonDecode(response.body)['error'];
       }
       return false;
     } catch (e) {
+      debugPrint(e.toString());
       return false;
     }
   }
+
   void imageList(Product? product) {
     if ((product?.image1Url ?? '').isNotEmpty) {
       clothingImages.add(product?.image1Url ?? '');
@@ -871,8 +892,9 @@ class _ProductDetailState extends State<ProductDetail> {
       clothingImages.add(product?.image5url ?? '');
     }
   }
+
   getTotalPrice() {
-    double itemTotal = double.parse(product?.sellingPrice??'0') * itemCount;
+    double itemTotal = double.parse(widget.itemPrice) * itemCount;
     return itemTotal.toString();
   }
 }

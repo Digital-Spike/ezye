@@ -20,11 +20,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-   bool isLoggedIn = false;
-   @override
+  bool isLoggedIn = false;
+  @override
   void initState() {
     super.initState();
-   
+
     checkLoginStatus(); // Call the function to fetch carousel data
   }
 
@@ -36,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return MainScreen(
@@ -110,7 +111,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const PaymentPage()));
+                              builder: (context) => const PaymentPage(
+                                    address: '',
+                                    totalAmount: '',
+                                  )));
                     }),
                 divider,
                 CustomButton(
@@ -118,17 +122,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     svgPath: 'assets/icons/Order.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
-                       if (isLoggedIn) {
-                  // User is logged in, navigate to the payment page
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyOrderPage()));
-                } else {
-                  // User is not logged in, show the login dialog
-                  _showLoginDialog1();
-                }
-                   
+                      if (isLoggedIn) {
+                        // User is logged in, navigate to the payment page
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyOrderPage()));
+                      } else {
+                        // User is not logged in, show the login dialog
+                        _showLoginDialog1();
+                      }
                     }),
                 divider,
                 CustomButton(
@@ -159,16 +162,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     svgPath: 'assets/icons/Invite.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () async {
-                       if (isLoggedIn) {
-                  // User is logged in, navigate to the payment page
-                   final box = context.findRenderObject() as RenderBox?;
-             await Share.share('check out this app',sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-);
-                } else {
-                  // User is not logged in, show the login dialog
-                  _showLoginDialog();
-                }
-                     
+                      if (isLoggedIn) {
+                        // User is logged in, navigate to the payment page
+                        final box = context.findRenderObject() as RenderBox?;
+                        await Share.share(
+                          'check out this app',
+                          sharePositionOrigin:
+                              box!.localToGlobal(Offset.zero) & box.size,
+                        );
+                      } else {
+                        // User is not logged in, show the login dialog
+                        _showLoginDialog();
+                      }
                     }),
                 divider,
                 CustomButton(
@@ -176,113 +181,115 @@ class _ProfilePageState extends State<ProfilePage> {
                     svgPath: 'assets/icons/logout 2.svg',
                     trailingIcon: CupertinoIcons.forward,
                     onPressed: () {
-                       if (isLoggedIn) {
-                  // User is logged in, navigate to the payment page
-                 
-                      showModalBottomSheet(
-                        elevation: 5,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30))),
-                        context: context,
-                        builder: (context) => Padding(
-                          padding: MediaQuery.of(context).viewInsets,
-                          child: SizedBox(
-                            height: 200,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'Logout',
-                                    style: title,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  divider,
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Are you sure you want to log out?',
-                                    style: content1,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                elevation: 0,
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30))),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: subtitle1,
-                                            )),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                elevation: 0,
-                                                backgroundColor: buttonColor,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30))),
-                                            onPressed: () async {
-                                              await FirebaseAuth.instance
-                                                  .signOut();
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const LoginPage(),
-                                                ),
-                                              );
-                                            },
-                                            child: const Text(
-                                              'Yes, Logout',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                      if (isLoggedIn) {
+                        // User is logged in, navigate to the payment page
+
+                        showModalBottomSheet(
+                          elevation: 5,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
+                          context: context,
+                          builder: (context) => Padding(
+                            padding: MediaQuery.of(context).viewInsets,
+                            child: SizedBox(
+                              height: 200,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Logout',
+                                      style: title,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    divider,
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Are you sure you want to log out?',
+                                      style: content1,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  elevation: 0,
+                                                  backgroundColor:
+                                                      Colors.grey[300],
+                                                  minimumSize: const Size(
+                                                      double.infinity, 50),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30))),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: subtitle1,
+                                              )),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0,
+                                                  backgroundColor: buttonColor,
+                                                  minimumSize: const Size(
+                                                      double.infinity, 50),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30))),
+                                              onPressed: () async {
+                                                await FirebaseAuth.instance
+                                                    .signOut();
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginPage(),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text(
+                                                'Yes, Logout',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                       } else {
-                  // User is not logged in, show the login dialog
-                  _showLoginDialog2();
-                }
+                        );
+                      } else {
+                        // User is not logged in, show the login dialog
+                        _showLoginDialog2();
+                      }
                     }),
               ],
             ),
           ),
         ));
   }
+
   void _showLoginDialog() {
     showAdaptiveDialog(
       context: context,
@@ -315,7 +322,8 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-   void _showLoginDialog1() {
+
+  void _showLoginDialog1() {
     showAdaptiveDialog(
       context: context,
       builder: (BuildContext context) {
@@ -349,7 +357,8 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-   void _showLoginDialog2() {
+
+  void _showLoginDialog2() {
     showAdaptiveDialog(
       context: context,
       builder: (BuildContext context) {
