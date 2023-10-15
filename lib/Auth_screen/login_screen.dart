@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgcolor,
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Positioned(
                 top: 5,
-                right: 5,
+                right: 10,
                 child: InkWell(
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomePage()));
@@ -73,9 +73,11 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                      
-                      const SizedBox(height: 20),
-                      Center(child: Image.asset('assets/Ezye gif 4.gif',height: 250,)),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 15),
+                    const  Center(child: Text('Sign In',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),)),
+                       const SizedBox(height: 20),
+                      Center(child: Image.asset('assets/login.gif',height: 250,)),
+                       const SizedBox(height: 20),
                       const Text('* Log in using Mobile Number', style: title),
                       const SizedBox(height: 20),
                       TextFormField(

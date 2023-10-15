@@ -180,25 +180,65 @@ class _ProductDetailState extends State<ProductDetail> {
                         borderRadius: BorderRadius.circular(30)),
                     minimumSize: const Size(150, 45)),
                 onPressed: () async {
-                  showProcessingDialogue();
-                  bool isAddedToCart = await addToCart();
-                  if (!mounted) {
-                    return;
+                  if (isLoggedIn) {
+                    showProcessingDialogue();
+                    bool isAddedToCart = await addToCart();
+                    if (!mounted) {
+                      return;
+                    }
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isAddedToCart
+                            ? "Item added to cart successfully.."
+                            : "Something went wrong. please try again later.."),
+                        backgroundColor:
+                            isAddedToCart ? Colors.green : Colors.redAccent,
+                        elevation: 10,
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(5),
+                      ),
+                    );
+                  } else {
+                    showAdaptiveDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            title: const Text(
+                              'Login Required!',
+                              style: TextStyle(color: indicator),
+                            ),
+                            content: const Text(
+                                'You need to log in to Add Product To Cart.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Navigate to the login screen
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginPage()));
+                                },
+                                child: const Text('Log In',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700)),
+                              ),
+                            ],
+                          );
+                        });
                   }
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(isAddedToCart
-                          ? "Item added to cart successfully.."
-                          : "Something went wrong. please try again later.."),
-                      backgroundColor:
-                          isAddedToCart ? Colors.green : Colors.redAccent,
-                      elevation: 10,
-                      behavior: SnackBarBehavior.floating,
-                      margin: const EdgeInsets.all(5),
-                    ),
-                  );
                 },
                 child: const Row(
                   children: [
@@ -315,9 +355,54 @@ class _ProductDetailState extends State<ProductDetail> {
                             right: 10,
                             child: GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  isLiked = !isLiked;
-                                });
+                                if (isLoggedIn) {
+                                  // User is logged in, navigate to the payment page
+                                  setState(() {
+                                    isLiked = !isLiked;
+                                  });
+                                } else {
+                                  // User is not logged in, show the login dialog
+                                  showAdaptiveDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return CupertinoAlertDialog(
+                                          title: const Text(
+                                            'Login Required!',
+                                            style: TextStyle(color: indicator),
+                                          ),
+                                          content: const Text(
+                                              'Please login to Save this Product as Your Favourite.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(
+                                                    context); // Close the dialog
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                // Navigate to the login screen
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginPage()));
+                                              },
+                                              child: const Text('Log In',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
                               },
                               child: Container(
                                 height: 50,

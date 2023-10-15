@@ -92,15 +92,9 @@ class _CartScreenState extends State<CartScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             updateCartTotal();
             if (cartItems.isEmpty) {
-              // Cart is empty, don't show the Checkout button
-              return const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(
-                    "Your cart is empty.",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
+              return Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(child: Image.asset('assets/Add to Cart.gif')),
               );
             } else {
               return Padding(

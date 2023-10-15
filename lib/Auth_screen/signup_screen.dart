@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Positioned(
                 top: 5,
-                right: 5,
+                right: 10,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(context,
