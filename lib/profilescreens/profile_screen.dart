@@ -254,13 +254,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                               onPressed: () async {
                                                 await FirebaseAuth.instance
                                                     .signOut();
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LoginPage(),
-                                                  ),
-                                                );
+                                                if (mounted) {
+                                                  Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                        pageBuilder: (context,
+                                                                a, b) =>
+                                                            const LoginPage()),
+                                                    (route) => false,
+                                                  );
+                                                }
                                               },
                                               child: const Text(
                                                 'Yes, Logout',
