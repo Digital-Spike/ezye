@@ -32,6 +32,7 @@ class _ProductDetailState extends State<ProductDetail> {
   String? selectedColorName;
   bool isLiked = false;
   List<Product> products = [];
+  List<Product> bookmarkList = [];
   Product? product;
   String size = '';
   List<String> clothingImages = [];
@@ -354,12 +355,16 @@ class _ProductDetailState extends State<ProductDetail> {
                             top: 10,
                             right: 10,
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 if (isLoggedIn) {
-                                  // User is logged in, navigate to the payment page
-                                  setState(() {
-                                    isLiked = !isLiked;
-                                  });
+                                  showProcessingDialogue();
+                                  isSaved()
+                                      ? await addToWishlist()
+                                      : await removeFromWishlist();
+                                  if (mounted) {
+                                    Navigator.of(context).pop();
+                                  }
+                                  setState(() {});
                                 } else {
                                   // User is not logged in, show the login dialog
                                   showAdaptiveDialog(
@@ -413,9 +418,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                 ),
                                 padding: const EdgeInsets.all(10),
                                 child: Image.asset(
-                                  isLiked
-                                      ? 'assets/icons/heart (2).png'
-                                      : 'assets/icons/heart.png',
+                                  isSaved()
+                                      ? 'assets/icons/heart.png'
+                                      : 'assets/icons/heart (2).png',
                                 ),
                               ),
                             ),
@@ -772,6 +777,8 @@ class _ProductDetailState extends State<ProductDetail> {
       var productUrl = Uri.parse('${ApiService.url}/getProductDetails.php');
       var response =
           await http.post(productUrl, body: {"productId": widget.productId});
+      await getWishList();
+
       if (response.statusCode == 200) {
         products = (json.decode(response.body) as List)
             .map((item) => Product.fromJson(item))
@@ -798,6 +805,22 @@ class _ProductDetailState extends State<ProductDetail> {
       print('Error: $error');
     }
     return false;
+  }
+
+  Future<void> getWishList() async {
+    String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
+    var bookmarkResponse = await http
+        .post(Uri.parse(bookmarkUrl), body: {"userId": auth.currentUser?.uid});
+    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
+  }
+
+  bool isSaved() {
+    List<Product> list = bookmarkList
+        .where((element) => element.productId == product?.productId)
+        .toList();
+    return list.isEmpty;
   }
 
   showProcessingDialogue() {
@@ -960,6 +983,32 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
+  Future<bool> addToWishlist() async {
+    try {
+      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": product?.productId,
+        "name": product?.name,
+        "category": product?.category,
+        "subCategory": product?.subCategory,
+        "MRP": product?.mrp,
+        "sellingPrice": product?.sellingPrice,
+        "description": product?.description,
+      };
+
+      var response = await http.post(addToWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
   void imageList(Product? product) {
     if ((product?.image1Url ?? '').isNotEmpty) {
       clothingImages.add(product?.image1Url ?? '');
@@ -981,5 +1030,26 @@ class _ProductDetailState extends State<ProductDetail> {
   getTotalPrice() {
     double itemTotal = double.parse(widget.itemPrice) * itemCount;
     return itemTotal.toString();
+  }
+
+  Future<bool> removeFromWishlist() async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}/removeWishlist.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": product?.productId
+      };
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 }

@@ -49,7 +49,10 @@ class _HomePageState extends State<HomePage> {
   List<Category> categories = [];
   List<Product> products = [];
   List<String> subcategory = [];
+  List<Product> bookmarkList = [];
   bool isLiked = false;
+  User? user = FirebaseAuth.instance.currentUser;
+
   final List<String> imgList = [
     'assets/ezye2.png',
   ];
@@ -87,7 +90,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkLoginStatus() {
-    User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
         isLoggedIn = true;
@@ -369,6 +371,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       itemBuilder: ((context, index) {
                         Product product = products[index];
+                        products[index].isSaved = isSaved(product);
                         return Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -494,15 +497,21 @@ class _HomePageState extends State<HomePage> {
                                           shape: BoxShape.circle,
                                         ),
                                         child: GestureDetector(
-                                          onTap: () {
+                                          onTap: () async {
+                                            isLiked = isSaved(product);
+                                            isLiked
+                                                ? await addToWishlist(product)
+                                                : await removeFromWishlist(
+                                                    product);
                                             setState(() {
-                                              isLiked = !isLiked;
+                                              products[index].isSaved =
+                                                  !isLiked;
                                             });
                                           },
                                           child: Image.asset(
-                                            isLiked
-                                                ? 'assets/icons/Comp 232.gif'
-                                                : 'assets/icons/White heart.png',
+                                            products[index].isSaved
+                                                ? 'assets/icons/White heart.png'
+                                                : 'assets/icons/Comp 232.gif',
                                             height: 30,
                                             width: 30,
                                           ),
@@ -544,6 +553,8 @@ class _HomePageState extends State<HomePage> {
       var productsUrl = Uri.parse('${ApiService.url}/getAllProducts.php');
       var productsResponse = await http.post(productsUrl);
 
+      await getWishList();
+
       categories = (json.decode(categoryResponse.body) as List)
           .map((item) => Category.fromJson(item))
           .toList();
@@ -558,6 +569,22 @@ class _HomePageState extends State<HomePage> {
     }
 
     return true;
+  }
+
+  bool isSaved(Product product) {
+    List<Product> list = bookmarkList
+        .where((element) => element.productId == product.productId)
+        .toList();
+    return list.isEmpty;
+  }
+
+  Future<void> getWishList() async {
+    String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
+    var bookmarkResponse =
+        await http.post(Uri.parse(bookmarkUrl), body: {"userId": user?.uid});
+    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
   }
 
   void _showLoginDialog() {
@@ -591,6 +618,50 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  Future<bool> addToWishlist(Product product) async {
+    try {
+      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var reqBody = {
+        "userId": user?.uid ?? '',
+        "productId": product.productId,
+        "name": product.name,
+        "category": product.category,
+        "subCategory": product.subCategory,
+        "MRP": product.mrp,
+        "sellingPrice": product.sellingPrice,
+        "description": product.description,
+      };
+
+      var response = await http.post(addToWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> removeFromWishlist(Product product) async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}/removeWishlist.php');
+      var reqBody = {"userId": user?.uid ?? '', "productId": product.productId};
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 
   void _showLoginDialog1() {

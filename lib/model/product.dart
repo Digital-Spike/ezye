@@ -17,6 +17,7 @@ class Product {
   String? color;
   String? stockStatus;
   String? stockNumber;
+  bool isSaved;
 
   Product(
       {this.id,
@@ -36,7 +37,8 @@ class Product {
       this.color,
       this.size,
       this.stockNumber,
-      this.stockStatus});
+      this.stockStatus,
+      this.isSaved = false});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
