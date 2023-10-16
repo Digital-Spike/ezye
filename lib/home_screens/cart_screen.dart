@@ -113,7 +113,12 @@ class _CartScreenState extends State<CartScreen> {
                                   motion: const BehindMotion(),
                                   children: [
                                     SlidableAction(
-                                        onPressed: ((context) {}),
+                                        onPressed: ((context) async {
+                                          await removeCartItem(cartItem);
+                                          setState(() {
+                                            getCartFuture = getCartItems();
+                                          });
+                                        }),
                                         icon: CupertinoIcons.delete,
                                         backgroundColor: Colors.red.shade300,
                                         label: 'Remove')
@@ -675,5 +680,52 @@ class _CartScreenState extends State<CartScreen> {
 
   getCartTotal() {
     return itemTotalAmount + deliveryCost;
+  }
+
+  Future<bool> removeCartItem(CartItem cartItem) async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}/removeCartItem.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": cartItem.productId
+      };
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  showProcessingDialogue() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      'Processing...',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
