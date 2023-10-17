@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
 import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/orderscreens/myaddress_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
+import 'package:ezys/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -171,7 +173,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   thickness: 0.5,
                   color: Colors.grey[500],
                 ),
-                const SizedBox(height: 10),
+                /*const SizedBox(height: 10),
                 const Text('Choose Shipping Type', style: title),
                 const SizedBox(height: 10),
                 const Row(
@@ -215,7 +217,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 Divider(
                   thickness: 0.5,
                   color: Colors.grey[500],
-                ),
+                ),*/
               ],
             ),
           ),
@@ -251,12 +253,33 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           Container(
                             height: 100,
                             width: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image: const DecorationImage(
-                                  image: AssetImage('assets/image1.jpeg'),
-                                  fit: BoxFit.cover,
-                                )),
+                            // decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(12),
+                            //     image: const DecorationImage(
+                            //       image: AssetImage('assets/image1.jpeg'),
+                            //       fit: BoxFit.cover,
+                            //     )),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  '${ApiService.uploads}${cartItem.productId}01.jpg',
+                              placeholder: (context, url) => const CircleAvatar(
+                                backgroundColor: Colors.white30,
+                              ),
+                              errorWidget: (context, url, error) => Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Image.asset(
+                                  'assets/ERROR1.png',
+                                  height: 110,
+                                  width: double.infinity,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              imageBuilder: (context, image) => Image(
+                                image: image,
+                                height: 400,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 20),
                           Expanded(
@@ -267,7 +290,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               children: [
                                 Text('${cartItem.name}', style: subtitle),
                                 const SizedBox(height: 5),
-                                Text('T-shirt', style: content),
+                                Text('Color: ${cartItem.color}',
+                                    style: content),
                                 const SizedBox(height: 5),
                                 Row(
                                   children: [

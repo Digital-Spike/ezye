@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:ezys/custom_widgets/persistentheader.dart';
@@ -136,11 +137,32 @@ class _WishListState extends State<WishList> {
                                           ),
                                           child: Stack(
                                             children: [
-                                              Image.asset(
-                                                'assets/image.jpeg',
-                                                fit: BoxFit.cover,
-                                                height: 150,
-                                                width: double.infinity,
+                                              CachedNetworkImage(
+                                                imageUrl:
+                                                    '${ApiService.uploads}${product.productId}01.jpg',
+                                                placeholder: (context, url) =>
+                                                    const CircleAvatar(
+                                                  backgroundColor:
+                                                      Colors.white30,
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(1.0),
+                                                  child: Image.asset(
+                                                    'assets/ERROR1.png',
+                                                    height: 150,
+                                                    width: double.infinity,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                imageBuilder:
+                                                    (context, image) => Image(
+                                                  image: image,
+                                                  height: 150,
+                                                  fit: BoxFit.contain,
+                                                ),
                                               ),
                                               Container(
                                                 decoration: BoxDecoration(

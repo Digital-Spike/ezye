@@ -5,6 +5,7 @@ import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/cart_screen.dart';
 import 'package:ezys/home_screens/wishlist_screen.dart';
+import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/model/product.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
@@ -33,6 +34,8 @@ class _ProductDetailState extends State<ProductDetail> {
   bool isLiked = false;
   List<Product> products = [];
   List<Product> bookmarkList = [];
+  List<CartItem> cartItems = [];
+  int previousCartQty = 0;
   Product? product;
   String size = '';
   List<String> clothingImages = [];
@@ -274,14 +277,14 @@ class _ProductDetailState extends State<ProductDetail> {
                             },
                             child: CachedNetworkImage(
                               imageUrl:
-                                  '${ApiService.uploads}ezysp005547902.png',
+                                  '${ApiService.uploads}${products.first.productId}01.jpg',
                               placeholder: (context, url) => const CircleAvatar(
                                 backgroundColor: Colors.white30,
                               ),
                               errorWidget: (context, url, error) => Padding(
                                 padding: const EdgeInsets.all(1.0),
                                 child: Image.asset(
-                                  'assets/image.jpeg',
+                                  'assets/ERROR1.png',
                                   height: 110,
                                   width: double.infinity,
                                   fit: BoxFit.contain,
@@ -958,6 +961,18 @@ class _ProductDetailState extends State<ProductDetail> {
 
   Future<bool> addToCart() async {
     try {
+      await getCartItems();
+
+      List<CartItem> cartItem = cartItems
+          .where((element) => element.productId == product?.productId)
+          .toList();
+
+      if (cartItem.isNotEmpty) {
+        previousCartQty = int.parse(cartItems.first.quantity.toString()) ?? 0;
+        await updateCartQuantity();
+        return true;
+      }
+
       var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
@@ -971,7 +986,6 @@ class _ProductDetailState extends State<ProductDetail> {
         "imageUrl": product?.image1Url
       };
 
-      print(jsonEncode(reqBody));
       var response = await http.post(addToCartUrl, body: reqBody);
       if (response.statusCode == 200) {
         return !jsonDecode(response.body)['error'];
@@ -981,6 +995,24 @@ class _ProductDetailState extends State<ProductDetail> {
       debugPrint(e.toString());
       return false;
     }
+  }
+
+  Future<bool> getCartItems() async {
+    try {
+      var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
+      var response =
+          await http.post(productUrl, body: {"cartId": FirebaseUser.cartId});
+
+      if (response.statusCode == 200) {
+        cartItems = (json.decode(response.body) as List)
+            .map((item) => CartItem.fromJson(item))
+            .toList();
+      }
+      return true;
+    } catch (error) {
+      print('Error: $error');
+    }
+    return false;
   }
 
   Future<bool> addToWishlist() async {
@@ -1042,6 +1074,28 @@ class _ProductDetailState extends State<ProductDetail> {
       };
 
       var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateCartQuantity() async {
+    try {
+      var updateCartCount =
+          Uri.parse('${ApiService.url}updateCartQuantity.php');
+      var reqBody = {
+        "quantity": previousCartQty + itemCount,
+        "cartId": FirebaseUser.cartId,
+        "productId": product?.productId
+      };
+
+      var response = await http.post(updateCartCount, body: reqBody);
       if (response.statusCode == 200) {
         await getWishList();
         return !jsonDecode(response.body)['error'];

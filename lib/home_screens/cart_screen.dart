@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/dashed_line.dart';
@@ -90,7 +91,6 @@ class _CartScreenState extends State<CartScreen> {
         future: getCartFuture,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            updateCartTotal();
             if (cartItems.isEmpty) {
               return Container(
                 padding: const EdgeInsets.all(16.0),
@@ -136,17 +136,35 @@ class _CartScreenState extends State<CartScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           height: 100,
                                           width: 100,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              image: const DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/error.png'),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${ApiService.uploads}${cartItem.productId}01',
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              backgroundColor: Colors.white30,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Padding(
+                                              padding:
+                                                  const EdgeInsets.all(1.0),
+                                              child: Image.asset(
+                                                'assets/ERROR1.png',
+                                                height: 100,
+                                                width: double.infinity,
                                                 fit: BoxFit.contain,
-                                              )),
+                                              ),
+                                            ),
+                                            imageBuilder: (context, image) =>
+                                                Image(
+                                              image: image,
+                                              height: 100,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
                                         ),
                                         const SizedBox(width: 20),
                                         Expanded(
@@ -157,11 +175,11 @@ class _CartScreenState extends State<CartScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              const Text("Title",
+                                              Text(cartItem.name ?? '',
                                                   style: subtitle),
                                               const SizedBox(height: 5),
                                               Text(
-                                                cartItem.name ?? '',
+                                                'Color: ${cartItem.color ?? ''}',
                                                 style: content,
                                               ),
                                               const SizedBox(height: 5),
@@ -176,7 +194,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    cartItem.sellingPrice ?? '',
+                                                    '₹ ${(double.parse(cartItem.sellingPrice ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -198,8 +216,24 @@ class _CartScreenState extends State<CartScreen> {
                                                               .spaceBetween,
                                                       children: [
                                                         GestureDetector(
-                                                          onTap: () {
-                                                            decrementCounter();
+                                                          onTap: () async {
+                                                            if (int.parse(cartItem
+                                                                        .quantity ??
+                                                                    '1') ==
+                                                                1) {
+                                                              showDeleteWarning(
+                                                                  cartItem);
+                                                              return;
+                                                            }
+                                                            await updateQuantity(
+                                                                cartItem:
+                                                                    cartItem,
+                                                                isIncrement:
+                                                                    false);
+                                                            setState(() {
+                                                              getCartFuture =
+                                                                  getCartItems();
+                                                            });
                                                           },
                                                           child: Container(
                                                             padding:
@@ -237,8 +271,16 @@ class _CartScreenState extends State<CartScreen> {
                                                         const SizedBox(
                                                             width: 5),
                                                         GestureDetector(
-                                                          onTap: () {
-                                                            incrementCounter();
+                                                          onTap: () async {
+                                                            await updateQuantity(
+                                                                cartItem:
+                                                                    cartItem,
+                                                                isIncrement:
+                                                                    true);
+                                                            setState(() {
+                                                              getCartFuture =
+                                                                  getCartItems();
+                                                            });
                                                           },
                                                           child: Container(
                                                             padding:
@@ -325,6 +367,7 @@ class _CartScreenState extends State<CartScreen> {
                                   borderRadius: BorderRadius.circular(30)),
                               minimumSize: const Size(380, 50)),
                           onPressed: () {
+                            updateCartTotal();
                             showModalBottomSheet(
                               backgroundColor: bgcolor,
                               elevation: 5,
@@ -670,6 +713,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   updateCartTotal() {
+    itemTotalAmount = 0;
+    discount = 0;
     for (var cartItem in cartItems) {
       itemTotalAmount += double.parse(cartItem.sellingPrice ?? "0") *
           double.parse(cartItem.quantity ?? "0");
@@ -703,7 +748,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   showProcessingDialogue() {
-    showDialog(
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -726,6 +771,106 @@ class _CartScreenState extends State<CartScreen> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> updateQuantity(
+      {required CartItem cartItem, required bool isIncrement}) async {
+    try {
+      int count = isIncrement ? 1 : -1;
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}updateCartQuantity.php');
+      var reqBody = {
+        "quantity": (int.parse(cartItem.quantity ?? '1') + count).toString(),
+        "cartId": FirebaseUser.cartId,
+        "productId": cartItem.productId
+      };
+      await http.post(removeFromWishlistUrl, body: reqBody);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  showDeleteWarning(CartItem cartItem) {
+    return showModalBottomSheet(
+      elevation: 5,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      context: context,
+      builder: (context) => Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: SizedBox(
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'Delete from cart?',
+                  style: title,
+                ),
+                const SizedBox(height: 10),
+                divider,
+                const SizedBox(height: 10),
+                Text(
+                  'Are you sure you want to delete this item from cart?',
+                  style: content1,
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: Colors.grey[300],
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30))),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: subtitle1,
+                          )),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: buttonColor,
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30))),
+                          onPressed: () async {
+                            await removeCartItem(cartItem);
+                            Navigator.pop(context);
+                            setState(() {
+                              getCartFuture = getCartItems();
+                            });
+                          },
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
