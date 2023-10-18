@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/model/address.dart';
 import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/orderscreens/myaddress_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:ezys/services/api_service.dart';
+import 'package:ezys/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:http/http.dart' as http;
 
 class CheckOutPage extends StatefulWidget {
   final List<CartItem> cartItems;
@@ -21,40 +26,18 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+  Future<void>? getCartFuture;
   bool isLoggedIn = false;
   String? canCall;
-  String address =
-      '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011';
+  List<Address> addressList = [];
 
-//   int counter = 0;
-//   bool showOriginalContainer = false;
-//     void incrementCounter() {
-//     setState(() {
-//       counter++;
-//     });
-//   }
+  @override
+  void initState() {
+    getCartFuture = getCart();
 
-//   void decrementCounter() {
-//     setState(() {
-//       if (counter > 0) {
-//         counter--;
-//       }
-//     });
-//   }
-//    void toggleContainer() {
-//   setState(() {
-//     showOriginalContainer = !showOriginalContainer;
-//     if (showOriginalContainer) {
-//       if (counter == 0) {
-//         counter = 1; // Set counter to 1 when showing the original container
-//       }
-//     } else {
-//       if (counter == 1) {
-//         counter = 0; // Set counter to 0 when showing the "Add" text
-//       }
-//     }
-//   });
-// }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +83,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => PaymentPage(
-                              address: address,
+                              address: addressList.first,
                               totalAmount: widget.cartTotal.toString(),
                             )));
               },
@@ -116,299 +99,229 @@ class _CheckOutPageState extends State<CheckOutPage> {
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Column(
+      body: FutureBuilder<void>(
+        future: getCartFuture,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Shipping Address', style: title),
-                const SizedBox(height: 10),
-                const Row(
-                  children: [
-                    Icon(CupertinoIcons.placemark),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Home', style: subtitle),
-                  ],
-                ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                          child: Text(
-                        address,
-                        style:
-                            TextStyle(color: Colors.grey[600], fontSize: 14.5),
-                      )),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            _address();
-                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    width: 0.5, color: Colors.grey.shade400)),
-                            child: const Text(
-                              'CHANGE',
-                              style: TextStyle(color: Colors.green),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
-                Divider(
-                  thickness: 0.5,
-                  color: Colors.grey[500],
-                ),
-                /*const SizedBox(height: 10),
-                const Text('Choose Shipping Type', style: title),
-                const SizedBox(height: 10),
-                const Row(
-                  children: [
-                    Icon(CupertinoIcons.cube_box_fill),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Economy', style: subtitle),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                          child: Text(
-                        'Estimated Arrival 18 september 2023 ',
-                        style:
-                            TextStyle(color: Colors.grey[600], fontSize: 14.5),
-                      )),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                width: 0.5, color: Colors.grey.shade400)),
-                        child: const Text(
-                          'CHANGE',
-                          style: TextStyle(color: Colors.green),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Divider(
-                  thickness: 0.5,
-                  color: Colors.grey[500],
-                ),*/
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Text('Order List', style: title),
-          ),
-          const SizedBox(height: 5),
-          Expanded(
-            child: ListView.builder(
-                itemCount: widget.cartItems.length,
-                itemBuilder: (context, index) {
-                  CartItem cartItem = widget.cartItems[index];
-                  return Slidable(
-                    endActionPane:
-                        ActionPane(motion: const BehindMotion(), children: [
-                      SlidableAction(
-                        onPressed: ((context) {}),
-                        icon: CupertinoIcons.delete,
-                        backgroundColor: Colors.red.shade300,
-                        label: 'Remove',
-                      )
-                    ]),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(0),
-                          color: Colors.white),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const Text('Shipping Address', style: title),
+                      const SizedBox(height: 10),
+                      const Row(
                         children: [
-                          Container(
-                            height: 100,
-                            width: 100,
-                            // decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(12),
-                            //     image: const DecorationImage(
-                            //       image: AssetImage('assets/image1.jpeg'),
-                            //       fit: BoxFit.cover,
-                            //     )),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  '${ApiService.uploads}${cartItem.productId}01.jpg',
-                              placeholder: (context, url) => const CircleAvatar(
-                                backgroundColor: Colors.white30,
-                              ),
-                              errorWidget: (context, url, error) => Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Image.asset(
-                                  'assets/ERROR1.png',
-                                  height: 110,
-                                  width: double.infinity,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              imageBuilder: (context, image) => Image(
-                                image: image,
-                                height: 400,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
+                          Icon(CupertinoIcons.placemark),
+                          SizedBox(
+                            width: 5,
                           ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                          Text('Home', style: subtitle),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, bottom: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              '${addressList.first.line1}, ${addressList.first.line2}, ${addressList.first.city}, ${addressList.first.pinCode}.',
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 14.5),
+                            )),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  _address();
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                          width: 0.5,
+                                          color: Colors.grey.shade400)),
+                                  child: const Text(
+                                    'CHANGE',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[500],
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text('Order List', style: title),
+                ),
+                const SizedBox(height: 5),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: widget.cartItems.length,
+                      itemBuilder: (context, index) {
+                        CartItem cartItem = widget.cartItems[index];
+                        return Slidable(
+                          endActionPane: ActionPane(
+                              motion: const BehindMotion(),
                               children: [
-                                Text('${cartItem.name}', style: subtitle),
-                                const SizedBox(height: 5),
-                                Text('Color: ${cartItem.color}',
-                                    style: content),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Text('Size: ${cartItem.size}',
-                                        style: content),
-                                    const SizedBox(width: 5),
-                                    Container(
-                                      height: 12,
-                                      width: 1,
-                                      color: Colors.black,
+                                SlidableAction(
+                                  onPressed: ((context) {}),
+                                  icon: CupertinoIcons.delete,
+                                  backgroundColor: Colors.red.shade300,
+                                  label: 'Remove',
+                                )
+                              ]),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.white),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  // decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(12),
+                                  //     image: const DecorationImage(
+                                  //       image: AssetImage('assets/image1.jpeg'),
+                                  //       fit: BoxFit.cover,
+                                  //     )),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        '${ApiService.uploads}${cartItem.productId}01.jpg',
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
+                                      backgroundColor: Colors.white30,
                                     ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'Qty : ${cartItem.quantity}',
-                                      style: content,
-                                    )
-                                  ],
+                                    errorWidget: (context, url, error) =>
+                                        Padding(
+                                      padding: const EdgeInsets.all(1.0),
+                                      child: Image.asset(
+                                        'assets/ERROR1.png',
+                                        height: 110,
+                                        width: double.infinity,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    imageBuilder: (context, image) => Image(
+                                      image: image,
+                                      height: 400,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
                                 ),
-                                const SizedBox(height: 15),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Price: ₹${cartItem.sellingPrice}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    // Container(
-                                    //                         height: 35,
-                                    //                         width: 100,
-                                    //                         decoration: BoxDecoration(
-                                    //                           borderRadius: BorderRadius.circular(7),
-                                    //                           border: Border.all(width: 0.5,color: Colors.grey.shade200)
-                                    //                         ),
-                                    //                         child: Row(
-                                    //                           mainAxisAlignment:
-                                    //                               MainAxisAlignment.spaceBetween,
-                                    //                           children: [
-                                    //                             GestureDetector(
-                                    //                               onTap: () {
-                                    //                                 decrementCounter();
-                                    //                               },
-                                    //                               child: Container(
-                                    //                                 padding: EdgeInsets.all(4),
-                                    //                                 decoration: BoxDecoration(
-                                    //                                     borderRadius:
-                                    //                                         BorderRadius.circular(5),
-                                    //                                     color: Colors.grey[300]),
-                                    //                                 child: Icon(
-                                    //                                   CupertinoIcons.minus,
-                                    //                                   color: Colors.black,
-                                    //                                 ),
-                                    //                               ),
-                                    //                             ),
-                                    //                             SizedBox(width: 5),
-                                    //                             Text(
-                                    //                               '$counter',
-                                    //                               style: TextStyle(
-                                    //                                   fontWeight: FontWeight.bold,
-                                    //                                   color: Colors.black),
-                                    //                             ),
-                                    //                             SizedBox(width: 5),
-                                    //                             GestureDetector(
-                                    //                               onTap: () {
-                                    //                                 incrementCounter();
-                                    //                               },
-                                    //                               child: Container(
-                                    //                                 padding: EdgeInsets.all(4),
-                                    //                                 decoration: BoxDecoration(
-                                    //                                     borderRadius:
-                                    //                                         BorderRadius.circular(5),
-                                    //                                     color: Colors.brown[300]),
-                                    //                                 child: Icon(
-                                    //                                   CupertinoIcons.add,
-                                    //                                   color: Colors.black,
-                                    //                                 ),
-                                    //                               ),
-                                    //                             ),
-                                    //                           ],
-                                    //                         ),
-                                    //                       ),
-                                  ],
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text('${cartItem.name}', style: subtitle),
+                                      const SizedBox(height: 5),
+                                      Text('Color: ${cartItem.color}',
+                                          style: content),
+                                      const SizedBox(height: 5),
+                                      Row(
+                                        children: [
+                                          Text('Size: ${cartItem.size}',
+                                              style: content),
+                                          const SizedBox(width: 5),
+                                          Container(
+                                            height: 12,
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            'Qty : ${cartItem.quantity}',
+                                            style: content,
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Price: ₹${cartItem.sellingPrice}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        );
+                      }),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 0.25, color: Colors.grey.shade400),
+                        color: Colors.white),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Add More Items',
+                          style: subtitle,
+                        ),
+                        Icon(CupertinoIcons.add_circled)
+                      ],
                     ),
-                  );
-                }),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 0.25, color: Colors.grey.shade400),
-                  color: Colors.white),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Add More Items',
-                    style: subtitle,
                   ),
-                  Icon(CupertinoIcons.add_circled)
-                ],
-              ),
+                )
+              ],
+            );
+          }
+
+          if (snapshot.hasError) {
+            return const Text("Something went wrong. Please try again later");
+          }
+
+          return Center(
+            child: Image.asset(
+              'assets/animation.gif',
+              height: 150,
+              width: 250,
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }
@@ -446,8 +359,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       SizedBox(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: 2,
+                            itemCount: addressList.length,
                             itemBuilder: ((context, index) {
+                              Address address = addressList[index];
                               return Column(
                                 children: [
                                   ListTile(
@@ -466,18 +380,19 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Row(
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               CupertinoIcons.placemark,
                                               color: buttonColor,
                                             ),
-                                            SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             Text(
-                                              'Home',
-                                              style: TextStyle(
+                                              (address.type ?? '')
+                                                  .toUpperCase(),
+                                              style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ],
@@ -486,7 +401,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                           padding:
                                               const EdgeInsets.only(left: 5),
                                           child: Text(
-                                            '64/1 B Vinaya marga, Siddhartha layout, Mysore Pincode 570011',
+                                            '${address.line1}, ${address.line2}, ${address.city}, ${address.pinCode}.',
                                             style: TextStyle(
                                                 color: Colors.grey[600]),
                                           ),
@@ -538,5 +453,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
             );
           });
         });
+  }
+
+  Future<void> getCart() async {
+    var removeFromWishlistUrl =
+        Uri.parse('${ApiService.url}/getUserAddress.php');
+    var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
+
+    var response = await http.post(removeFromWishlistUrl, body: reqBody);
+    if (response.statusCode == 200) {
+      addressList = (json.decode(response.body) as List)
+          .map((item) => Address.fromJson(item))
+          .toList();
+    }
   }
 }

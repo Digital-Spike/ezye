@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:ezys/constants/string_util.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/model/address.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
-  final String address;
+  final Address address;
   final String totalAmount;
   const PaymentPage(
       {super.key, required this.address, required this.totalAmount});
@@ -144,7 +145,7 @@ class _PaymentPageState extends State<PaymentPage> {
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": widget.totalAmount,
         "paymentMethod": 'cash',
-        "address": widget.address
+        "address": widget.address.line1
       };
 
       var response = await http.post(createOrderUrl, body: reqBody);

@@ -2,6 +2,7 @@ import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/custom_widgets/profile_button.dart';
 import 'package:ezys/home_screens/main_screen.dart';
+import 'package:ezys/model/address.dart';
 import 'package:ezys/orderscreens/myorder_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:ezys/profilescreens/editprofile.dart';
@@ -111,8 +112,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const PaymentPage(
-                                    address: '',
+                              builder: (context) => PaymentPage(
+                                    address: Address(),
                                     totalAmount: '',
                                   )));
                     }),
