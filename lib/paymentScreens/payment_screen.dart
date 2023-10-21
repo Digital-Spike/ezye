@@ -142,6 +142,7 @@ class _PaymentPageState extends State<PaymentPage> {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
         "cartId": FirebaseUser.cartId,
+        "userId": FirebaseUser.user?.uid,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": widget.totalAmount,
         "paymentMethod": 'cash',
