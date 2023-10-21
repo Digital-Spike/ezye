@@ -5,7 +5,6 @@ import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
 import 'package:ezys/model/address.dart';
 import 'package:ezys/model/cart_item.dart';
-import 'package:ezys/orderscreens/myaddress_screen.dart';
 import 'package:ezys/paymentScreens/payment_screen.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
@@ -30,11 +29,17 @@ class _CheckOutPageState extends State<CheckOutPage> {
   bool isLoggedIn = false;
   String? canCall;
   List<Address> addressList = [];
+  final _formKey = GlobalKey<FormState>();
+  ShippingType shippingType = ShippingType.home;
+
+  final TextEditingController house = TextEditingController();
+  final TextEditingController _street = TextEditingController();
+  final TextEditingController _city = TextEditingController();
+  final TextEditingController _pincode = TextEditingController();
 
   @override
   void initState() {
     getCartFuture = getCart();
-
     super.initState();
   }
 
@@ -334,124 +339,266 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: Container(
-                height: 350,
-                padding: const EdgeInsets.all(0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      const Center(
-                        child: Text(
-                          'Shipping Address',
-                          style: title,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      devider,
-                      SizedBox(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: addressList.length,
-                            itemBuilder: ((context, index) {
-                              Address address = addressList[index];
-                              return Column(
-                                children: [
-                                  ListTile(
-                                    leading: Radio<String>(
-                                      value: 'Home',
-                                      // Use 'NO' as the value for the "NO" option
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            padding: const EdgeInsets.all(0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  const Center(
+                    child: Text(
+                      'Shipping Address',
+                      style: title,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  devider,
+                  Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: addressList.length,
+                        itemBuilder: ((context, index) {
+                          Address address = addressList[index];
+                          return Column(
+                            children: [
+                              ListTile(
+                                leading: Radio<String>(
+                                  value: 'Home',
+                                  // Use 'NO' as the value for the "NO" option
 
-                                      groupValue: canCall,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          canCall = value!;
-                                        });
-                                      },
-                                    ),
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                  groupValue: canCall,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      canCall = value!;
+                                    });
+                                  },
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              CupertinoIcons.placemark,
-                                              color: buttonColor,
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              (address.type ?? '')
-                                                  .toUpperCase(),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
+                                        const Icon(
+                                          CupertinoIcons.placemark,
+                                          color: buttonColor,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            '${address.line1}, ${address.line2}, ${address.city}, ${address.pinCode}.',
-                                            style: TextStyle(
-                                                color: Colors.grey[600]),
-                                          ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          (address.type ?? '').toUpperCase(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Divider(
-                                        thickness: 0.5,
-                                        color: Colors.grey[400]),
-                                  )
-                                ],
-                              );
-                            })),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: Text(
+                                        '${address.line1}, ${address.line2}, ${address.city}, ${address.pinCode}.',
+                                        style:
+                                            TextStyle(color: Colors.grey[600]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Divider(
+                                    thickness: 0.5, color: Colors.grey[400]),
+                              )
+                            ],
+                          );
+                        })),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          minimumSize: const Size(double.infinity, 50)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        addNewAddress();
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Add New Shipping Address',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: ElevatedButton(
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void addNewAddress() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            padding: const EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  const Center(
+                    child: Text(
+                      'Shipping Address',
+                      style: title,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  devider,
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Radio<ShippingType>(
+                              value: ShippingType.home,
+                              groupValue: shippingType,
+                              onChanged: (ShippingType? value) {
+                                setState(() {
+                                  shippingType = value!;
+                                });
+                              },
+                            ),
+                            const Text('Home'),
+                            Radio<ShippingType>(
+                              value: ShippingType.work,
+                              groupValue: shippingType,
+                              onChanged: (ShippingType? value) {
+                                setState(() {
+                                  shippingType = value!;
+                                });
+                              },
+                            ),
+                            const Text('Work'),
+                            Radio<ShippingType>(
+                              value: ShippingType.others,
+                              groupValue: shippingType,
+                              onChanged: (ShippingType? value) {
+                                setState(() {
+                                  shippingType = value!;
+                                });
+                              },
+                            ),
+                            const Text('Others'),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: house,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter House/Flat/Door No';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'House/Flat/Door No',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _street,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Landmark/Street/Nearby';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'Landmark/Street/Nearby',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _city,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter City name';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Your City',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        TextFormField(
+                          controller: _pincode,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Pincode';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Pincode',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: buttonColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
-                              minimumSize: const Size(double.infinity, 50)),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyAddress()));
+                              minimumSize: const Size(380, 50)),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              bool response = await addUser();
+                              getCartFuture = getCart();
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(response
+                                      ? "Address added successfully"
+                                      : "Something went wrong. please try again later.."),
+                                  backgroundColor: response
+                                      ? Colors.green
+                                      : Colors.redAccent,
+                                  elevation: 10,
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.all(5),
+                                ),
+                              );
+                            }
                           },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Add New Shipping Address',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                          child: const Text('Save',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            );
-          });
+            ),
+          );
         });
   }
 
@@ -467,4 +614,30 @@ class _CheckOutPageState extends State<CheckOutPage> {
           .toList();
     }
   }
+
+  Future<bool> addUser() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${ApiService.url}/addAddress.php'),
+        body: {
+          'userId': FirebaseUser.user?.uid,
+          'line1': house.text,
+          'line2': _street.text,
+          'city': _city.text,
+          'pincode': _pincode.text,
+          'type': shippingType.name,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }
+
+enum ShippingType { home, work, others }
