@@ -31,6 +31,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
   List<Address> addressList = [];
   final _formKey = GlobalKey<FormState>();
   ShippingType shippingType = ShippingType.home;
+  int addressIndex = 0;
+  Address? selectedAddress;
 
   final TextEditingController house = TextEditingController();
   final TextEditingController _street = TextEditingController();
@@ -88,7 +90,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => PaymentPage(
-                              address: addressList.first,
+                              address: selectedAddress ?? Address(),
                               totalAmount: widget.cartTotal.toString(),
                             )));
               },
@@ -135,7 +137,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           children: [
                             Expanded(
                                 child: Text(
-                              '${addressList.first.line1}, ${addressList.first.line2}, ${addressList.first.city}, ${addressList.first.pinCode}.',
+                              '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
                               style: TextStyle(
                                   color: Colors.grey[600], fontSize: 14.5),
                             )),
@@ -145,7 +147,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             GestureDetector(
                                 onTap: () {
                                   _address();
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>MyAddress()));
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.all(5),
@@ -356,64 +357,63 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   const SizedBox(height: 5),
                   devider,
                   Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: addressList.length,
-                        itemBuilder: ((context, index) {
-                          Address address = addressList[index];
-                          return Column(
-                            children: [
-                              ListTile(
-                                leading: Radio<String>(
-                                  value: 'Home',
-                                  // Use 'NO' as the value for the "NO" option
-
-                                  groupValue: canCall,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      canCall = value!;
-                                    });
-                                  },
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: addressList.length,
+                      itemBuilder: ((context, index) {
+                        Address address = addressList[index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            setState(() {
+                              addressIndex = index;
+                              selectedAddress = address;
+                            });
+                          },
+                          child: ListTile(
+                            leading: Radio<int>(
+                              value: addressIndex,
+                              groupValue: index,
+                              onChanged: (value) {},
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.placemark,
-                                          color: buttonColor,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          (address.type ?? '').toUpperCase(),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
+                                    const Icon(
+                                      CupertinoIcons.placemark,
+                                      color: buttonColor,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        '${address.line1}, ${address.line2}, ${address.city}, ${address.pinCode}.',
-                                        style:
-                                            TextStyle(color: Colors.grey[600]),
-                                      ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      (address.type ?? '').toUpperCase(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Divider(
-                                    thickness: 0.5, color: Colors.grey[400]),
-                              )
-                            ],
-                          );
-                        })),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    '${address.line1}, ${address.line2}, ${address.city}, ${address.pinCode}.',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child:
+                              Divider(thickness: 0.5, color: Colors.grey[400]),
+                        );
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -612,6 +612,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
       addressList = (json.decode(response.body) as List)
           .map((item) => Address.fromJson(item))
           .toList();
+      selectedAddress = addressList.first;
     }
   }
 

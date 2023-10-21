@@ -145,7 +145,8 @@ class _PaymentPageState extends State<PaymentPage> {
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": widget.totalAmount,
         "paymentMethod": 'cash',
-        "address": widget.address.line1
+        "address":
+            '${widget.address.line1}, ${widget.address.line2}, ${widget.address.city}, ${widget.address.pinCode}'
       };
 
       var response = await http.post(createOrderUrl, body: reqBody);
