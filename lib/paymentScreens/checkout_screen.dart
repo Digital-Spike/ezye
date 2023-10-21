@@ -86,6 +86,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       borderRadius: BorderRadius.circular(30)),
                   minimumSize: const Size(150, 45)),
               onPressed: () {
+                if (selectedAddress?.line1 == null) {
+                  addNewAddress();
+                  return;
+                }
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -113,63 +117,72 @@ class _CheckOutPageState extends State<CheckOutPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Shipping Address', style: title),
-                      const SizedBox(height: 10),
-                      const Row(
-                        children: [
-                          Icon(CupertinoIcons.placemark),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('Home', style: subtitle),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30, bottom: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Visibility(
+                  visible: selectedAddress?.line1 != null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text('Shipping Address', style: title),
+                        const SizedBox(height: 10),
+                        Row(
                           children: [
-                            Expanded(
-                                child: Text(
-                              '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 14.5),
-                            )),
+                            const Icon(CupertinoIcons.placemark),
                             const SizedBox(
-                              width: 40,
+                              width: 5,
                             ),
-                            GestureDetector(
-                                onTap: () {
-                                  _address();
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.all(5),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                          width: 0.5,
-                                          color: Colors.grey.shade400)),
-                                  child: const Text(
-                                    'CHANGE',
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                ))
+                            Text((selectedAddress?.type ?? "").toUpperCase(),
+                                style: subtitle),
                           ],
                         ),
-                      ),
-                      Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[500],
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+                                style: TextStyle(
+                                    color: Colors.grey[600], fontSize: 14.5),
+                              )),
+                              const SizedBox(
+                                width: 40,
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    _address();
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            width: 0.5,
+                                            color: Colors.grey.shade400)),
+                                    child: const Text(
+                                      'CHANGE',
+                                      style: TextStyle(color: Colors.green),
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[500],
+                        ),
+                      ],
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
@@ -454,152 +467,158 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         context: context,
         builder: (BuildContext context) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            padding: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  const Center(
-                    child: Text(
-                      'Shipping Address',
-                      style: title,
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              padding: const EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    const Center(
+                      child: Text(
+                        'Shipping Address',
+                        style: title,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  devider,
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Radio<ShippingType>(
-                              value: ShippingType.home,
-                              groupValue: shippingType,
-                              onChanged: (ShippingType? value) {
-                                setState(() {
-                                  shippingType = value!;
-                                });
-                              },
+                    const SizedBox(height: 5),
+                    devider,
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Radio<ShippingType>(
+                                value: ShippingType.home,
+                                groupValue: shippingType,
+                                onChanged: (ShippingType? value) {
+                                  setState(() {
+                                    shippingType = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Home'),
+                              Radio<ShippingType>(
+                                value: ShippingType.work,
+                                groupValue: shippingType,
+                                onChanged: (ShippingType? value) {
+                                  setState(() {
+                                    shippingType = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Work'),
+                              Radio<ShippingType>(
+                                value: ShippingType.others,
+                                groupValue: shippingType,
+                                onChanged: (ShippingType? value) {
+                                  setState(() {
+                                    shippingType = value!;
+                                  });
+                                },
+                              ),
+                              const Text('Others'),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            controller: house,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter House/Flat/Door No';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'House/Flat/Door No',
                             ),
-                            const Text('Home'),
-                            Radio<ShippingType>(
-                              value: ShippingType.work,
-                              groupValue: shippingType,
-                              onChanged: (ShippingType? value) {
-                                setState(() {
-                                  shippingType = value!;
-                                });
-                              },
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            controller: _street,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Landmark/Street/Nearby';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Landmark/Street/Nearby',
                             ),
-                            const Text('Work'),
-                            Radio<ShippingType>(
-                              value: ShippingType.others,
-                              groupValue: shippingType,
-                              onChanged: (ShippingType? value) {
-                                setState(() {
-                                  shippingType = value!;
-                                });
-                              },
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            controller: _city,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter City name';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter Your City',
                             ),
-                            const Text('Others'),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        TextFormField(
-                          controller: house,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter House/Flat/Door No';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'House/Flat/Door No',
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        TextFormField(
-                          controller: _street,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Landmark/Street/Nearby';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Landmark/Street/Nearby',
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            controller: _pincode,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Pincode';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter Pincode',
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        TextFormField(
-                          controller: _city,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter City name';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter Your City',
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        TextFormField(
-                          controller: _pincode,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Pincode';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter Pincode',
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: buttonColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              minimumSize: const Size(380, 50)),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              bool response = await addUser();
-                              getCartFuture = getCart();
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(response
-                                      ? "Address added successfully"
-                                      : "Something went wrong. please try again later.."),
-                                  backgroundColor: response
-                                      ? Colors.green
-                                      : Colors.redAccent,
-                                  elevation: 10,
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(5),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text('Save',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                        )
-                      ],
+                          const SizedBox(height: 15),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: buttonColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                minimumSize: const Size(380, 50)),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                bool response = await addAddress();
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(response
+                                        ? "Address added successfully"
+                                        : "Something went wrong. please try again later.."),
+                                    backgroundColor: response
+                                        ? Colors.green
+                                        : Colors.redAccent,
+                                    elevation: 10,
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(5),
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text('Save',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        });
+            );
+          });
+        }).whenComplete(() {
+      setState(() {
+        getCartFuture = getCart();
+      });
+    });
   }
 
   Future<void> getCart() async {
@@ -616,7 +635,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
     }
   }
 
-  Future<bool> addUser() async {
+  Future<bool> addAddress() async {
     try {
       final response = await http.post(
         Uri.parse('${ApiService.url}/addAddress.php'),
