@@ -486,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 ],
                               ),
-                              Positioned(
+                              /*Positioned(
                                   top: 0,
                                   right: 0,
                                   child: Column(
@@ -519,7 +519,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       const SizedBox(height: 10),
                                     ],
-                                  )),
+                                  )),*/
                             ],
                           ),
                         );
