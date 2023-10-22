@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
 import 'package:ezys/services/api_service.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -221,17 +224,24 @@ class _AddUserState extends State<AddUser> {
 
   Future<void> addUser() async {
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-      await http.post(
+      var reqBody = {
+        'userId': userId,
+        'name': name.text,
+        'email': email.text,
+        'mobile': FirebaseAuth.instance.currentUser?.phoneNumber,
+        'cartId': FirebaseUser.getCartId(userId)
+      };
+
+      var response = await http.post(
         Uri.parse('${ApiService.url}/addUser.php'),
-        body: {
-          'userId': userId,
-          'name': name.text,
-          'email': email.text,
-          'mobile': FirebaseAuth.instance.currentUser?.phoneNumber,
-          'cartId': FirebaseUser.getCartId(userId)
-        },
+        body: reqBody,
       );
+
+      if (response.statusCode == 200 && !jsonDecode(response.body)['error']) {
+        await prefs.setString('user', jsonEncode(reqBody));
+      }
     } catch (e) {
       print('Error: $e');
     }
