@@ -325,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
 
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
-        return !jsonDecode(response.body)['error'];
+        return jsonDecode(response.body)['userId'] != null;
       }
       return false;
     } catch (e) {

@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late StreamSubscription<User?> listener;
-  Future<void>? getUserFuture;
+  Future<bool>? getUserFuture;
   bool isUserExists = false;
 
   @override
@@ -37,10 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<void>(
+      body: FutureBuilder<bool>(
           future: getUserFuture,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              navigateFunction();
               return Center(
                 child: Image.asset(
                   'assets/EZYE SS.gif',
@@ -92,10 +93,10 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  Future<void> getUser() async {
+  Future<bool> getUser() async {
     try {
       if (FirebaseUser.user?.uid == null) {
-        return;
+        return Future.value(false);
       }
 
       var getUserUrl = Uri.parse('${ApiService.url}/getUser.php');
@@ -104,10 +105,12 @@ class _SplashScreenState extends State<SplashScreen> {
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
         isUserExists = jsonDecode(response.body)['userId'] != null;
-        navigateFunction();
+        return true;
       }
     } catch (e) {
       debugPrint(e.toString());
+      return false;
     }
+    return false;
   }
 }
