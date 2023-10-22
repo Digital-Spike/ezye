@@ -1,10 +1,14 @@
-import 'package:ezys/Auth_screen/signup_screen.dart';
+import 'dart:convert';
+
+import 'package:ezys/Auth_screen/add_user.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/services/api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-   final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
@@ -22,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   bool otpVisibility = false;
   User? user;
   String verificationID = "";
+
   @override
   void initState() {
     super.initState();
@@ -52,18 +57,22 @@ class _LoginPageState extends State<LoginPage> {
           child: Stack(
             children: [
               Positioned(
-                top: 5,
-                right: 10,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomePage()));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey[400]),
-                    child: const Icon(CupertinoIcons.clear),
-                              ),
-                )),
+                  top: 5,
+                  right: 10,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.grey[400]),
+                      child: const Icon(CupertinoIcons.clear),
+                    ),
+                  )),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Form(
@@ -72,12 +81,20 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     
                       const SizedBox(height: 15),
-                    const  Center(child: Text('Sign In',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),)),
-                       const SizedBox(height: 20),
-                      Center(child: Image.asset('assets/login.gif',height: 250,)),
-                       const SizedBox(height: 20),
+                      const Center(
+                          child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      )),
+                      const SizedBox(height: 20),
+                      Center(
+                          child: Image.asset(
+                        'assets/login.gif',
+                        height: 250,
+                      )),
+                      const SizedBox(height: 20),
                       const Text('* Log in using Mobile Number', style: title),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -94,12 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                         maxLength: 10,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
-                           if (value == null || value.isEmpty) {
-            return 'Please enter phone number';
-          } else if (value.length != 10) {
-            return 'Phone number must be 10 digits';
-          }
-          return null;
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter phone number';
+                          } else if (value.length != 10) {
+                            return 'Phone number must be 10 digits';
+                          }
+                          return null;
                         },
                       ),
                       Visibility(
@@ -122,13 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                                       borderRadius: BorderRadius.circular(10))),
                               maxLength: 6,
                               keyboardType: TextInputType.number,
-                               validator: (value){
-                                    if (value == null || value.isEmpty) {
-                              return 'Please enter OTP';
-                            }
-                            return null;
-                          
-                                  },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter OTP';
+                                }
+                                return null;
+                              },
                             ),
                           ],
                         ),
@@ -144,8 +160,8 @@ class _LoginPageState extends State<LoginPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
                         onPressed: () {
-                           final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
+                          final isValid = formKey.currentState!.validate();
+                          if (!isValid) return;
                           if (otpVisibility) {
                             verifyOTP();
                           } else {
@@ -154,30 +170,46 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Text(
                           otpVisibility ? "Verify" : "Sign In",
-                         style: const TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16,fontWeight: FontWeight.w700
-                            ),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      /*const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("If you don't have account? please",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),),TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpPage()));}, child: const Text('Sign Up',style: TextStyle(
+                          const Text(
+                            "If you don't have account? please",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w700),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpPage()));
+                              },
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
                                     fontSize: 14,
                                     color: indicator,
-                                    fontWeight: FontWeight.bold),))
+                                    fontWeight: FontWeight.bold),
+                              ))
                         ],
-                      ),
+                      ),*/
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
                             "By continuing, you agree to Ezye's ",
-                            style:
-                                TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 12.5, fontWeight: FontWeight.w700),
                           ),
                           GestureDetector(
                               onTap: () {},
@@ -190,8 +222,8 @@ class _LoginPageState extends State<LoginPage> {
                               )),
                           const Text(
                             'and ',
-                            style:
-                                TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600),
                           ),
                           GestureDetector(
                               onTap: () {},
@@ -204,7 +236,6 @@ class _LoginPageState extends State<LoginPage> {
                               ))
                         ],
                       ),
-                      
                     ],
                   ),
                 ),
@@ -242,12 +273,20 @@ class _LoginPageState extends State<LoginPage> {
 
     await auth.signInWithCredential(credential).then(
       (value) {
-        setState(() {
-          user = FirebaseAuth.instance.currentUser;
-        });
+        user = FirebaseAuth.instance.currentUser;
       },
     ).whenComplete(
-      () {
+      () async {
+        bool isUserExist = await getUser(user?.uid ?? '');
+        if (!isUserExist && mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddUser(),
+            ),
+          );
+          return;
+        }
         if (user != null) {
           Fluttertoast.showToast(
             msg: "You are logged in successfully",
@@ -277,5 +316,21 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
     );
+  }
+
+  Future<bool> getUser(String userId) async {
+    try {
+      var getUserUrl = Uri.parse('${ApiService.url}/getUser.php');
+      var reqBody = {"userId": userId};
+
+      var response = await http.post(getUserUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 }
