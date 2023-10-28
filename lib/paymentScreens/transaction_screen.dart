@@ -38,7 +38,8 @@ class _TransactionPageState extends State<TransactionPage> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 List<WalletTransactions> transactions = snapshot.data;
-                if (!snapshot.hasData) {
+
+                if (!snapshot.hasData || transactions.isEmpty) {
                   return const Text('No transactions found!');
                 }
 
