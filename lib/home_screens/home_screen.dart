@@ -14,6 +14,7 @@ import 'package:ezys/home_screens/search_screen.dart';
 import 'package:ezys/home_screens/wishlist_screen.dart';
 import 'package:ezys/model/category.dart';
 import 'package:ezys/model/product.dart';
+import 'package:ezys/providers/session_object.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -553,7 +554,9 @@ class _HomePageState extends State<HomePage> {
       var productsUrl = Uri.parse('${ApiService.url}/getAllProducts.php');
       var productsResponse = await http.post(productsUrl);
 
-      await getWishList();
+      if (SessionObject.user.userId != null) {
+        await getWishList();
+      }
 
       categories = (json.decode(categoryResponse.body) as List)
           .map((item) => Category.fromJson(item))
