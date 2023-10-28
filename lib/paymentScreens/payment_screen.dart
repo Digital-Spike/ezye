@@ -4,8 +4,10 @@ import 'package:ezys/constants/string_util.dart';
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
 import 'package:ezys/model/address.dart';
+import 'package:ezys/providers/session_object.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
+import 'package:ezys/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -141,7 +143,7 @@ class _PaymentPageState extends State<PaymentPage> {
     try {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
-        "cartId": FirebaseUser.cartId,
+        "cartId": SessionObject.user.cartId ?? "",
         "userId": FirebaseUser.user?.uid,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": widget.totalAmount,
@@ -152,6 +154,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
       var response = await http.post(createOrderUrl, body: reqBody);
       if (response.statusCode == 200) {
+        await UserService.updateUser(SessionObject.user);
         return !jsonDecode(response.body)['error'];
       }
       return false;

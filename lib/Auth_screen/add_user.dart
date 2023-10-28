@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -232,7 +231,7 @@ class _AddUserState extends State<AddUser> {
         'name': name.text,
         'email': email.text,
         'mobile': FirebaseAuth.instance.currentUser?.phoneNumber,
-        'cartId': FirebaseUser.getCartId(userId)
+        'cartId': FirebaseUser.getCartId()
       };
 
       var response = await http.post(
@@ -242,8 +241,7 @@ class _AddUserState extends State<AddUser> {
 
       if (response.statusCode == 200 && !jsonDecode(response.body)['error']) {
         // await SharedService.addUserToPref(jsonEncode(reqBody));
-        Provider.of<SessionObject>(context, listen: false).user =
-            UserModel.fromJson(reqBody);
+        SessionObject.user = UserModel.fromJson(reqBody);
       }
     } catch (e) {
       print('Error: $e');

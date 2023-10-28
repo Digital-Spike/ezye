@@ -7,6 +7,7 @@ import 'package:ezys/custom_widgets/dashed_line.dart';
 import 'package:ezys/model/cart_item.dart';
 import 'package:ezys/paymentScreens/checkout_screen.dart';
 import 'package:ezys/paymentScreens/coupan_screen.dart';
+import 'package:ezys/providers/session_object.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -663,8 +664,8 @@ class _CartScreenState extends State<CartScreen> {
   Future<bool> getCartItems() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
-      var response =
-          await http.post(productUrl, body: {"cartId": FirebaseUser.cartId});
+      var response = await http
+          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
 
       if (response.statusCode == 200) {
         cartItems = (json.decode(response.body) as List)
@@ -782,7 +783,7 @@ class _CartScreenState extends State<CartScreen> {
           Uri.parse('${ApiService.url}updateCartQuantity.php');
       var reqBody = {
         "quantity": (int.parse(cartItem.quantity ?? '1') + count).toString(),
-        "cartId": FirebaseUser.cartId,
+        "cartId": SessionObject.user.cartId ?? "",
         "productId": cartItem.productId
       };
       await http.post(removeFromWishlistUrl, body: reqBody);
