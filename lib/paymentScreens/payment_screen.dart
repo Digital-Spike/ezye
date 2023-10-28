@@ -154,7 +154,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
       var response = await http.post(createOrderUrl, body: reqBody);
       if (response.statusCode == 200) {
-        await UserService.updateUser(SessionObject.user);
+        await UserService.updateUser();
         return !jsonDecode(response.body)['error'];
       }
       return false;

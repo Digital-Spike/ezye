@@ -7,24 +7,19 @@ import 'package:ezys/services/auth.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static Future<void> updateUser(UserModel user) async {
+  static Future<void> updateUser() async {
     try {
-      var reqBody = {
-        'mobile': user.mobile,
-        'email': user.email,
-        'name': user.name,
-        'cartId': FirebaseUser.getCartId(),
-        'userId': user.userId
-      };
+      Map<String, dynamic> user = SessionObject.user.toJson();
+      user['cartId'] = FirebaseUser.getCartId();
 
       var response = await http.post(
         Uri.parse('${ApiService.url}/editProfile.php'),
-        body: reqBody,
+        body: user,
       );
 
       if (response.statusCode == 200 && !jsonDecode(response.body)['error']) {
         // await SharedService.addUserToPref(jsonEncode(reqBody));
-        SessionObject.user = UserModel.fromJson(reqBody);
+        SessionObject.user = UserModel.fromJson(user);
       }
     } catch (e) {
       print('Error: $e');
