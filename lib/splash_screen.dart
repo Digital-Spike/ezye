@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'package:ezys/Auth_screen/add_user.dart';
 import 'package:ezys/Auth_screen/login_screen.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/model/user.dart';
+import 'package:ezys/providers/session_object.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -104,6 +107,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
+        Provider.of<SessionObject>(context, listen: false).user =
+            UserModel.fromJson(jsonDecode(response.body));
         isUserExists = jsonDecode(response.body)['userId'] != null;
         return true;
       }

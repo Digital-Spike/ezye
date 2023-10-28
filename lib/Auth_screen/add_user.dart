@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:ezys/custom_widgets/constants.dart';
 import 'package:ezys/home_screens/home_screen.dart';
+import 'package:ezys/model/user.dart';
+import 'package:ezys/providers/session_object.dart';
 import 'package:ezys/services/api_service.dart';
 import 'package:ezys/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -224,7 +226,6 @@ class _AddUserState extends State<AddUser> {
 
   Future<void> addUser() async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
       var reqBody = {
         'userId': userId,
@@ -240,7 +241,9 @@ class _AddUserState extends State<AddUser> {
       );
 
       if (response.statusCode == 200 && !jsonDecode(response.body)['error']) {
-        await prefs.setString('user', jsonEncode(reqBody));
+        // await SharedService.addUserToPref(jsonEncode(reqBody));
+        Provider.of<SessionObject>(context, listen: false).user =
+            UserModel.fromJson(reqBody);
       }
     } catch (e) {
       print('Error: $e');

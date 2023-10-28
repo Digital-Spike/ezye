@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   String? id;
   String? userId;
   String? mobile;
@@ -7,7 +7,7 @@ class User {
   String? cartId;
   String? status;
 
-  User(
+  UserModel(
       {this.id,
       this.userId,
       this.mobile,
@@ -16,8 +16,8 @@ class User {
       this.cartId,
       this.status});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
         id: json['id'],
         userId: json['userId'],
         mobile: json['mobile'],
