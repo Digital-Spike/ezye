@@ -1,6 +1,6 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/model/transaction.dart';
-import 'package:ezys/services/wallet_service.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/transaction.dart';
+import 'package:ezye/services/wallet_service.dart';
 import 'package:flutter/material.dart';
 
 class TransactionPage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:ezys/model/transaction.dart';
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/services/api_service.dart';
+import 'package:ezye/model/transaction.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 

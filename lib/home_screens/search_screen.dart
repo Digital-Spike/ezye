@@ -1,4 +1,4 @@
-import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

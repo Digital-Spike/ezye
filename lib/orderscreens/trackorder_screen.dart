@@ -1,7 +1,7 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/custom_widgets/snackbar.dart';
-import 'package:ezys/custom_widgets/status.dart';
-import 'package:ezys/custom_widgets/timeline_tile.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/snackbar.dart';
+import 'package:ezye/custom_widgets/status.dart';
+import 'package:ezye/custom_widgets/timeline_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,5 +1,6 @@
-import 'package:ezys/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
+
 class PersistentHeader extends SliverPersistentHeaderDelegate {
   final Widget widget;
 

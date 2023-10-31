@@ -1,5 +1,7 @@
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/splash_screen.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/splash_screen.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

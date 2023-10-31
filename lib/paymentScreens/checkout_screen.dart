@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/home_screens/home_screen.dart';
-import 'package:ezys/model/address.dart';
-import 'package:ezys/model/cart_item.dart';
-import 'package:ezys/paymentScreens/payment_screen.dart';
-import 'package:ezys/services/api_service.dart';
-import 'package:ezys/services/auth.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/model/address.dart';
+import 'package:ezye/model/cart_item.dart';
+import 'package:ezye/paymentScreens/payment_screen.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

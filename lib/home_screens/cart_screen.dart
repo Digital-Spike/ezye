@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ezys/Auth_screen/login_screen.dart';
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/custom_widgets/dashed_line.dart';
-import 'package:ezys/model/cart_item.dart';
-import 'package:ezys/paymentScreens/checkout_screen.dart';
-import 'package:ezys/paymentScreens/coupan_screen.dart';
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/services/api_service.dart';
-import 'package:ezys/services/auth.dart';
+import 'package:ezye/Auth_screen/login_screen.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/dashed_line.dart';
+import 'package:ezye/model/cart_item.dart';
+import 'package:ezye/paymentScreens/checkout_screen.dart';
+import 'package:ezye/paymentScreens/coupan_screen.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

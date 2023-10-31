@@ -1,5 +1,5 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/custom_widgets/multiselectchoicechip_widget.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:flutter/material.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _CategoryPageState extends State<CategoryPage> {
             preferredSize: const Size.fromHeight(40),
             child: Expanded(
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.horizontal,
                   itemCount: 1,
                   itemBuilder: (context, index) {
                     return MultiSelectChoiceChips(

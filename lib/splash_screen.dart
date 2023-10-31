@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ezys/Auth_screen/add_user.dart';
-import 'package:ezys/Auth_screen/login_screen.dart';
-import 'package:ezys/home_screens/home_screen.dart';
-import 'package:ezys/model/user.dart';
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/services/api_service.dart';
-import 'package:ezys/services/auth.dart';
+import 'package:ezye/Auth_screen/add_user.dart';
+import 'package:ezye/Auth_screen/login_screen.dart';
+import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/model/user.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

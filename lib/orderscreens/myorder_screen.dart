@@ -1,8 +1,9 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/orderscreens/activeorder_screen.dart';
-import 'package:ezys/orderscreens/cancelledorder_screen.dart';
-import 'package:ezys/orderscreens/completedorder_screen.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/orderscreens/activeorder_screen.dart';
+import 'package:ezye/orderscreens/cancelledorder_screen.dart';
+import 'package:ezye/orderscreens/completedorder_screen.dart';
 import 'package:flutter/material.dart';
+
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({super.key});
 
@@ -19,41 +20,42 @@ class _MyOrderPageState extends State<MyOrderPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: BackButton(color: buttonColor),
-        title: Text('My Orders',style: apptitle,),
+        title: Text(
+          'My Orders',
+          style: apptitle,
+        ),
         centerTitle: true,
       ),
-body:  DefaultTabController(
-                          length: 3, // Number of tabs
-                          child: Column(children: [
-                            Container(
-                              color: Colors.white,
-                              child: TabBar(
-                              indicatorColor: indicator,
-                              
-                                indicatorWeight: 4,
-                               indicatorSize: TabBarIndicatorSize.label,
-                                labelColor: Colors.black,
-                                unselectedLabelColor: Colors.grey,
-                                labelStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                tabs: [
-                                  Tab(text: 'Active'), // First tab
-                                  Tab(text: 'Completed'), 
-                                  Tab(text: 'Cancelled',)// Second tab
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              
-                              child: const TabBarView(
-                                children: [
-                                 ActiveOrder(),CompletedOrder(),CancelledOrder()
-                                ],
-                              ),
-                            )
-                          ])),
+      body: DefaultTabController(
+          length: 3, // Number of tabs
+          child: Column(children: [
+            Container(
+              color: Colors.white,
+              child: TabBar(
+                indicatorColor: indicator,
+                indicatorWeight: 4,
+                indicatorSize: TabBarIndicatorSize.label,
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                labelStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                tabs: [
+                  Tab(text: 'Active'), // First tab
+                  Tab(text: 'Completed'),
+                  Tab(
+                    text: 'Cancelled',
+                  ) // Second tab
+                ],
+              ),
+            ),
+            Expanded(
+              child: const TabBarView(
+                children: [ActiveOrder(), CompletedOrder(), CancelledOrder()],
+              ),
+            )
+          ])),
     );
   }
 }

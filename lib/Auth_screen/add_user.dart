@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/home_screens/home_screen.dart';
-import 'package:ezys/model/user.dart';
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/services/api_service.dart';
-import 'package:ezys/services/auth.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/model/user.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

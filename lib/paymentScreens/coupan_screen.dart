@@ -1,6 +1,6 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/custom_widgets/snackbar.dart';
-import 'package:ezys/home_screens/main_screen.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/custom_widgets/snackbar.dart';
+import 'package:ezye/home_screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ticket_widget/ticket_widget.dart';

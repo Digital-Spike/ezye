@@ -1,7 +1,7 @@
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/home_screens/main_screen.dart';
-import 'package:ezys/paymentScreens/transaction_screen.dart';
-import 'package:ezys/providers/session_object.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/main_screen.dart';
+import 'package:ezye/paymentScreens/transaction_screen.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

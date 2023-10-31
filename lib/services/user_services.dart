@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ezys/model/user.dart';
-import 'package:ezys/providers/session_object.dart';
-import 'package:ezys/services/api_service.dart';
-import 'package:ezys/services/auth.dart';
+import 'package:ezye/model/user.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {

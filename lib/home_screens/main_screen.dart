@@ -1,9 +1,9 @@
-import 'package:ezys/Auth_screen/login_screen.dart';
-import 'package:ezys/custom_widgets/constants.dart';
-import 'package:ezys/home_screens/home_screen.dart';
-import 'package:ezys/paymentScreens/coupan_screen.dart';
-import 'package:ezys/paymentScreens/wallet_screen.dart';
-import 'package:ezys/profilescreens/profile_screen.dart';
+import 'package:ezye/Auth_screen/login_screen.dart';
+import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/paymentScreens/coupan_screen.dart';
+import 'package:ezye/paymentScreens/wallet_screen.dart';
+import 'package:ezye/profilescreens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
