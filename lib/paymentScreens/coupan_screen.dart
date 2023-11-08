@@ -19,8 +19,9 @@ class _CoupanPageState extends State<CoupanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-        mainAppBar: AppBar(
+    return Scaffold(
+       
+        appBar: AppBar(
           backgroundColor: Colors.white,
           leading: const BackButton(color: Colors.black),
           title: const Text(
@@ -30,7 +31,7 @@ class _CoupanPageState extends State<CoupanPage> {
           centerTitle: true,
           elevation: 0,
         ),
-        mainChild: Padding(
+        body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

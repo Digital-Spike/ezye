@@ -1,17 +1,20 @@
+import 'dart:convert';
+
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/profile_button.dart';
-import 'package:ezye/home_screens/main_screen.dart';
-import 'package:ezye/model/address.dart';
-import 'package:ezye/orderscreens/myorder_screen.dart';
-import 'package:ezye/paymentScreens/payment_screen.dart';
+import 'package:ezye/profilescreens/addresses_screen.dart';
+import 'package:ezye/profilescreens/wishlist_screen1.dart';
 import 'package:ezye/profilescreens/editprofile.dart';
+import 'package:ezye/profilescreens/help_and_support.dart';
+import 'package:ezye/profilescreens/refer_earn.dart';
 import 'package:ezye/profilescreens/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,10 +25,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isLoggedIn = false;
+  final user = FirebaseAuth.instance.currentUser;
+  late String? _phone;
+  String? name, phone;
   @override
   void initState() {
     super.initState();
-
+    getUser();
+    _phone = user?.phoneNumber;
     checkLoginStatus(); // Call the function to fetch carousel data
   }
 
@@ -38,362 +45,283 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  var size, height, width;
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-        mainAppBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: const BackButton(color: buttonColor),
-          title: const Text(
-            'Profile',
-            style: apptitle,
-          ),
-          centerTitle: true,
-        ),
-        mainChild: Container(
-          height: double.infinity,
-          color: bgcolor,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: Stack(
-                    children: [
-                      const Center(
-                        child: CircleAvatar(
-                          minRadius: 55,
-                          child: Icon(
-                            CupertinoIcons.person,
-                            size: 60,
-                          ),
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            if (isLoggedIn == false)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: width / 1.5),
+                    SvgPicture.asset('assets/svg/cloud.svg'),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'To access your account, please log in or create a new account.',
+                      style: TextStyle(fontSize: 14, color: Color(0xff7C7D85)),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            minimumSize: const Size(208, 56)),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ))
+                  ],
+                ),
+              ),
+            if (isLoggedIn == true)
+              Column(
+                children: [
+                  Container(
+                    height: width / 1.3,
+                    width: width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: const Color(0xff040707)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 50),
+                        Container(
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                  image: AssetImage('assets/png/user.png')),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                  width: 1.5, color: const Color(0xffE8E9EE))),
                         ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          left: 200,
-                          right: 120,
-                          child: GestureDetector(
-                            onTap: () {
+                        const SizedBox(height: 5),
+                        Text(
+                          name != null ? name.toString() : 'Welcome',
+                          style: const TextStyle(
+                              color: Color(0xff7C7D85),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          _phone ?? '',
+                          style: const TextStyle(
+                              color: Color(0xff7C7D85),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(112, 28),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                backgroundColor: Colors.white),
+                            onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const EditProfile()));
                             },
-                            child: Container(
-                                padding: const EdgeInsets.all(7),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 2, color: Colors.white),
-                                    color: Colors.grey,
-                                    shape: BoxShape.circle),
-                                child: SvgPicture.asset(
-                                  'assets/icons/Edit (1).svg',
-                                  height: 20,
-                                  width: 20,
-                                )),
-                          ))
-                    ],
+                            child: const Text(
+                              'EDIT PROFILE',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w700),
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-                const Text(
-                  'User name',
-                  style: title,
-                ),
-                const SizedBox(height: 35),
-                CustomButton(
-                    title1: 'Payment Methods',
-                    svgPath: 'assets/icons/Card.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentPage(
-                                    address: Address(),
-                                    totalAmount: '',
-                                  )));
-                    }),
-                divider,
-                CustomButton(
-                    title1: 'My Orders',
-                    svgPath: 'assets/icons/Order.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {
-                      if (isLoggedIn) {
-                        // User is logged in, navigate to the payment page
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyOrderPage()));
-                      } else {
-                        // User is not logged in, show the login dialog
-                        _showLoginDialog1();
-                      }
-                    }),
-                divider,
-                CustomButton(
-                    title1: 'Settings',
-                    svgPath: 'assets/icons/Settings (1).svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsPage()));
-                    }),
-                divider,
-                CustomButton(
-                    title1: 'Help Center',
-                    svgPath: 'assets/icons/Help Center.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {}),
-                divider,
-                CustomButton(
-                    title1: 'Privacy Policy',
-                    svgPath: 'assets/icons/Privacy Policy.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {}),
-                divider,
-                CustomButton(
-                    title1: 'Invite Friends',
-                    svgPath: 'assets/icons/Invite.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () async {
-                      if (isLoggedIn) {
-                        // User is logged in, navigate to the payment page
-                        final box = context.findRenderObject() as RenderBox?;
-                        await Share.share(
-                          'check out this app',
-                          sharePositionOrigin:
-                              box!.localToGlobal(Offset.zero) & box.size,
-                        );
-                      } else {
-                        // User is not logged in, show the login dialog
-                        _showLoginDialog();
-                      }
-                    }),
-                divider,
-                CustomButton(
-                    title1: 'Log out',
-                    svgPath: 'assets/icons/logout 2.svg',
-                    trailingIcon: CupertinoIcons.forward,
-                    onPressed: () {
-                      if (isLoggedIn) {
-                        // User is logged in, navigate to the payment page
-
-                        showModalBottomSheet(
-                          elevation: 5,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30))),
-                          context: context,
-                          builder: (context) => Padding(
-                            padding: MediaQuery.of(context).viewInsets,
-                            child: SizedBox(
-                              height: 200,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Logout',
-                                      style: title,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    divider,
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Are you sure you want to log out?',
-                                      style: content1,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  elevation: 0,
-                                                  backgroundColor:
-                                                      Colors.grey[300],
-                                                  minimumSize: const Size(
-                                                      double.infinity, 50),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30))),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text(
-                                                'Cancel',
-                                                style: subtitle1,
-                                              )),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  elevation: 0,
-                                                  backgroundColor: buttonColor,
-                                                  minimumSize: const Size(
-                                                      double.infinity, 50),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30))),
-                                              onPressed: () async {
-                                                await FirebaseAuth.instance
-                                                    .signOut();
-                                                if (mounted) {
-                                                  Navigator.pushAndRemoveUntil(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                        pageBuilder: (context,
-                                                                a, b) =>
-                                                            const LoginPage()),
-                                                    (route) => false,
-                                                  );
-                                                }
-                                              },
-                                              child: const Text(
-                                                'Yes, Logout',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        // User is not logged in, show the login dialog
-                        _showLoginDialog2();
-                      }
-                    }),
-              ],
-            ),
-          ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        CustomButton(
+                            title1: 'Addresses',
+                            svgPath: 'assets/svg/location.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Addresses()));
+                            }),
+                        devider,
+                        CustomButton(
+                            title1: 'Wishlist',
+                            svgPath: 'assets/svg/heart.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const WishListScreen()));
+                            }),
+                        devider,
+                        CustomButton(
+                            title1: 'My wallet',
+                            svgPath: 'assets/svg/wallet.svg',
+                            onPressed: () {}),
+                        devider,
+                        CustomButton(
+                            title1: 'My Orders',
+                            svgPath: 'assets/svg/transaction.svg',
+                            onPressed: () {}),
+                        devider,
+                        CustomButton(
+                            title1: 'Settings',
+                            svgPath: 'assets/svg/setting.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SettingsPage()));
+                            }),
+                        devider,
+                        CustomButton(
+                            title1: 'Help & Support',
+                            svgPath: 'assets/svg/helpdesk.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HelpAndSupport()));
+                            }),
+                        devider,
+                        CustomButton(
+                            title1: 'Refer & Earn',
+                            svgPath: 'assets/svg/share.svg',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ReferAndEarn()));
+                            }),
+                        devider,
+                        CustomButton(
+                            title1: 'Logout',
+                            svgPath: 'assets/svg/logout.svg',
+                            onPressed: _showDialog),
+                        devider
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+          ],
         ));
   }
 
-  void _showLoginDialog() {
-    showAdaptiveDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title:
-              const Text('Login Required!', style: TextStyle(color: indicator)),
-          content: const Text('You need to log in to Invite Friends.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigate to the login screen
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              child: const Text('Log In',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-            ),
-          ],
-        );
-      },
-    );
+  void getUser() async {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    String apiUrl = "https://ezys.in/customerApp/getUser.php";
+    var response = await http.post(Uri.parse(apiUrl), body: {
+      "userId": userId,
+    });
+    var jsondata = json.decode(response.body);
+    print(jsondata);
+    setState(() {
+      name = jsondata[0]['name'];
+      phone = jsondata[0]['mobile'];
+    });
   }
 
-  void _showLoginDialog1() {
-    showAdaptiveDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text(
-            'Login Required!',
-            style: TextStyle(color: indicator),
-          ),
-          content: const Text('You need to log in to Check Your Orders.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontWeight: FontWeight.w700),
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            alignment: Alignment.center,
+            insetPadding: const EdgeInsets.all(30),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: const Center(
+              child: Text(
+                'Are you sure you want to\nlog out?.',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
               ),
             ),
-            TextButton(
-              onPressed: () {
-                // Navigate to the login screen
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              child: const Text('Log In',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showLoginDialog2() {
-    showAdaptiveDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text(
-            'Login Required!',
-            style: TextStyle(color: indicator),
-          ),
-          content: const Text('You need to log in to First.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigate to the login screen
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              child: const Text('Log In',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-            ),
-          ],
-        );
-      },
-    );
+            actionsPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            actions: [
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            side:
+                                const BorderSide(width: 1, color: Colors.black),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            minimumSize: const Size(154, 56)),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            minimumSize: const Size(154, 56)),
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut().then((value) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage()),
+                                (route) => false);
+                          });
+                        },
+                        child: const Text(
+                          'Confirm',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        )),
+                  )
+                ],
+              )
+            ],
+          );
+        });
   }
 }

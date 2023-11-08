@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ezye/Auth_screen/add_user.dart';
-import 'package:ezye/Auth_screen/login_screen.dart';
-import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/Auth_screen/onboarding_screen.dart';
+import 'package:ezye/Auth_screen/testlogin.dart';
 import 'package:ezye/model/user.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
@@ -75,21 +74,15 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const LoginPage(),
+              builder: (context) => const OnboardingScreen(),
             ),
           );
         } else {
-          isUserExists
-              ? Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const HomePage()),
-                )
-              : Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const AddUser()),
-                );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const TestLogin()),
+          );
         }
       });
     });

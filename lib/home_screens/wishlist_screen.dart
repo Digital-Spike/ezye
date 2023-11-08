@@ -34,8 +34,8 @@ class _WishListState extends State<WishList> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-        mainAppBar: AppBar(
+    return Scaffold(
+        appBar: AppBar(
           title: const Text('My Wishlist', style: apptitle),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -44,7 +44,7 @@ class _WishListState extends State<WishList> {
             color: Colors.black,
           ),
         ),
-        mainChild: FutureBuilder<void>(
+        body: FutureBuilder<void>(
             future: listItems,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {

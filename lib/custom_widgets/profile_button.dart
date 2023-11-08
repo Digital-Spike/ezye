@@ -7,14 +7,12 @@ class CustomButton extends StatelessWidget {
 
   final String svgPath;
 
-  final IconData trailingIcon;
   final VoidCallback onPressed;
 
   const CustomButton({
     super.key,
     required this.title1,
     required this.svgPath,
-    required this.trailingIcon,
     required this.onPressed,
   });
 
@@ -23,29 +21,23 @@ class CustomButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        minimumSize: Size(double.infinity, 40),
+        minimumSize: const Size(double.infinity, 30),
         elevation: 0,
-        backgroundColor: bgcolor,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       ),
       child: Row(
         children: [
           SvgPicture.asset(
             svgPath,
-            height: 30,
-            width: 30,
+            height: 22,
+            width: 22,
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 10),
           Text(
             title1,
-            style: title,
-          ),
-          Spacer(),
-          Icon(
-            trailingIcon,
-            size: 26,
-            color: Colors.black,
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black),
           ),
         ],
       ),

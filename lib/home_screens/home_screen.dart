@@ -100,8 +100,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-      mainAppBar: AppBar(
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
               ))
         ],
       ),
-      mainChild: FutureBuilder<bool>(
+      body: FutureBuilder<bool>(
           future: listItems,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {

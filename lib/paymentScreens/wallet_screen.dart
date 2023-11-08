@@ -15,8 +15,8 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage> {
   @override
   Widget build(BuildContext context) {
-    return MainScreen(
-        mainAppBar: AppBar(
+    return Scaffold(
+        appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
           leading: const BackButton(color: Colors.black),
@@ -26,7 +26,7 @@ class _WalletPageState extends State<WalletPage> {
           ),
           centerTitle: true,
         ),
-        mainChild: Column(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
