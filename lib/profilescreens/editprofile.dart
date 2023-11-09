@@ -208,7 +208,10 @@ class _EditProfileState extends State<EditProfile> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             minimumSize: const Size(double.infinity, 56)),
-                        onPressed: () {},
+                        onPressed: () {
+                          _name.clear();
+                          _email.clear();
+                        },
                         child: const Text(
                           'Undo Changes',
                           style: TextStyle(

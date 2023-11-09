@@ -100,12 +100,13 @@ class _WishListScreenState extends State<WishListScreen> {
           if (isLoggedIn == true)
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: GridView.builder(
                     itemCount: imageList.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1 / 2,
+                            childAspectRatio: 1 / 1.9,
                             crossAxisSpacing: 10,
                             crossAxisCount: 2),
                     itemBuilder: ((context, int) {

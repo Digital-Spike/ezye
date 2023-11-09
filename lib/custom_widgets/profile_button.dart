@@ -30,8 +30,8 @@ class CustomButton extends StatelessWidget {
         children: [
           SvgPicture.asset(
             svgPath,
-            height: 22,
-            width: 22,
+            height: 23,
+            width: 23,
           ),
           const SizedBox(width: 10),
           Text(

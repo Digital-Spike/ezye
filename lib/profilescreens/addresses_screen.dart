@@ -1,5 +1,6 @@
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/profilescreens/add_address.dart';
+import 'package:ezye/profilescreens/edit_address.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -92,7 +93,13 @@ class _AddressesState extends State<Addresses> {
                               Row(
                                 children: [
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const EditAddress()));
+                                    },
                                     child: Container(
                                       height: 24,
                                       width: 63,

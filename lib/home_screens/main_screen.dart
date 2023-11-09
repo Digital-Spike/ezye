@@ -1,3 +1,4 @@
+import 'package:ezye/home_screens/cart_screen1.dart';
 import 'package:ezye/home_screens/categories_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/paymentScreens/wallet_screen.dart';
@@ -20,8 +21,8 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-   CateGories(),
-    WalletPage(),
+    CateGories(),
+    CartPage(),
     ProfilePage(),
   ];
 

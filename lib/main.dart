@@ -1,3 +1,4 @@
+import 'package:ezye/home_screens/product_screen1.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.grey,
             fontFamily: 'Satoshi',
           ),
-          home: const SplashScreen()),
+          home: const ProductScreen()),
     );
   }
 }

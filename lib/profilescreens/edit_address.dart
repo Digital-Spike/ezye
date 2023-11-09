@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:searchfield/searchfield.dart';
 
-class AddAdress extends StatefulWidget {
-  const AddAdress({super.key});
+class EditAddress extends StatefulWidget {
+  const EditAddress({super.key});
 
   @override
-  State<AddAdress> createState() => _AddAdressState();
+  State<EditAddress> createState() => _EditAddressState();
 }
 
-class _AddAdressState extends State<AddAdress> {
+class _EditAddressState extends State<EditAddress> {
   List<String> _states = [];
   List<String> _filterStates = [];
   TextEditingController searchController = TextEditingController();
@@ -104,7 +104,7 @@ class _AddAdressState extends State<AddAdress> {
         elevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
-          'Add Addresses',
+          'Edit Address',
           style: apptitle,
         ),
         centerTitle: true,
@@ -120,20 +120,53 @@ class _AddAdressState extends State<AddAdress> {
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 56),
-                  backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15))),
-              onPressed: _submitForm,
-              child: const Text(
-                'Save Address',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              )),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 56),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        side:
+                            const BorderSide(width: 1.5, color: Colors.black)),
+                    onPressed: () {
+                      setState(() {
+                        _ad1.clear();
+                        _ad2.clear();
+                        _ad3.clear();
+                        _city.clear();
+                        _state.clear();
+                        _pincode.clear();
+                      });
+                    },
+                    child: const Text(
+                      'Undo Changes',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    )),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 56),
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15))),
+                    onPressed: _submitForm,
+                    child: const Text(
+                      'Save Changes',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(

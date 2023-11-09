@@ -194,7 +194,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
                         )),
-                    const SizedBox(height: 15)
+                    const SizedBox(height: 10)
                   ],
                 ),
               ),

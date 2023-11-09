@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/profile_button.dart';
+import 'package:ezye/paymentScreens/wallet_screen.dart';
 import 'package:ezye/profilescreens/addresses_screen.dart';
 import 'package:ezye/profilescreens/wishlist_screen1.dart';
 import 'package:ezye/profilescreens/editprofile.dart';
@@ -48,195 +49,211 @@ class _ProfilePageState extends State<ProfilePage> {
   var size, height, width;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    setState(() {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    });
+
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            if (isLoggedIn == false)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (isLoggedIn == false)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: width / 1.5),
+                      SvgPicture.asset('assets/svg/cloud.svg'),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'To access your account, please log in or create a new account.',
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xff7C7D85)),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              minimumSize: const Size(208, 56)),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage()));
+                          },
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ))
+                    ],
+                  ),
+                ),
+              if (isLoggedIn == true)
+                Column(
                   children: [
-                    SizedBox(height: width / 1.5),
-                    SvgPicture.asset('assets/svg/cloud.svg'),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'To access your account, please log in or create a new account.',
-                      style: TextStyle(fontSize: 14, color: Color(0xff7C7D85)),
-                      textAlign: TextAlign.center,
+                    Container(
+                      height: width / 1.3,
+                      width: width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30)),
+                          color: const Color(0xff040707)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 50),
+                          Container(
+                            height: 120,
+                            width: 120,
+                            decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                    image: AssetImage('assets/png/user.png')),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                    width: 1.5,
+                                    color: const Color(0xffE8E9EE))),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            name != null ? name.toString() : 'Welcome',
+                            style: const TextStyle(
+                                color: Color(0xff7C7D85),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            _phone ?? '',
+                            style: const TextStyle(
+                                color: Color(0xff7C7D85),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 5),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(112, 28),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  backgroundColor: Colors.white),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EditProfile()));
+                              },
+                              child: const Text(
+                                'EDIT PROFILE',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w700),
+                              ))
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            minimumSize: const Size(208, 56)),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()));
-                        },
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        children: [
+                          CustomButton(
+                              title1: 'Addresses',
+                              svgPath: 'assets/svg/location.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Addresses()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'Wishlist',
+                              svgPath: 'assets/svg/heart.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WishListScreen()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'My Wallet',
+                              svgPath: 'assets/svg/wallet.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WalletPage()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'My Orders',
+                              svgPath: 'assets/svg/transaction.svg',
+                              onPressed: () {}),
+                          devider,
+                          CustomButton(
+                              title1: 'Settings',
+                              svgPath: 'assets/svg/setting.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SettingsPage()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'Help & Support',
+                              svgPath: 'assets/svg/helpdesk.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HelpAndSupport()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'Refer & Earn',
+                              svgPath: 'assets/svg/share.svg',
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ReferAndEarn()));
+                              }),
+                          devider,
+                          CustomButton(
+                              title1: 'Logout',
+                              svgPath: 'assets/svg/logout.svg',
+                              onPressed: _showDialog),
+                          devider
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            if (isLoggedIn == true)
-              Column(
-                children: [
-                  Container(
-                    height: width / 1.3,
-                    width: width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: const Color(0xff040707)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 50),
-                        Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                  image: AssetImage('assets/png/user.png')),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                  width: 1.5, color: const Color(0xffE8E9EE))),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          name != null ? name.toString() : 'Welcome',
-                          style: const TextStyle(
-                              color: Color(0xff7C7D85),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          _phone ?? '',
-                          style: const TextStyle(
-                              color: Color(0xff7C7D85),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(112, 28),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                                backgroundColor: Colors.white),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const EditProfile()));
-                            },
-                            child: const Text(
-                              'EDIT PROFILE',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w700),
-                            ))
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      children: [
-                        CustomButton(
-                            title1: 'Addresses',
-                            svgPath: 'assets/svg/location.svg',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Addresses()));
-                            }),
-                        devider,
-                        CustomButton(
-                            title1: 'Wishlist',
-                            svgPath: 'assets/svg/heart.svg',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const WishListScreen()));
-                            }),
-                        devider,
-                        CustomButton(
-                            title1: 'My wallet',
-                            svgPath: 'assets/svg/wallet.svg',
-                            onPressed: () {}),
-                        devider,
-                        CustomButton(
-                            title1: 'My Orders',
-                            svgPath: 'assets/svg/transaction.svg',
-                            onPressed: () {}),
-                        devider,
-                        CustomButton(
-                            title1: 'Settings',
-                            svgPath: 'assets/svg/setting.svg',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SettingsPage()));
-                            }),
-                        devider,
-                        CustomButton(
-                            title1: 'Help & Support',
-                            svgPath: 'assets/svg/helpdesk.svg',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HelpAndSupport()));
-                            }),
-                        devider,
-                        CustomButton(
-                            title1: 'Refer & Earn',
-                            svgPath: 'assets/svg/share.svg',
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ReferAndEarn()));
-                            }),
-                        devider,
-                        CustomButton(
-                            title1: 'Logout',
-                            svgPath: 'assets/svg/logout.svg',
-                            onPressed: _showDialog),
-                        devider
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-          ],
+            ],
+          ),
         ));
   }
 
