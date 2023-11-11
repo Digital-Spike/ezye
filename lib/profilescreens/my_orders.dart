@@ -1,5 +1,5 @@
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/profilescreens/order_detail_screen.dart';
+import 'package:ezye/orderscreens/order_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -94,6 +94,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         itemCount: 2,
                         itemBuilder: (context, index) {
@@ -192,7 +193,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                               borderRadius: BorderRadius.circular(5)),
                           minimumSize: const Size(double.infinity, 38)),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const OrderDetail()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const OrderDetail()));
                       },
                       child: const Text(
                         'View Details',

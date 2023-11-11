@@ -1,4 +1,5 @@
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/orderscreens/cancel_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -84,6 +85,7 @@ class _OrderDetailState extends State<OrderDetail> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,6 +218,186 @@ class _OrderDetailState extends State<OrderDetail> {
               const Text(
                 'Payment Details',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Payment Method',
+                    style: TextStyle(color: Color(0xff7C7D85)),
+                  ),
+                  Text('Phone Pay')
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Payment Status',
+                    style: TextStyle(color: Color(0xff7C7D85)),
+                  ),
+                  Text(
+                    'Paid',
+                    style: TextStyle(color: Color(0xff00CA14)),
+                  )
+                ],
+              ),
+              const SizedBox(height: 25),
+              const Text(
+                'Delivery Location',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
+                style: TextStyle(color: Color(0xff7C7D85)),
+              ),
+              const SizedBox(height: 25),
+              const Text(
+                'Billing Details',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total MRP',
+                    style: TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                  ),
+                  Text(
+                    '₹ 12,894.00',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Discount',
+                    style: TextStyle(fontSize: 16, color: Color(0xff00CA14)),
+                  ),
+                  Text(
+                    '- ₹ 8,976.00',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff00CA14)),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Coupon Discount',
+                    style: TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                  ),
+                  Text(
+                    '-',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'EZYE Coins',
+                    style: TextStyle(fontSize: 16, color: Color(0xff00CA14)),
+                  ),
+                  Text(
+                    '- ₹ 100.00',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff00CA14)),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Delivery Charges',
+                    style: TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                  ),
+                  Text(
+                    '₹ 150.00',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  )
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Tax',
+                    style: TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                  ),
+                  Text(
+                    '₹ 320.00',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  )
+                ],
+              ),
+              const SizedBox(height: 5),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: const Color(0xffE8E9EE).withOpacity(0.3)),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total Amount',
+                      style: TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                    ),
+                    Text(
+                      '₹ 3,818.00',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 54),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      side:
+                          const BorderSide(width: 2, color: Color(0xffF30000))),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CancelOrder()));
+                  },
+                  child: const Text(
+                    'Cancel Order',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xffF30000)),
+                  )),
+              const SizedBox(
+                height: 20,
               )
             ],
           ),
