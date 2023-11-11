@@ -1,7 +1,5 @@
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/home_screens/main_screen.dart';
-import 'package:ezye/paymentScreens/transaction_screen.dart';
-import 'package:ezye/providers/session_object.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,123 +14,175 @@ class _WalletPageState extends State<WalletPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           elevation: 0,
-          leading: const BackButton(color: Colors.black),
+          leading: const BackButton(color: Colors.white),
           title: const Text(
-            'Wallet',
-            style: apptitle,
+            'My Wallet',
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
           ),
           centerTitle: true,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              width: double.infinity,
-              height: 100,
-              color: buttonColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/icons/EZYE Coin black.png',
-                        height: 25,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${SessionObject.user.walletBalance ?? 0}',
-                        style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'Total Ezye Coins balance',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TransactionPage()));
-              },
-              child: Container(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
                 padding: const EdgeInsets.all(10),
                 width: double.infinity,
-                height: 100,
+                height: MediaQuery.of(context).size.height / 3,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30)),
+                    color: Colors.black),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Ezye Coins History',
-                            style: title1,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      '1,000',
+                      style: TextStyle(
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
+                    const Text(
+                      'Available Balance',
+                      style: TextStyle(fontSize: 18, color: Color(0xffBDC1CA)),
+                    ),
+                    const SizedBox(height: 60),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Column(
+                          children: [
+                            Text(
+                              '3,000',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              'Total Earnings',
+                              style: TextStyle(
+                                  fontSize: 16, color: Color(0xffBDC1CA)),
+                            )
+                          ],
+                        ),
+                        const SizedBox(width: 15),
+                        Container(
+                          width: 1,
+                          height: 50,
+                          color: const Color(0xff7C7D85),
+                        ),
+                        const SizedBox(width: 15),
+                        const Column(
+                          children: [
+                            Text(
+                              '2,000',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              'Total Spent',
+                              style: TextStyle(
+                                  fontSize: 16, color: Color(0xffBDC1CA)),
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      color: const Color(0xffE8E9EE).withOpacity(0.3)),
+                  child: const Text(
+                    'Transactions',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      primary: true,
+                      shrinkWrap: true,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: const Color(0xffE8E9EE)
+                                                .withOpacity(0.4)),
+                                        child: const Icon(
+                                            CupertinoIcons.clock_fill),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      const Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Earned from order',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          Text(
+                                            '07 Oct 2023  05:23 PM',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xff7C7D85)),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Text(
+                                    '100',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Color(0xff00CA14)),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              devider
+                            ],
                           ),
-                          Icon(
-                            CupertinoIcons.forward,
-                            color: indicator,
-                          )
-                        ],
-                      ),
-                      Text(
-                        'You can Check all Your Ezye Coins Earn and Spent History here',
-                        style: content,
-                      )
-                    ]),
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                'Frequently Asked Questions',
-                style: title,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const ExpansionTile(
-              expandedAlignment: Alignment.bottomLeft,
-              tilePadding: EdgeInsets.symmetric(horizontal: 10),
-              iconColor: Colors.black,
-              backgroundColor: Colors.white,
-              collapsedBackgroundColor: Colors.white,
-              childrenPadding: EdgeInsets.symmetric(horizontal: 10),
-              title: Text(
-                'What is Ezye Coins?',
-                style: subtitle,
-              ),
-              children: [
-                Text(
-                    '1. Ezey coins are the reward which you will get for purchase from Ezey app'),
-                SizedBox(
-                  height: 5,
-                )
-              ],
-            ),
-          ],
+                        );
+                      }),
+                ),
+              )
+            ],
+          ),
         ));
   }
 }

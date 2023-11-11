@@ -6,12 +6,11 @@ import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/multiselectchoicechip_widget.dart';
 import 'package:ezye/custom_widgets/persistentheader.dart';
-import 'package:ezye/home_screens/cart_screen.dart';
+
 import 'package:ezye/home_screens/category_screen.dart';
-import 'package:ezye/home_screens/main_screen.dart';
-import 'package:ezye/home_screens/product_detail_screen.dart';
+
 import 'package:ezye/home_screens/search_screen.dart';
-import 'package:ezye/home_screens/wishlist_screen.dart';
+
 import 'package:ezye/model/category.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/providers/session_object.dart';
@@ -147,10 +146,6 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 if (isLoggedIn) {
                   // User is logged in, navigate to the payment page
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const WishList()));
                 } else {
                   // User is not logged in, show the login dialog
                   _showLoginDialog1();
@@ -166,10 +161,6 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 if (isLoggedIn) {
                   // User is logged in, navigate to the payment page
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CartScreen()));
                 } else {
                   // User is not logged in, show the login dialog
                   _showLoginDialog();
@@ -387,19 +378,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductDetail(
-                                                        itemPrice:
-                                                            product.sellingPrice ??
-                                                                "0",
-                                                        productId:
-                                                            product.productId ??
-                                                                '')));
-                                      },
+                                      onTap: () {},
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Container(

@@ -129,6 +129,25 @@ class _SettingsPageState extends State<SettingsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
+                            'Return Policy',
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          ),
+                          Icon(CupertinoIcons.forward, color: Colors.black)
+                        ],
+                      )),
+                  const SizedBox(height: 15),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)),
+                          side: const BorderSide(
+                              width: 1, color: Color(0xffE8E9EE)),
+                          minimumSize: const Size(double.infinity, 64)),
+                      onPressed: () {},
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
                             'Terms & Conditions',
                             style: TextStyle(fontSize: 18, color: Colors.black),
                           ),

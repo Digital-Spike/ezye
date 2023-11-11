@@ -63,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700),
                             ),
-                            SvgPicture.asset("assets/icons/arrow.svg")
+                            SvgPicture.asset("assets/svg/arrow.svg")
                           ],
                         ))
                   ],

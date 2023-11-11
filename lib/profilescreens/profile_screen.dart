@@ -5,6 +5,7 @@ import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/profile_button.dart';
 import 'package:ezye/paymentScreens/wallet_screen.dart';
 import 'package:ezye/profilescreens/addresses_screen.dart';
+import 'package:ezye/profilescreens/my_orders.dart';
 import 'package:ezye/profilescreens/wishlist_screen1.dart';
 import 'package:ezye/profilescreens/editprofile.dart';
 import 'package:ezye/profilescreens/help_and_support.dart';
@@ -117,8 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           const SizedBox(height: 50),
                           Container(
-                            height: 120,
-                            width: 120,
+                            height: 86,
+                            width: 86,
                             decoration: BoxDecoration(
                                 image: const DecorationImage(
                                     image: AssetImage('assets/png/user.png')),
@@ -128,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 1.5,
                                     color: const Color(0xffE8E9EE))),
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 8),
                           Text(
                             name != null ? name.toString() : 'Welcome',
                             style: const TextStyle(
@@ -136,13 +137,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
                           ),
-                          const SizedBox(height: 5),
                           Text(
                             _phone ?? '',
                             style: const TextStyle(
                                 color: Color(0xff7C7D85),
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.w700),
                           ),
                           const SizedBox(height: 5),
                           ElevatedButton(
@@ -207,11 +207,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           CustomButton(
                               title1: 'My Orders',
                               svgPath: 'assets/svg/transaction.svg',
-                              onPressed: () {}),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyOrdersScreen()));
+                              }),
                           devider,
                           CustomButton(
                               title1: 'Settings',
-                              svgPath: 'assets/svg/setting.svg',
+                              svgPath: 'assets/svg/settings.svg',
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -222,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           devider,
                           CustomButton(
                               title1: 'Help & Support',
-                              svgPath: 'assets/svg/helpdesk.svg',
+                              svgPath: 'assets/svg/helpandsupport.svg',
                               onPressed: () {
                                 Navigator.push(
                                     context,

@@ -1,5 +1,6 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/product_screen1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -106,73 +107,82 @@ class _WishListScreenState extends State<WishListScreen> {
                     itemCount: imageList.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1 / 1.9,
+                            childAspectRatio: 1 / 1.92,
                             crossAxisSpacing: 10,
                             crossAxisCount: 2),
                     itemBuilder: ((context, int) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset(
-                                'assets/png/cloth.png',
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProductScreen()));
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Image.asset(
+                                  'assets/png/cloth.png',
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: Colors.black),
-                                  child: const Text(
-                                    'EZYE',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: Colors.black),
+                                    child: const Text(
+                                      'EZYE',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
                                   ),
-                                ),
-                                SvgPicture.asset('assets/svg/redheart.svg')
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Men Blue Washed Denim Jacket',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Text(
-                                  '₹ 2199',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                      color: Color(0xff7C7D85),
-                                      fontSize: 14),
-                                ),
-                                const SizedBox(width: 5),
-                                const Text(
-                                  '₹ 2000',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                const SizedBox(width: 5),
-                                Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: const Color(0xff00CA14)),
-                                  child: const Text(
-                                    '10% Off',
+                                  SvgPicture.asset('assets/svg/redheart.svg')
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Men Blue Washed Denim Jacket',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Text(
+                                    '₹ 2199',
                                     style: TextStyle(
-                                        fontSize: 12, color: Colors.white),
+                                        decoration: TextDecoration.lineThrough,
+                                        color: Color(0xff7C7D85),
+                                        fontSize: 14),
                                   ),
-                                )
-                              ],
-                            )
-                          ],
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    '₹ 2000',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Container(
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: const Color(0xff00CA14)),
+                                    child: const Text(
+                                      '10% Off',
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       );
                     })),
