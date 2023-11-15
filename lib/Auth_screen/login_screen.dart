@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             const SizedBox(width: 10),
                             SvgPicture.asset(
-                              'assets/icons/arrow.svg',
+                              'assets/svg/arrow.svg',
                               width: 22,
                               color: Colors.white,
                             )

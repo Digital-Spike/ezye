@@ -1,4 +1,5 @@
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -36,64 +37,109 @@ class _CateGoriesState extends State<CateGories> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 115,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Image.asset(
-                'assets/png/women.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-            Container(
-              height: 115,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Image.asset(
-                'assets/png/mens.png',
-                fit: BoxFit.fill,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CategoryPage(
+                            category: "Women's Collections")));
+              },
+              child: Container(
+                height: 115,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  'assets/png/women.png',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-            Container(
-              height: 115,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Image.asset(
-                'assets/png/boys.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-            Container(
-              height: 115,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Image.asset(
-                'assets/png/girls.png',
-                fit: BoxFit.fill,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const CategoryPage(category: "Men's Collections")));
+              },
+              child: Container(
+                height: 115,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  'assets/png/mens.png',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-            Container(
-              height: 115,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const CategoryPage(category: 'Boys Collections')));
+              },
+              child: Container(
+                height: 115,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  'assets/png/boys.png',
+                  fit: BoxFit.fill,
+                ),
               ),
-              child: Image.asset(
-                'assets/png/babies.png',
-                fit: BoxFit.fill,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const CategoryPage(category: 'Girls Collections')));
+              },
+              child: Container(
+                height: 115,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  'assets/png/girls.png',
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CategoryPage(
+                            category: 'Babies Collections')));
+              },
+              child: Container(
+                height: 115,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Image.asset(
+                  'assets/png/babies.png',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ],

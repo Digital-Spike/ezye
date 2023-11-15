@@ -1,5 +1,6 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/orderscreens/confirmation_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -1370,7 +1371,20 @@ class _CartPageState extends State<CartPage> {
                                                           15)),
                                               backgroundColor: Colors.black,
                                               minimumSize: const Size(240, 46)),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const ConfirmationScreen(
+                                                            title:
+                                                                'Congratulations! Your order\nplaced & You Earned 50 EZYE\nCoins.',
+                                                            subtitle: '',
+                                                            image:
+                                                                'assets/png/Ezyecoins.png',
+                                                            svgpath:
+                                                                'assets/svg/orderconfirm.svg')));
+                                          },
                                           child: const Text(
                                             'Confirm Order',
                                             style: TextStyle(

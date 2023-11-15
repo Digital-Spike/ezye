@@ -78,6 +78,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       )
                     ],
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     width: double.infinity,
                     padding:

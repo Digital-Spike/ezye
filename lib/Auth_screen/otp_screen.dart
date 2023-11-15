@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/Auth_screen/testlogin.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
@@ -93,23 +94,29 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
               children: [Text('00:$_start')],
             ),
             const Spacer(),
-            RichText(
-              text: TextSpan(
-                  text:
-                      'A one-time password has been sent to your mobile number ${widget.number}. ',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff7C7D85)),
-                  children: const [
-                    TextSpan(
-                        text: ' Need to change it?',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff040707)))
-                  ]),
-              textAlign: TextAlign.center,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: RichText(
+                text: TextSpan(
+                    text:
+                        'A one-time password has been sent to your mobile number ${widget.number}. ',
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff7C7D85)),
+                    children: const [
+                      TextSpan(
+                          text: ' Need to change it?',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff040707)))
+                    ]),
+                textAlign: TextAlign.center,
+              ),
             ),
             SizedBox(height: 10),
             if (otpCode.length == 6)

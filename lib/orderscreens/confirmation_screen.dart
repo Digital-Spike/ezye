@@ -4,7 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ConfirmationScreen extends StatefulWidget {
-  const ConfirmationScreen({super.key});
+  final String title;
+  final String subtitle;
+  final String image;
+  final String svgpath;
+  const ConfirmationScreen(
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.image,
+      required this.svgpath});
 
   @override
   State<ConfirmationScreen> createState() => _ConfirmationScreenState();
@@ -12,15 +21,20 @@ class ConfirmationScreen extends StatefulWidget {
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
   @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    setState(() {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    });
+    setState(() {});
     return Scaffold(
       body: Stack(
         children: [
           SvgPicture.asset(
-            'assets/svg/cancelorder.svg',
+            widget.svgpath,
             fit: BoxFit.cover,
           ),
           Column(
@@ -29,27 +43,27 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             children: [
               Center(
                 child: Image.asset(
-                  'assets/png/cancelorder.png',
-                  height: 120,
+                  widget.image,
                 ),
               ),
               const SizedBox(height: 15),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  'Your order has been canceled!',
-                  style: TextStyle(
+                  widget.title,
+                  style: const TextStyle(
                       fontSize: 24,
                       color: Colors.white,
                       fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 5),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  'The refunded amount will be transferred to your EZYE wallet.',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  widget.subtitle,
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),

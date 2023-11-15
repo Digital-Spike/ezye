@@ -22,7 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: screenHeight,
               width: screenWidth,
               child: Image.asset(
-                'assets/Group 3.png',
+                'assets/png/Group 3.png',
                 fit: BoxFit.fill,
               ),
             ),

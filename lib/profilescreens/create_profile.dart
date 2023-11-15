@@ -2,6 +2,7 @@
 
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/orderscreens/confirmation_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -234,17 +235,17 @@ class _CreateProfileState extends State<CreateProfile> {
     if (response.statusCode == 200) {
       Navigator.pushAndRemoveUntil(
         context,
-        PageRouteBuilder(pageBuilder: (context, a, b) => const HomePage()),
+        PageRouteBuilder(
+            pageBuilder: (context, a, b) => const ConfirmationScreen(
+                  title:
+                      'Congratulations! Your\naccount has been successfully\ncreated.',
+                  subtitle: '',
+                  image: 'assets/png/registered.png',
+                  svgpath: 'assets/svg/registered.svg',
+                )),
         (route) => false,
       );
-      const snackdemo = SnackBar(
-        content: Text("Created successfully.."),
-        backgroundColor: Colors.green,
-        elevation: 10,
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(5),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+
       print('User data saved successfully');
     } else {
       print('Failed to save user data: ${response.statusCode}');

@@ -548,7 +548,14 @@ class _CancelOrderState extends State<CancelOrder> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const ConfirmationScreen()));
+                                        const ConfirmationScreen(
+                                          title:
+                                              'Your order has been canceled!',
+                                          subtitle:
+                                              'The refunded amount will be transferred to your EZYE wallet.',
+                                          image: 'assets/png/cancelorder.png',
+                                          svgpath: 'assets/svg/cancelorder.svg',
+                                        )));
                           }
                           continueN = !continueN;
                         });
@@ -566,7 +573,7 @@ class _CancelOrderState extends State<CancelOrder> {
           ),
           const SizedBox(
             height: 10,
-          )
+          ),
         ],
       ),
     );

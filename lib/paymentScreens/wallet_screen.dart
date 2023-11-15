@@ -128,7 +128,8 @@ class _WalletPageState extends State<WalletPage> {
                       itemCount: 10,
                       itemBuilder: (context, index) {
                         return Container(
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           child: Column(
                             children: [
                               Row(
@@ -147,19 +148,19 @@ class _WalletPageState extends State<WalletPage> {
                                         child: const Icon(
                                             CupertinoIcons.clock_fill),
                                       ),
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 10),
                                       const Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Earned from order',
-                                            style: TextStyle(fontSize: 18),
+                                            style: TextStyle(fontSize: 16),
                                           ),
                                           Text(
                                             '07 Oct 2023  05:23 PM',
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Color(0xff7C7D85)),
                                           )
                                         ],
