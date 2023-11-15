@@ -67,6 +67,7 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         height: 90,
         child: Column(
           children: [
