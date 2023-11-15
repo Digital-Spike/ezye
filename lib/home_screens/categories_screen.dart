@@ -14,6 +14,7 @@ class _CateGoriesState extends State<CateGories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -43,7 +44,7 @@ class _CateGoriesState extends State<CateGories> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const CategoryPage(
-                            category: "Women's Collections")));
+                            category: "Women")));
               },
               child: Container(
                 height: 115,
@@ -64,7 +65,7 @@ class _CateGoriesState extends State<CateGories> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const CategoryPage(category: "Men's Collections")));
+                            const CategoryPage(category: "Men")));
               },
               child: Container(
                 height: 115,
@@ -85,7 +86,7 @@ class _CateGoriesState extends State<CateGories> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const CategoryPage(category: 'Boys Collections')));
+                            const CategoryPage(category: 'Boy')));
               },
               child: Container(
                 height: 115,
@@ -106,7 +107,7 @@ class _CateGoriesState extends State<CateGories> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const CategoryPage(category: 'Girls Collections')));
+                            const CategoryPage(category: 'Girl')));
               },
               child: Container(
                 height: 115,

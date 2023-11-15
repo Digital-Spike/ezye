@@ -104,7 +104,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.category,
+                      widget.category+"'s Collections",
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w600),
                     ),

@@ -1,9 +1,8 @@
 import 'package:ezye/home_screens/cart_screen1.dart';
 import 'package:ezye/home_screens/categories_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
-import 'package:ezye/paymentScreens/wallet_screen.dart';
 import 'package:ezye/profilescreens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -40,9 +39,9 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {
             _selectedIndex = 0;
           });
-          return false; // Prevent app from closing
+          return false;
         }
-        return true; // Allow app to close
+        return true;
       },
       child: Scaffold(
         body: Center(

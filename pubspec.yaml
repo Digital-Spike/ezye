@@ -37,6 +37,7 @@ dependencies:
   searchfield: ^0.8.7
   dots_indicator: ^3.0.0
   easy_stepper: ^0.8.1
+  animate_do: ^3.1.2
 
 dev_dependencies:
   flutter_test:

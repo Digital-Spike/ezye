@@ -1,6 +1,9 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/orderscreens/confirmation_screen.dart';
+import 'package:ezye/paymentScreens/coupan_screen.dart';
+import 'package:ezye/paymentScreens/order_confirm_screen.dart';
+import 'package:ezye/profilescreens/select_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +65,7 @@ class _CartPageState extends State<CartPage> {
     height = size.height;
     width = size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: BottomAppBar(
         height: 90,
         child: Column(
@@ -515,10 +519,19 @@ class _CartPageState extends State<CartPage> {
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: devider,
                           ),
-                          const Text(
-                            'VIEW COUPONS',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CoupanPage()));
+                            },
+                            child: const Text(
+                              'VIEW COUPONS',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w700),
+                            ),
                           )
                         ],
                       ),
@@ -537,7 +550,13 @@ class _CartPageState extends State<CartPage> {
                         ),
                         const SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SelectAddress()));
+                          },
                           child: Container(
                             padding: const EdgeInsets.all(3),
                             decoration: BoxDecoration(
@@ -1376,14 +1395,7 @@ class _CartPageState extends State<CartPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const ConfirmationScreen(
-                                                            title:
-                                                                'Congratulations! Your order\nplaced & You Earned 50 EZYE\nCoins.',
-                                                            subtitle: '',
-                                                            image:
-                                                                'assets/png/Ezyecoins.png',
-                                                            svgpath:
-                                                                'assets/svg/orderconfirm.svg')));
+                                                        const OrderConfirmScreen()));
                                           },
                                           child: const Text(
                                             'Confirm Order',

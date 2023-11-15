@@ -60,7 +60,7 @@ class _AddressesState extends State<Addresses> {
                 ),
               ),
             ),
-          if (address == 1)
+          if (address >= 1)
             Expanded(
               child: Padding(
                   padding:

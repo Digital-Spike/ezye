@@ -13,33 +13,37 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgcolor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: const BackButton(
-          color: buttonColor,
-        ),
-        centerTitle: true,
+        automaticallyImplyLeading: false,
         elevation: 0,
-        title: TextField(
+        title: TextFormField(
           decoration: InputDecoration(
-              fillColor: bgcolor,
-              filled: true,
               isDense: true,
               prefixIcon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SvgPicture.asset(
-                  'assets/icons/Search.svg',
+                  'assets/svg/searching.svg',
                   height: 23,
                   width: 23,
-                  color: Colors.grey[800],
                 ),
               ),
               prefixIconConstraints:
                   const BoxConstraints(minHeight: 28, minWidth: 28),
-              hintText: 'Search Your Favorite...',
+              hintStyle:
+                  const TextStyle(fontSize: 14, color: Color(0xffBDC1CA)),
+              hintText: 'Search product, category, etc',
+              focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide(width: 1.5, color: Color(0xffE8E9EE))),
+              enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide(width: 1.5, color: Color(0xffE8E9EE))),
               border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)))),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide:
+                      BorderSide(width: 1.5, color: Color(0xffE8E9EE)))),
         ),
       ),
     );
