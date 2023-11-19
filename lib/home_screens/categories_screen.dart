@@ -3,14 +3,14 @@ import 'package:ezye/home_screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CateGories extends StatefulWidget {
-  const CateGories({super.key});
+class Categories extends StatefulWidget {
+  const Categories({super.key});
 
   @override
-  State<CateGories> createState() => _CateGoriesState();
+  State<Categories> createState() => _CategoriesState();
 }
 
-class _CateGoriesState extends State<CateGories> {
+class _CategoriesState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +43,14 @@ class _CateGoriesState extends State<CateGories> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CategoryPage(
-                            category: "Women")));
+                        builder: (context) =>
+                            const CategoryPage(category: "Women")));
               },
               child: Container(
                 height: 115,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -70,7 +71,8 @@ class _CateGoriesState extends State<CateGories> {
               child: Container(
                 height: 115,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -91,7 +93,8 @@ class _CateGoriesState extends State<CateGories> {
               child: Container(
                 height: 115,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -112,7 +115,8 @@ class _CateGoriesState extends State<CateGories> {
               child: Container(
                 height: 115,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -127,13 +131,14 @@ class _CateGoriesState extends State<CateGories> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CategoryPage(
-                            category: 'Babies Collections')));
+                        builder: (context) =>
+                            const CategoryPage(category: "Babies")));
               },
               child: Container(
                 height: 115,
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
