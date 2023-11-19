@@ -90,6 +90,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> getUser() async {
     try {
+      /* PhonePePaymentSdk.init("PRODUCTION", "testAppId", "DIGITALSPONLINE", true)
+          .then((val) =>
+              {print('**********'), print('PhonePe SDK Initialized - $val')})
+          .catchError((error) {
+        print(error);
+      });*/
       if (FirebaseUser.user?.uid == null) {
         return Future.value(false);
       }

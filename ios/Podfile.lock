@@ -51,6 +51,10 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - phonepe_payment_sdk (1.0.3):
+    - Flutter
+    - PhonePePayment (= 2.6.0)
+  - PhonePePayment (2.6.0)
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
   - share_plus (0.0.1):
@@ -75,6 +79,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - phonepe_payment_sdk (from `.symlinks/plugins/phonepe_payment_sdk/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
@@ -92,6 +97,7 @@ SPEC REPOS:
     - FMDB
     - GoogleUtilities
     - GTMSessionFetcher
+    - PhonePePayment
     - PromisesObjC
     - RecaptchaInterop
     - Toast
@@ -107,6 +113,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  phonepe_payment_sdk:
+    :path: ".symlinks/plugins/phonepe_payment_sdk/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -134,6 +142,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  phonepe_payment_sdk: c4fc2f011e8cf31bbd460c6fe423f5e85351478b
+  PhonePePayment: a23a9cec49aa34eaa7f83c89f7381ea76e1de477
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
@@ -146,4 +156,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f8076b1e4c84a5e8abd47440978d36aee44a27e5
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.2

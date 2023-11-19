@@ -4,7 +4,6 @@ import 'package:ezye/Auth_screen/otp_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void checkCurrentUser() async {
+    /*String? signature = await PhonePePaymentSdk.getPackageSignatureForAndroid();
+    print(signature);*/
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // User is already logged in, navigate to HomePage
