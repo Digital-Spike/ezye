@@ -1,6 +1,6 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/home_screens/product_screen1.dart';
+import 'package:ezye/home_screens/product_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -116,7 +116,9 @@ class _WishListScreenState extends State<WishListScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const ProductScreen()));
+                                  builder: (context) => ProductScreen(
+                                        productId: "",
+                                      )));
                         },
                         child: Container(
                           child: Column(
