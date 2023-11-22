@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ezye/Auth_screen/onboarding_screen.dart';
 import 'package:ezye/model/user.dart';
+import 'package:ezye/profilescreens/create_profile.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:ezye/services/auth.dart';
@@ -10,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'Auth_screen/add_user.dart';
 import 'home_screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
               : Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const AddUser()),
+                      builder: (BuildContext context) => const CreateProfile()),
                 );
         }
       });
@@ -113,8 +113,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
-        SessionObject.user = UserModel.fromJson(jsonDecode(response.body));
-        isUserExists = jsonDecode(response.body)['userId'] != null;
+        Map<String, dynamic> user =
+            (jsonDecode(response.body) as List).firstOrNull;
+        SessionObject.user = UserModel.fromJson(user);
+        isUserExists = user['userId'] != null;
         return true;
       }
     } catch (e) {

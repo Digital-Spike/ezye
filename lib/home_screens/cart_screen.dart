@@ -1,11 +1,9 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/orderscreens/confirmation_screen.dart';
 import 'package:ezye/paymentScreens/coupan_screen.dart';
 import 'package:ezye/paymentScreens/order_confirm_screen.dart';
 import 'package:ezye/profilescreens/select_address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -26,6 +24,7 @@ class _CartPageState extends State<CartPage> {
   int cartCount = 3;
   int counter = 0;
   int count = 1;
+
   void incrementCounter() {
     setState(() {
       count++;
