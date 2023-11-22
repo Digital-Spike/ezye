@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:ezye/Auth_screen/onboarding_screen.dart';
-import 'package:ezye/Auth_screen/testlogin.dart';
 import 'package:ezye/model/user.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
@@ -10,6 +9,9 @@ import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'Auth_screen/add_user.dart';
+import 'home_screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -78,11 +80,17 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           );
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const TestLogin()),
-          );
+          isUserExists
+              ? Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const MainScreen()),
+                )
+              : Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const AddUser()),
+                );
         }
       });
     });

@@ -1,12 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/home_screens/home_screen.dart';
+import 'package:ezye/model/user.dart';
 import 'package:ezye/orderscreens/confirmation_screen.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class CreateProfile extends StatefulWidget {
@@ -21,18 +22,8 @@ class _CreateProfileState extends State<CreateProfile> {
   late String? _phone;
   var name = TextEditingController();
   var email = TextEditingController();
-  var refferal = TextEditingController();
+  var referral = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      if (name.text.isEmpty && email.text.isEmpty && _phone!.isEmpty) {
-        return;
-      }
-
-      _saveUserData();
-    } else {}
-  }
 
   @override
   void initState() {
@@ -52,7 +43,11 @@ class _CreateProfileState extends State<CreateProfile> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 minimumSize: const Size(double.infinity, 56)),
-            onPressed: _submitForm,
+            onPressed: () {
+              if (!_formKey.currentState!.validate()) return;
+              showProcessingDialogue();
+              _saveUserData();
+            },
             child: const Text(
               'Create Account',
               style: TextStyle(
@@ -196,15 +191,15 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                       const SizedBox(height: 15),
                       const Text(
-                        "Refferal Code",
+                        "Referral Code",
                         style: subtitle,
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
-                        controller: refferal,
+                        controller: referral,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                            hintText: 'Enter refferal code',
+                            hintText: 'Enter referral code',
                             isDense: true,
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15))),
@@ -221,18 +216,50 @@ class _CreateProfileState extends State<CreateProfile> {
     );
   }
 
+  showProcessingDialogue() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      'Creating your account...',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<dynamic> _saveUserData() async {
     String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    String apiUrl = "https://ezys.in/customerApp/addUser.php";
-    var response = await http.post(Uri.parse(apiUrl), body: {
-      "userId": userId,
-      "name": name.text,
-      "email": email.text,
-      "mobile": _phone?.replaceFirst("", "+91"),
-      'refferal': refferal.text
-    });
+    var reqBody = {
+      'userId': userId,
+      'name': name.text,
+      'email': email.text,
+      'mobile': FirebaseAuth.instance.currentUser?.phoneNumber,
+      'cartId': FirebaseUser.getCartId()
+    };
+
+    var response = await http.post(
+      Uri.parse('${ApiService.url}/addUser.php'),
+      body: reqBody,
+    );
 
     if (response.statusCode == 200) {
+      SessionObject.user = UserModel.fromJson(reqBody);
       Navigator.pushAndRemoveUntil(
         context,
         PageRouteBuilder(
@@ -245,10 +272,6 @@ class _CreateProfileState extends State<CreateProfile> {
                 )),
         (route) => false,
       );
-
-      print('User data saved successfully');
-    } else {
-      print('Failed to save user data: ${response.statusCode}');
     }
   }
 }

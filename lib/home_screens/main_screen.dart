@@ -1,4 +1,4 @@
-import 'package:ezye/home_screens/cart_screen1.dart';
+import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/home_screens/categories_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/profilescreens/profile_screen.dart';

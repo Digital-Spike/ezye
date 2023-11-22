@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:ezye/Auth_screen/login_screen.dart';
-import 'package:ezye/Auth_screen/testlogin.dart';
-import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
+import 'package:ezye/profilescreens/create_profile.dart';
+import 'package:ezye/services/api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:sms_autofill/sms_autofill.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -19,6 +22,8 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
   String verificationIdentity = '';
   String otpCode = '';
+  User? user;
+
   @override
   void initState() {
     startTimer();
@@ -162,25 +167,70 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
   }
 
   Future<void> verifyPhoneNumber({context, otp}) async {
-    try {
-      FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationIdentity, smsCode: otp);
 
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationIdentity, smsCode: otp);
-      User? user = (await auth.signInWithCredential(credential)).user;
-      if (user != null) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const TestLogin()));
+    await auth.signInWithCredential(credential).then(
+      (value) {
+        user = FirebaseAuth.instance.currentUser;
+      },
+    ).whenComplete(
+      () async {
+        bool isUserExist = await getUser(user?.uid ?? '');
+        if (!isUserExist && mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateProfile(),
+            ),
+          );
+          return;
+        }
+        if (user != null) {
+          Fluttertoast.showToast(
+            msg: "You are logged in successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.greenAccent,
+            textColor: Colors.black,
+            fontSize: 16.0,
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainScreen(),
+            ),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "your login is failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      },
+    );
+  }
+
+  Future<bool> getUser(String userId) async {
+    try {
+      var getUserUrl = Uri.parse('${ApiService.url}/getUser.php');
+      var reqBody = {"userId": userId};
+
+      var response = await http.post(getUserUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        return (jsonDecode(response.body) as List).first['userId'] != null;
       }
+      return false;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-          'Invalid OTP',
-          style: TextStyle(fontFamily: 'Nunito'),
-        )),
-      );
-      print('Error ${e.toString()}');
+      debugPrint(e.toString());
+      return false;
     }
   }
 

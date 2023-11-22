@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
-import 'package:ezye/home_screens/cart_screen1.dart';
+import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/home_screens/product_screen.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/profilescreens/wishlist_screen1.dart';
