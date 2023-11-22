@@ -6,7 +6,9 @@ import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/home_screens/product_screen.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/profilescreens/wishlist_screen1.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +26,8 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isLiked = false;
   Future<bool>? listItems;
   List<Product> products = [];
+  User? user = FirebaseAuth.instance.currentUser;
+  List<Product> bookmarkList = [];
 
   @override
   void initState() {
@@ -160,6 +164,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                     crossAxisCount: 2),
                             itemBuilder: ((context, index) {
                               Product product = products[index];
+                              products[index].isSaved = isSaved(product);
+                              print(products[index].isSaved);
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -218,13 +224,19 @@ class _CategoryPageState extends State<CategoryPage> {
                                           ),
                                         ),
                                         GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
+                                              isLiked = isSaved(product);
+                                              !isSaved(product)
+                                                  ? await addToWishlist(product)
+                                                  : await removeFromWishlist(
+                                                      product);
                                               setState(() {
-                                                isLiked = !isLiked;
+                                                products[index].isSaved =
+                                                    !isLiked;
                                               });
                                             },
                                             child: SvgPicture.asset(
-                                              isLiked
+                                              products[index].isSaved
                                                   ? 'assets/svg/redheart.svg'
                                                   : 'assets/svg/greyheart.svg',
                                             ))
@@ -302,11 +314,75 @@ class _CategoryPageState extends State<CategoryPage> {
           .map((item) => Product.fromJson(item))
           .toList();
 
+      if (SessionObject.user.userId != null) {
+        await getWishList();
+      }
+
       return true;
     } catch (e) {
       debugPrint(e.toString());
     }
 
     return true;
+  }
+
+  Future<bool> addToWishlist(Product product) async {
+    try {
+      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var reqBody = {
+        "userId": user?.uid ?? '',
+        "productId": product.productId,
+        "name": product.name,
+        "category": product.category,
+        "subCategory": product.subCategory,
+        "MRP": product.mrp,
+        "sellingPrice": product.sellingPrice,
+        "description": product.description,
+      };
+
+      var response = await http.post(addToWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<void> getWishList() async {
+    String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
+    var bookmarkResponse =
+        await http.post(Uri.parse(bookmarkUrl), body: {"userId": user?.uid});
+    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
+  }
+
+  bool isSaved(Product product) {
+    List<Product> list = bookmarkList
+        .where((element) => element.productId == product.productId)
+        .toList();
+    return list.isNotEmpty;
+  }
+
+  Future<bool> removeFromWishlist(Product product) async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}/removeWishlist.php');
+      var reqBody = {"userId": user?.uid ?? '', "productId": product.productId};
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 }
