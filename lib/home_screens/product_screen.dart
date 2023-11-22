@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/model/product.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -18,8 +21,6 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> products = [];
-  bool wishList = false;
-  bool addToCart = false;
   bool selectedSize = false;
   String size = '';
   int? _value = -1;
@@ -45,21 +46,17 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
-  int counter = 0;
-  int count = 0;
+  int itemCount = 1;
   void incrementCounter() {
     setState(() {
-      count++;
+      itemCount++;
     });
   }
 
   void decrementCounter() {
     setState(() {
-      if (count > 0) {
-        count--;
-      }
-      if (count < 1) {
-        addToCart = !addToCart;
+      if (itemCount > 0) {
+        itemCount--;
       }
     });
   }
@@ -115,103 +112,85 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Row(
             children: [
               Expanded(
+                child: Container(
+                  height: 56,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    border: Border.all(width: 0.1, color: Colors.grey.shade200),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            decrementCounter();
+                          },
+                          child: SvgPicture.asset(
+                            'assets/svg/minus.svg',
+                            height: 50,
+                          )),
+                      Text(
+                        itemCount.toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20),
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            incrementCounter();
+                          },
+                          child: SvgPicture.asset(
+                            'assets/svg/add.svg',
+                            height: 50,
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor:
-                            wishList ? Colors.white : const Color(0xff00CA14),
+                        backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         minimumSize: const Size(double.infinity, 56),
-                        side: BorderSide(
-                            width: 1.5,
-                            color: wishList
-                                ? Colors.black
-                                : const Color(0xff00CA14))),
-                    onPressed: () {
-                      setState(() {
-                        wishList = !wishList;
-                      });
+                        side:
+                            const BorderSide(width: 1.5, color: Colors.black)),
+                    onPressed: () async {
+                      showProcessingDialogue();
+                      bool isAddedToCart = await addToCart();
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CartPage()));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(isAddedToCart
+                              ? "Item added to cart successfully.."
+                              : "Something went wrong. please try again later.."),
+                          backgroundColor:
+                              isAddedToCart ? Colors.green : Colors.redAccent,
+                          elevation: 10,
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.all(5),
+                        ),
+                      );
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                          'assets/svg/heart.svg',
-                          color: wishList ? Colors.black : Colors.white,
-                        ),
                         Text(
-                          wishList ? ' Wishlist' : ' Added',
+                          'Add to cart',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: wishList ? Colors.black : Colors.white),
+                              color: Colors.white),
                         ),
                       ],
                     )),
               ),
-              const SizedBox(width: 20),
-              if (addToCart == false)
-                Expanded(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          backgroundColor: Colors.black,
-                          minimumSize: const Size(double.infinity, 56),
-                          side: const BorderSide(
-                              width: 1.5, color: Colors.black)),
-                      onPressed: () {
-                        setState(() {
-                          addToCart = !addToCart;
-                          incrementCounter();
-                        });
-                      },
-                      child: const Text(
-                        'Add to Cart',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      )),
-                ),
-              if (addToCart == true)
-                Expanded(
-                  child: Container(
-                    height: 56,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      border:
-                          Border.all(width: 0.1, color: Colors.grey.shade200),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              decrementCounter();
-                            },
-                            child: SvgPicture.asset(
-                              'assets/svg/minus.svg',
-                              height: 50,
-                            )),
-                        Text(
-                          count.toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 20),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              incrementCounter();
-                            },
-                            child: SvgPicture.asset(
-                              'assets/svg/add.svg',
-                              height: 50,
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
             ],
           ),
         ),
@@ -427,7 +406,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 16),
-                                    selected: _value == [index],
+                                    selected: _value == index,
                                     backgroundColor: _value == index
                                         ? Colors.black
                                         : const Color(0xffE8E9EE),
@@ -500,5 +479,76 @@ class _ProductScreenState extends State<ProductScreen> {
       print('Error: $error');
     }
     return false;
+  }
+
+  Future<bool> addToCart() async {
+    try {
+/*      await getCartItems();
+
+      List<CartItem> cartItem = cartItems
+          .where((element) => element.productId == product?.productId)
+          .toList();
+
+      if (cartItem.isNotEmpty) {
+        previousCartQty = int.parse(cartItems.first.quantity.toString());
+        await updateCartQuantity();
+        return true;
+      }*/
+
+      var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": products.first.productId,
+        "productName": products.first.name,
+        "size": products.first.size,
+        "color": products.first.color,
+        "amount": getTotalPrice(),
+        "cartId": SessionObject.user.cartId ?? "",
+        "quantity": itemCount.toString(),
+        "imageUrl": products.first.image1Url
+      };
+
+      var response = await http.post(addToCartUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  getTotalPrice() {
+    double itemTotal =
+        double.parse(products.first.sellingPrice ?? "") * itemCount;
+    return itemTotal.toString();
+  }
+
+  showProcessingDialogue() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      'Processing...',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
