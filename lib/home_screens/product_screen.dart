@@ -20,11 +20,12 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<Product> products = [];
+  Product? product;
   bool selectedSize = false;
   String size = '';
   int? _value = -1;
   List<String> imgList = [];
+  List<Product> bookmarkList = [];
   int currentIndex = 0;
   List<Color> colors = [
     const Color(0xff243B4C),
@@ -70,137 +71,148 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withOpacity(0.2)),
-            child: const BackButton()),
-        actions: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withOpacity(0.2)),
-            child: SvgPicture.asset(
-              'assets/svg/heart.svg',
-              height: 25,
-              width: 25,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(5),
-            margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withOpacity(0.2)),
-            child: SvgPicture.asset('assets/svg/cart.svg'),
-          ),
-        ],
-      ),
-      extendBodyBehindAppBar: true,
-      bottomNavigationBar: BottomAppBar(
-        elevation: 10,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          height: 80,
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 56,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    border: Border.all(width: 0.1, color: Colors.grey.shade200),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            decrementCounter();
-                          },
-                          child: SvgPicture.asset(
-                            'assets/svg/minus.svg',
-                            height: 50,
-                          )),
-                      Text(
-                        itemCount.toString(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            incrementCounter();
-                          },
-                          child: SvgPicture.asset(
-                            'assets/svg/add.svg',
-                            height: 50,
-                          )),
-                    ],
-                  ),
+    return FutureBuilder<bool>(
+        future: listItems,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white.withOpacity(0.2)),
+                      child: const BackButton()),
+                  actions: [
+                    GestureDetector(
+                        onTap: () async {
+                          showProcessingDialogue();
+                          isSaved()
+                              ? await addToWishlist()
+                              : await removeFromWishlist();
+                          if (mounted) {
+                            Navigator.of(context).pop();
+                          }
+                          setState(() {});
+                        },
+                        child: SvgPicture.asset(
+                          isSaved()
+                              ? 'assets/svg/heart.svg'
+                              : 'assets/svg/redheart.svg',
+                          height: 30,
+                        )),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white.withOpacity(0.2)),
+                      child: SvgPicture.asset('assets/svg/cart.svg'),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        minimumSize: const Size(double.infinity, 56),
-                        side:
-                            const BorderSide(width: 1.5, color: Colors.black)),
-                    onPressed: () async {
-                      showProcessingDialogue();
-                      bool isAddedToCart = await addToCart();
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CartPage()));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(isAddedToCart
-                              ? "Item added to cart successfully.."
-                              : "Something went wrong. please try again later.."),
-                          backgroundColor:
-                              isAddedToCart ? Colors.green : Colors.redAccent,
-                          elevation: 10,
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(5),
-                        ),
-                      );
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                extendBodyBehindAppBar: true,
+                bottomNavigationBar: BottomAppBar(
+                  elevation: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    height: 80,
+                    child: Row(
                       children: [
-                        Text(
-                          'Add to cart',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                        Expanded(
+                          child: Container(
+                            height: 56,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              border: Border.all(
+                                  width: 0.1, color: Colors.grey.shade200),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      decrementCounter();
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/svg/minus.svg',
+                                      height: 50,
+                                    )),
+                                Text(
+                                  itemCount.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      incrementCounter();
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/svg/add.svg',
+                                      height: 50,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  minimumSize: const Size(double.infinity, 56),
+                                  side: const BorderSide(
+                                      width: 1.5, color: Colors.black)),
+                              onPressed: () async {
+                                showProcessingDialogue();
+                                bool isAddedToCart = await addToCart();
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CartPage()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(isAddedToCart
+                                        ? "Item added to cart successfully.."
+                                        : "Something went wrong. please try again later.."),
+                                    backgroundColor: isAddedToCart
+                                        ? Colors.green
+                                        : Colors.redAccent,
+                                    elevation: 10,
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(5),
+                                  ),
+                                );
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Add to cart',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              )),
                         ),
                       ],
-                    )),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: FutureBuilder<bool>(
-          future: listItems,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (products.isNotEmpty) {
-                return SingleChildScrollView(
+                    ),
+                  ),
+                ),
+                body: SingleChildScrollView(
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,7 +292,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            products.first.name ?? '',
+                            product?.name ?? '',
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.black),
                           ),
@@ -288,7 +300,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           Row(
                             children: [
                               Text(
-                                '₹${products.first.mrp}',
+                                '₹${product?.mrp}',
                                 style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xff7C7D85),
@@ -296,7 +308,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                '₹${products.first.sellingPrice}',
+                                '₹${product?.sellingPrice}',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
@@ -347,8 +359,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                               BorderRadius.circular(10),
                                           border: selectedColorIndex == index
                                               ? Border.all(
-                                                  color: Colors
-                                                      .black, // Add your desired stroke color
+                                                  color: Colors.black,
+                                                  // Add your desired stroke color
                                                   width:
                                                       1.5, // Adjust the stroke width as needed
                                                 )
@@ -424,7 +436,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w600)),
                           const SizedBox(height: 5),
                           Text(
-                            '${products.first.fullDescription}',
+                            '${product?.fullDescription}',
                             style: const TextStyle(
                                 fontSize: 14, color: Color(0xff3E3E41)),
                             textAlign: TextAlign.justify,
@@ -433,47 +445,48 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                     )
                   ],
-                ));
-              } else {
-                return const Text(
-                    "Something went wrong. Please try again later");
-              }
-            }
+                )));
+          }
 
-            if (snapshot.hasError || snapshot.data == false) {
-              return const Text("Something went wrong. Please try again later");
-            }
-            return const Center(child: CircularProgressIndicator());
-          }),
-    );
+          if (snapshot.hasError || snapshot.data == false) {
+            return const Text("Something went wrong. Please try again later");
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   Future<bool> fetchData() async {
     try {
+      if (SessionObject.user.userId != null) {
+        await getWishList();
+      }
+
       var productUrl = Uri.parse('${ApiService.url}/getProductDetails.php');
       var response =
           await http.post(productUrl, body: {"productId": widget.productId});
 
       if (response.statusCode == 200) {
-        products = (json.decode(response.body) as List)
+        product = (json.decode(response.body) as List)
             .map((item) => Product.fromJson(item))
-            .toList();
-        if ((products.first.image1Url ?? '').isNotEmpty) {
-          imgList.add(products.first.image1Url ?? '');
+            .toList()
+            .first;
+        if ((product?.image1Url ?? '').isNotEmpty) {
+          imgList.add(product?.image1Url ?? '');
         }
-        if ((products.first.image2Url ?? '').isNotEmpty) {
-          imgList.add(products.first.image2Url ?? '');
+        if ((product?.image2Url ?? '').isNotEmpty) {
+          imgList.add(product?.image2Url ?? '');
         }
-        if ((products.first.image3Url ?? '').isNotEmpty) {
-          imgList.add(products.first.image3Url ?? '');
+        if ((product?.image3Url ?? '').isNotEmpty) {
+          imgList.add(product?.image3Url ?? '');
         }
-        if ((products.first.image4Url ?? '').isNotEmpty) {
-          imgList.add(products.first.image4Url ?? '');
+        if ((product?.image4Url ?? '').isNotEmpty) {
+          imgList.add(product?.image4Url ?? '');
         }
-        if ((products.first.image5url ?? '').isNotEmpty) {
-          imgList.add(products.first.image5url ?? '');
+        if ((product?.image5url ?? '').isNotEmpty) {
+          imgList.add(product?.image5url ?? '');
         }
       }
+
       return true;
     } catch (error) {
       print('Error: $error');
@@ -498,14 +511,14 @@ class _ProductScreenState extends State<ProductScreen> {
       var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
-        "productId": products.first.productId,
-        "productName": products.first.name,
-        "size": products.first.size,
-        "color": products.first.color,
+        "productId": product?.productId,
+        "productName": product?.name,
+        "size": product?.size,
+        "color": product?.color,
         "amount": getTotalPrice(),
         "cartId": SessionObject.user.cartId ?? "",
         "quantity": itemCount.toString(),
-        "imageUrl": products.first.image1Url
+        "imageUrl": product?.image1Url
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);
@@ -520,8 +533,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   getTotalPrice() {
-    double itemTotal =
-        double.parse(products.first.sellingPrice ?? "") * itemCount;
+    double itemTotal = double.parse(product?.sellingPrice ?? "") * itemCount;
     return itemTotal.toString();
   }
 
@@ -550,5 +562,68 @@ class _ProductScreenState extends State<ProductScreen> {
         );
       },
     );
+  }
+
+  Future<void> getWishList() async {
+    String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
+    var bookmarkResponse = await http
+        .post(Uri.parse(bookmarkUrl), body: {"userId": auth.currentUser?.uid});
+    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+        .map((item) => Product.fromJson(item))
+        .toList();
+  }
+
+  bool isSaved() {
+    List<Product> list = bookmarkList
+        .where((element) => element.productId == product?.productId)
+        .toList();
+    return list.isEmpty;
+  }
+
+  Future<bool> removeFromWishlist() async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}/removeWishlist.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": product?.productId
+      };
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> addToWishlist() async {
+    try {
+      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var reqBody = {
+        "userId": FirebaseUser.user?.uid ?? '',
+        "productId": product?.productId,
+        "name": product?.name,
+        "category": product?.category,
+        "subCategory": product?.subCategory,
+        "MRP": product?.mrp,
+        "sellingPrice": product?.sellingPrice,
+        "description": product?.description,
+      };
+
+      var response = await http.post(addToWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 }
