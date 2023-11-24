@@ -111,7 +111,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.white.withOpacity(0.2)),
-                      child: SvgPicture.asset('assets/svg/cart.svg'),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CartPage()));
+                          },
+                          child: SvgPicture.asset('assets/svg/cart.svg')),
                     ),
                   ],
                 ),
