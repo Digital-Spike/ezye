@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/address.dart';
 import 'package:ezye/model/cart_item.dart';
 import 'package:ezye/paymentScreens/coupan_screen.dart';
 import 'package:ezye/paymentScreens/order_confirm_screen.dart';
@@ -32,6 +33,7 @@ class _CartPageState extends State<CartPage> {
 
   Future<bool>? getCartFuture;
   List<CartItem> cartItems = [];
+  Address? selectedAddress;
 
   @override
   void initState() {
@@ -678,12 +680,13 @@ class _CartPageState extends State<CartPage> {
                                 ],
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               child: Text(
-                                '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
-                                style: TextStyle(color: Color(0xff7C7D85)),
+                                '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+                                style:
+                                    const TextStyle(color: Color(0xff7C7D85)),
                               ),
                             ),
                             const SizedBox(height: 5),
@@ -1560,6 +1563,7 @@ class _CartPageState extends State<CartPage> {
 
   Future<bool> getCartItems() async {
     try {
+      await getAddress();
       var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
       var response = await http
           .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
@@ -1693,6 +1697,20 @@ class _CartPageState extends State<CartPage> {
       await http.post(removeFromWishlistUrl, body: reqBody);
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> getAddress() async {
+    var removeFromWishlistUrl =
+        Uri.parse('${ApiService.url}/getUserAddress.php');
+    var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
+
+    var response = await http.post(removeFromWishlistUrl, body: reqBody);
+    if (response.statusCode == 200) {
+      selectedAddress = (json.decode(response.body) as List)
+          .map((item) => Address.fromJson(item))
+          .toList()
+          .first;
     }
   }
 }
