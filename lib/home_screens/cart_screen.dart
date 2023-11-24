@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/Auth_screen/login_screen.dart';
+import 'package:ezye/constants/string_util.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/model/address.dart';
 import 'package:ezye/model/cart_item.dart';
@@ -11,6 +12,7 @@ import 'package:ezye/profilescreens/select_address.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:ezye/services/auth.dart';
+import 'package:ezye/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,11 +31,13 @@ class _CartPageState extends State<CartPage> {
   bool phonePe = false;
   bool isChecked = false;
   bool ezyeCoin = false;
-  List<bool> checkboxValues = List.generate(3, (index) => false);
 
   Future<bool>? getCartFuture;
   List<CartItem> cartItems = [];
   Address? selectedAddress;
+  double itemTotalAmount = 0.0;
+  double discount = 0.0;
+  double deliveryCost = 49.0;
 
   @override
   void initState() {
@@ -55,7 +59,6 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    int activeCheckboxes = checkboxValues.where((value) => value).length;
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -63,6 +66,10 @@ class _CartPageState extends State<CartPage> {
       future: getCartFuture,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          List<bool> checkboxValues =
+              List.generate(cartItems.length, (index) => true);
+
+          int activeCheckboxes = checkboxValues.where((value) => value).length;
           return Scaffold(
             backgroundColor: Colors.white,
             bottomNavigationBar: BottomAppBar(
@@ -101,17 +108,17 @@ class _CartPageState extends State<CartPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Total Amount',
                                     style: TextStyle(
                                         fontSize: 14, color: Color(0xff7C7D85)),
                                   ),
                                   Text(
-                                    '₹ 3,818.00',
-                                    style: TextStyle(
+                                    '₹ ${getCartTotal()}',
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),
                                   )
@@ -233,9 +240,9 @@ class _CartPageState extends State<CartPage> {
                                       )
                                     ],
                                   ),
-                                  const Text(
-                                    '₹ 3,918',
-                                    style: TextStyle(
+                                  Text(
+                                    '₹ $itemTotalAmount',
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600),
@@ -479,9 +486,9 @@ class _CartPageState extends State<CartPage> {
                                                                       CrossAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    const Text(
-                                                                      '₹ 2,199',
-                                                                      style: TextStyle(
+                                                                    Text(
+                                                                      '₹${(double.parse(cartItem.sellingPrice ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
+                                                                      style: const TextStyle(
                                                                           fontSize:
                                                                               12,
                                                                           color: Color(
@@ -538,8 +545,6 @@ class _CartPageState extends State<CartPage> {
                                             onChanged: (bool? value) {
                                               setState(() {
                                                 checkboxValues[index] = value!;
-
-                                                print(value);
                                               });
                                             },
                                           ),
@@ -820,21 +825,21 @@ class _CartPageState extends State<CartPage> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700)),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 3),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Total MRP',
                                     style: TextStyle(
                                         fontSize: 16, color: Color(0xff7C7D85)),
                                   ),
                                   Text(
-                                    '₹ 12,894.00',
-                                    style: TextStyle(
+                                    '₹ $itemTotalAmount',
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black),
@@ -855,7 +860,7 @@ class _CartPageState extends State<CartPage> {
                                         fontSize: 16, color: Color(0xff00CA14)),
                                   ),
                                   Text(
-                                    '- ₹ 8,976.00',
+                                    '-',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -901,7 +906,7 @@ class _CartPageState extends State<CartPage> {
                                           color: Color(0xff00CA14)),
                                     ),
                                     Text(
-                                      '- ₹ 100.00',
+                                      '-',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -910,21 +915,21 @@ class _CartPageState extends State<CartPage> {
                                   ],
                                 ),
                               ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 3),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Delivery Charges',
                                     style: TextStyle(
                                         fontSize: 16, color: Color(0xff7C7D85)),
                                   ),
                                   Text(
-                                    '₹ 150.00',
-                                    style: TextStyle(
+                                    '₹ $deliveryCost',
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black),
@@ -945,7 +950,7 @@ class _CartPageState extends State<CartPage> {
                                         fontSize: 16, color: Color(0xff7C7D85)),
                                   ),
                                   Text(
-                                    '₹ 320.00',
+                                    '-',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -962,19 +967,19 @@ class _CartPageState extends State<CartPage> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(7),
                                     color: const Color(0xffE8E9EE)),
-                                child: const Row(
+                                child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Total Amount',
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: Color(0xff7C7D85)),
                                     ),
                                     Text(
-                                      '₹ 3,818.00',
-                                      style: TextStyle(
+                                      '₹ ${getCartTotal()}',
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700),
                                     )
@@ -1095,6 +1100,8 @@ class _CartPageState extends State<CartPage> {
                                                 primary: false,
                                                 itemCount: cartItems.length,
                                                 itemBuilder: (context, index) {
+                                                  CartItem cartItem =
+                                                      cartItems[index];
                                                   return Container(
                                                     padding:
                                                         const EdgeInsets.all(5),
@@ -1143,9 +1150,9 @@ class _CartPageState extends State<CartPage> {
                                                                       .size
                                                                       .width /
                                                                   1.5,
-                                                              child: const Text(
-                                                                'Men Blue Washed Denim Jacket men Blue',
-                                                                style: TextStyle(
+                                                              child: Text(
+                                                                '${cartItem.name}',
+                                                                style: const TextStyle(
                                                                     fontSize:
                                                                         16,
                                                                     overflow:
@@ -1159,9 +1166,9 @@ class _CartPageState extends State<CartPage> {
                                                             ),
                                                             const SizedBox(
                                                                 height: 5),
-                                                            const Text(
-                                                              'XL',
-                                                              style: TextStyle(
+                                                            Text(
+                                                              '${cartItem.size}',
+                                                              style: const TextStyle(
                                                                   fontSize: 12,
                                                                   color: Color(
                                                                       0xffBDC1CA)),
@@ -1323,22 +1330,22 @@ class _CartPageState extends State<CartPage> {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w700)),
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'Total MRP',
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Color(0xff7C7D85)),
                                               ),
                                               Text(
-                                                '₹ 12,894.00',
-                                                style: TextStyle(
+                                                '₹ $itemTotalAmount',
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.black),
@@ -1360,7 +1367,7 @@ class _CartPageState extends State<CartPage> {
                                                     color: Color(0xff00CA14)),
                                               ),
                                               Text(
-                                                '- ₹ 8,976.00',
+                                                '-',
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
@@ -1408,7 +1415,7 @@ class _CartPageState extends State<CartPage> {
                                                       color: Color(0xff00CA14)),
                                                 ),
                                                 Text(
-                                                  '- ₹ 100.00',
+                                                  '-',
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1418,22 +1425,22 @@ class _CartPageState extends State<CartPage> {
                                               ],
                                             ),
                                           ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'Delivery Charges',
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Color(0xff7C7D85)),
                                               ),
                                               Text(
-                                                '₹ 150.00',
-                                                style: TextStyle(
+                                                '₹ $deliveryCost',
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.black),
@@ -1455,7 +1462,7 @@ class _CartPageState extends State<CartPage> {
                                                     color: Color(0xff7C7D85)),
                                               ),
                                               Text(
-                                                '₹ 320.00',
+                                                '-',
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
@@ -1474,20 +1481,20 @@ class _CartPageState extends State<CartPage> {
                                                     BorderRadius.circular(7),
                                                 color: const Color(0xffE8E9EE)
                                                     .withOpacity(0.3)),
-                                            child: const Row(
+                                            child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'Total Amount',
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Color(0xff7C7D85)),
                                                 ),
                                                 Text(
-                                                  '₹ 3,818.00',
-                                                  style: TextStyle(
+                                                  '₹ ${getCartTotal()}',
+                                                  style: const TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w700),
@@ -1508,19 +1515,19 @@ class _CartPageState extends State<CartPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Column(
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Total Amount',
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Color(0xff7C7D85)),
                                           ),
                                           Text(
-                                            '₹ 3,818.00',
-                                            style: TextStyle(
+                                            '₹ ${getCartTotal()}',
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w700),
                                           )
@@ -1534,12 +1541,19 @@ class _CartPageState extends State<CartPage> {
                                                           15)),
                                               backgroundColor: Colors.black,
                                               minimumSize: const Size(240, 46)),
-                                          onPressed: () {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const OrderConfirmScreen()));
+                                          onPressed: () async {
+                                            showProcessingDialogue();
+                                            await placeOrder();
+                                            if (!mounted) {
+                                              return;
+                                            }
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const OrderConfirmScreen()),
+                                              (route) => false,
+                                            );
                                           },
                                           child: const Text(
                                             'Confirm Order',
@@ -1573,6 +1587,7 @@ class _CartPageState extends State<CartPage> {
             .map((item) => CartItem.fromJson(item))
             .toList();
       }
+      updateCartTotal();
       return true;
     } catch (error) {
       print('Error: $error');
@@ -1712,5 +1727,72 @@ class _CartPageState extends State<CartPage> {
           .toList()
           .first;
     }
+  }
+
+  updateCartTotal() {
+    itemTotalAmount = 0;
+    discount = 0;
+    for (var cartItem in cartItems) {
+      itemTotalAmount += double.parse(cartItem.sellingPrice ?? "0") *
+          double.parse(cartItem.quantity ?? "0");
+      discount += double.parse(cartItem.sellingPrice ?? "0") -
+          double.parse(cartItem.sellingPrice ?? "0");
+    }
+  }
+
+  getCartTotal() {
+    return itemTotalAmount + deliveryCost;
+  }
+
+  Future<bool> placeOrder() async {
+    try {
+      var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
+      var reqBody = {
+        "cartId": SessionObject.user.cartId ?? "",
+        "userId": FirebaseUser.user?.uid,
+        "orderId": StringUtil.getRandomString(8),
+        "totalAmount": getCartTotal().toString(),
+        "paymentMethod": 'cash',
+        "address":
+            '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+      };
+
+      var response = await http.post(createOrderUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        await UserService.updateUser();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  showProcessingDialogue() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                    padding: EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      'Processing...',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

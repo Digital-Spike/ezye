@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ezye/model/user.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
@@ -17,7 +15,7 @@ class UserService {
         body: user,
       );
 
-      if (response.statusCode == 200 && !jsonDecode(response.body)['error']) {
+      if (response.statusCode == 200) {
         // await SharedService.addUserToPref(jsonEncode(reqBody));
         SessionObject.user = UserModel.fromJson(user);
       }
