@@ -1,5 +1,7 @@
 import 'package:ezye/custom_widgets/constants.dart';
-
+import 'package:ezye/model/transaction.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/wallet_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,14 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  late Future<List<WalletTransactions>> transactions;
+
+  @override
+  void initState() {
+    transactions = getTransactions();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +53,9 @@ class _WalletPageState extends State<WalletPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      '1,000',
-                      style: TextStyle(
+                    Text(
+                      '${SessionObject.user.walletBalance}',
+                      style: const TextStyle(
                           fontSize: 34,
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
@@ -117,73 +127,110 @@ class _WalletPageState extends State<WalletPage> {
                   ),
                 ),
               ),
-              Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      primary: true,
-                      shrinkWrap: true,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
+              FutureBuilder<List<WalletTransactions>>(
+                  future: transactions,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      List<WalletTransactions> transactions = snapshot.data;
+
+                      if (!snapshot.hasData || transactions.isEmpty) {
+                        return const Text('No transactions found!');
+                      }
+                      return Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              primary: true,
+                              shrinkWrap: true,
+                              itemCount: transactions.length,
+                              itemBuilder: (context, index) {
+                                WalletTransactions transaction =
+                                    transactions[index];
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  child: Column(
                                     children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: const Color(0xffE8E9EE)
-                                                .withOpacity(0.4)),
-                                        child: const Icon(
-                                            CupertinoIcons.clock_fill),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      const Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Earned from order',
-                                            style: TextStyle(fontSize: 16),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color:
+                                                        const Color(0xffE8E9EE)
+                                                            .withOpacity(0.4)),
+                                                child: const Icon(
+                                                    CupertinoIcons.clock_fill),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    ((transaction.status ??
+                                                                '') ==
+                                                            'PURCHASE')
+                                                        ? 'Earned from order'
+                                                        : 'Earned from reference',
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
+                                                  ),
+                                                  Text(
+                                                    '${transaction.created}',
+                                                    style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                            Color(0xff7C7D85)),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                           Text(
-                                            '07 Oct 2023  05:23 PM',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xff7C7D85)),
+                                            '${transaction.amount}',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Color(0xff00CA14)),
                                           )
                                         ],
                                       ),
+                                      const SizedBox(height: 5),
+                                      devider
                                     ],
                                   ),
-                                  const Text(
-                                    '100',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Color(0xff00CA14)),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              devider
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              )
+                                );
+                              }),
+                        ),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return const Text(
+                          'Something went wrong. Please try again later');
+                    }
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  })
             ],
           ),
         ));
+  }
+
+  Future<List<WalletTransactions>> getTransactions() async {
+    return await WalletService.getWalletTransaction();
   }
 }
