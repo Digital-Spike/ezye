@@ -21,6 +21,8 @@ class _SelectAddressState extends State<SelectAddress> {
   bool checkboxValues = false;
   var size, height, width;
 
+  int selectedAddress = 0;
+
   Future<bool>? getAddressFuture;
   List<Address> addressList = [];
 
@@ -217,7 +219,7 @@ class _SelectAddressState extends State<SelectAddress> {
                                 Positioned(
                                   top: 0,
                                   left: 5,
-                                  child: Checkbox.adaptive(
+                                  child: /*Checkbox.adaptive(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(7)),
                                     activeColor: Colors.black,
@@ -228,8 +230,16 @@ class _SelectAddressState extends State<SelectAddress> {
                                     onChanged: (bool? value) {
                                       setState(() {
                                         checkboxValues = value!;
-
-                                        print(value);
+                                      });
+                                    },
+                                  ),*/
+                                      Radio(
+                                    activeColor: Colors.black,
+                                    value: index,
+                                    groupValue: selectedAddress,
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedAddress = value ?? 0;
                                       });
                                     },
                                   ),
