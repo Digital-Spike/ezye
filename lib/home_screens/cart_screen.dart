@@ -474,50 +474,11 @@ class _CartPageState extends State<CartPage> {
                                                                       .end,
                                                               children: [
                                                                 Text(
-                                                                  '₹${(double.parse(cartItem.sellingPrice ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
+                                                                  '₹${(double.parse(cartItem.mrp ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           14),
                                                                 ),
-                                                                const SizedBox(
-                                                                    width: 2),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Text(
-                                                                      '₹${(double.parse(cartItem.sellingPrice ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color: Color(
-                                                                              0xffBDC1CA),
-                                                                          decoration:
-                                                                              TextDecoration.lineThrough),
-                                                                    ),
-                                                                    Container(
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .all(
-                                                                              2),
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              5),
-                                                                          color:
-                                                                              const Color(0xff00CA14)),
-                                                                      child:
-                                                                          const Text(
-                                                                        '10% Off',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                12,
-                                                                            color:
-                                                                                Colors.white),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                )
                                                               ],
                                                             ),
                                                           ],
@@ -1733,10 +1694,10 @@ class _CartPageState extends State<CartPage> {
     itemTotalAmount = 0;
     discount = 0;
     for (var cartItem in cartItems) {
-      itemTotalAmount += double.parse(cartItem.sellingPrice ?? "0") *
+      itemTotalAmount += double.parse(cartItem.mrp ?? "0") *
           double.parse(cartItem.quantity ?? "0");
-      discount += double.parse(cartItem.sellingPrice ?? "0") -
-          double.parse(cartItem.sellingPrice ?? "0");
+      discount +=
+          double.parse(cartItem.mrp ?? "0") - double.parse(cartItem.mrp ?? "0");
     }
   }
 

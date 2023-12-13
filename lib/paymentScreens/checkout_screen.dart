@@ -283,7 +283,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Price: ₹${cartItem.sellingPrice}',
+                                            'Price: ₹${cartItem.mrp}',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),

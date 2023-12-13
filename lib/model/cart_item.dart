@@ -6,7 +6,7 @@ class CartItem {
   String? size;
   String? color;
   String? quantity;
-  String? sellingPrice;
+  String? mrp;
   String? cartId;
   String? status;
 
@@ -15,7 +15,7 @@ class CartItem {
       this.productId,
       this.color,
       this.id,
-      this.sellingPrice,
+      this.mrp,
       this.cartId,
       this.name,
       this.quantity,
@@ -31,7 +31,7 @@ class CartItem {
         size: json['size'],
         color: json['color'],
         quantity: json['quantity'],
-        sellingPrice: json['amount'],
+        mrp: json['amount'],
         cartId: json['cartId'],
         status: json['status']);
   }

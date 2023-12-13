@@ -307,34 +307,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           Row(
                             children: [
                               Text(
-                                '₹${product?.mrp}',
+                                '₹ ${product?.mrp}',
                                 style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff7C7D85),
-                                    decoration: TextDecoration.lineThrough),
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(width: 5),
-                              Text(
-                                '₹${product?.sellingPrice}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Container(
-                                padding: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: const Color(0xff00CA14)),
-                                child: const Text(
-                                  '10% Off',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              )
                             ],
                           ),
                           const SizedBox(height: 5),
@@ -468,7 +444,7 @@ class _ProductScreenState extends State<ProductScreen> {
         await getWishList();
       }
 
-      var productUrl = Uri.parse('${ApiService.url}/getProductDetails.php');
+      var productUrl = Uri.parse('${ApiService.url}getProductDetails.php');
       var response =
           await http.post(productUrl, body: {"productId": widget.productId});
 
@@ -515,7 +491,7 @@ class _ProductScreenState extends State<ProductScreen> {
         return true;
       }*/
 
-      var addToCartUrl = Uri.parse('${ApiService.url}/addCart.php');
+      var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
         "productId": product?.productId,
@@ -540,7 +516,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   getTotalPrice() {
-    double itemTotal = double.parse(product?.sellingPrice ?? "") * itemCount;
+    double itemTotal = double.parse(product?.mrp ?? "") * itemCount;
     return itemTotal.toString();
   }
 
