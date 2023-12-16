@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
+import 'package:ezye/model/user.dart';
 import 'package:ezye/profilescreens/create_profile.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -171,60 +173,58 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationIdentity, smsCode: otp);
 
-    await auth.signInWithCredential(credential).then(
-      (value) {
-        user = FirebaseAuth.instance.currentUser;
-      },
-    ).whenComplete(
-      () async {
-        bool isUserExist = await getUser(user?.uid ?? '');
-        if (!isUserExist && mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateProfile(),
-            ),
-          );
-          return;
-        }
-        if (user != null) {
-          Fluttertoast.showToast(
-            msg: "You are logged in successfully",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.greenAccent,
-            textColor: Colors.black,
-            fontSize: 16.0,
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MainScreen(),
-            ),
-          );
-        } else {
-          Fluttertoast.showToast(
-            msg: "your login is failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        }
-      },
-    );
+    UserCredential userCredential = await auth.signInWithCredential(credential);
+
+    bool isUserExist = await getUser(userCredential.user?.uid ?? '');
+    if (!isUserExist && mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const CreateProfile(),
+        ),
+      );
+      return;
+    }
+
+    if (userCredential.user?.uid != null) {
+      Fluttertoast.showToast(
+        msg: "You are logged in successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.greenAccent,
+        textColor: Colors.black,
+        fontSize: 16.0,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainScreen(),
+        ),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "your login is failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 
   Future<bool> getUser(String userId) async {
     try {
-      var getUserUrl = Uri.parse('${ApiService.url}/getUser.php');
+      var getUserUrl = Uri.parse('${ApiService.url}getUser.php');
       var reqBody = {"userId": userId};
 
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
+        Map<String, dynamic> user =
+            (jsonDecode(response.body) as List).firstOrNull;
+        SessionObject.user = UserModel.fromJson(user);
         return (jsonDecode(response.body) as List).first['userId'] != null;
       }
       return false;
