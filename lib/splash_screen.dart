@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return Future.value(false);
       }
 
-      var getUserUrl = Uri.parse('${ApiService.url}/getUser.php');
+      var getUserUrl = Uri.parse('${ApiService.url}getUser.php');
       var reqBody = {"userId": FirebaseUser.user?.uid};
 
       var response = await http.post(getUserUrl, body: reqBody);
