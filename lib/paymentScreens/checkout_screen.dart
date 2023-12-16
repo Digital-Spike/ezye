@@ -623,7 +623,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
   Future<void> getCart() async {
     var removeFromWishlistUrl =
-        Uri.parse('${ApiService.url}/getUserAddress.php');
+        Uri.parse('${ApiService.url}getUserAddress.php');
     var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);
@@ -638,7 +638,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
   Future<bool> addAddress() async {
     try {
       final response = await http.post(
-        Uri.parse('${ApiService.url}/addAddress.php'),
+        Uri.parse('${ApiService.url}addAddress.php'),
         body: {
           'userId': FirebaseUser.user?.uid,
           'line1': house.text,

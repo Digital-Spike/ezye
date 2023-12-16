@@ -11,7 +11,7 @@ class UserService {
       user['cartId'] = FirebaseUser.getCartId();
 
       var response = await http.post(
-        Uri.parse('${ApiService.url}/editProfile.php'),
+        Uri.parse('${ApiService.url}editProfile.php'),
         body: user,
       );
 

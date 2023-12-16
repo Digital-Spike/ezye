@@ -10,7 +10,7 @@ class WalletService {
   static Future<List<WalletTransactions>> getWalletTransaction() async {
     try {
       var transactionsUrl =
-          Uri.parse('${ApiService.url}/getWalletTransactions.php');
+          Uri.parse('${ApiService.url}getWalletTransactions.php');
       var response = await http
           .post(transactionsUrl, body: {'userId': SessionObject.user.userId});
       return (json.decode(response.body) as List)

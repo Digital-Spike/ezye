@@ -283,7 +283,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Future<bool> getItems() async {
     try {
-      var productsUrl = Uri.parse('${ApiService.url}/globalSearch.php');
+      var productsUrl = Uri.parse('${ApiService.url}globalSearch.php');
       var productsResponse =
           await http.post(productsUrl, body: {'key': widget.category});
 
@@ -305,7 +305,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Future<bool> addToWishlist(Product product) async {
     try {
-      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var addToWishlistUrl = Uri.parse('${ApiService.url}wishList.php');
       var reqBody = {
         "userId": user?.uid ?? '',
         "productId": product.productId,
@@ -348,7 +348,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Future<bool> removeFromWishlist(Product product) async {
     try {
       var removeFromWishlistUrl =
-          Uri.parse('${ApiService.url}/removeWishlist.php');
+          Uri.parse('${ApiService.url}removeWishlist.php');
       var reqBody = {"userId": user?.uid ?? '', "productId": product.productId};
 
       var response = await http.post(removeFromWishlistUrl, body: reqBody);

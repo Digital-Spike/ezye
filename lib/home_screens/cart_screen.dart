@@ -1557,7 +1557,7 @@ class _CartPageState extends State<CartPage> {
   Future<bool> getCartItems() async {
     try {
       await getAddress();
-      var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
+      var productUrl = Uri.parse('${ApiService.url}getCartDetails.php');
       var response = await http
           .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
 
@@ -1660,7 +1660,7 @@ class _CartPageState extends State<CartPage> {
   Future<bool> removeCartItem(CartItem cartItem) async {
     try {
       var removeFromWishlistUrl =
-          Uri.parse('${ApiService.url}/removeCartItem.php');
+          Uri.parse('${ApiService.url}removeCartItem.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
         "productId": cartItem.productId
@@ -1696,7 +1696,7 @@ class _CartPageState extends State<CartPage> {
 
   Future<void> getAddress() async {
     var removeFromWishlistUrl =
-        Uri.parse('${ApiService.url}/getUserAddress.php');
+        Uri.parse('${ApiService.url}getUserAddress.php');
     var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);

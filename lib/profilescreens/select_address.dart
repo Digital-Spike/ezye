@@ -295,7 +295,7 @@ class _SelectAddressState extends State<SelectAddress> {
 
   Future<bool> getAddress() async {
     var removeFromWishlistUrl =
-        Uri.parse('${ApiService.url}/getUserAddress.php');
+        Uri.parse('${ApiService.url}getUserAddress.php');
     var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);

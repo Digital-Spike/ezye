@@ -254,7 +254,7 @@ class _CreateProfileState extends State<CreateProfile> {
     };
 
     var response = await http.post(
-      Uri.parse('${ApiService.url}/addUser.php'),
+      Uri.parse('${ApiService.url}addUser.php'),
       body: reqBody,
     );
 

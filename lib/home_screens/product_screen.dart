@@ -566,7 +566,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Future<bool> removeFromWishlist() async {
     try {
       var removeFromWishlistUrl =
-          Uri.parse('${ApiService.url}/removeWishlist.php');
+          Uri.parse('${ApiService.url}removeWishlist.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
         "productId": product?.productId
@@ -586,7 +586,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<bool> addToWishlist() async {
     try {
-      var addToWishlistUrl = Uri.parse('${ApiService.url}/wishList.php');
+      var addToWishlistUrl = Uri.parse('${ApiService.url}wishList.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
         "productId": product?.productId,

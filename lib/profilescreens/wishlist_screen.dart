@@ -257,7 +257,7 @@ class _WishListScreenState extends State<WishListScreen> {
   Future<void> getItems() async {
     try {
       var response = await http.post(
-          Uri.parse('${ApiService.url}/getUserWishlist.php'),
+          Uri.parse('${ApiService.url}getUserWishlist.php'),
           body: {"userId": FirebaseUser.user?.uid ?? ''});
       products = (json.decode(response.body) as List)
           .map((item) => Product.fromJson(item))
