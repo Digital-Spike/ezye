@@ -494,14 +494,14 @@ class _ProductScreenState extends State<ProductScreen> {
       var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
         "userId": FirebaseUser.user?.uid ?? '',
-        "productId": product?.productId,
-        "productName": product?.name,
-        "size": product?.size,
-        "color": product?.color,
+        "productId": product?.productId ?? '',
+        "productName": product?.name ?? '',
+        "size": product?.size ?? '',
+        "color": product?.color ?? '',
         "amount": getTotalPrice(),
         "cartId": SessionObject.user.cartId ?? "",
         "quantity": itemCount.toString(),
-        "imageUrl": product?.image1Url
+        "imageUrl": product?.image1Url ?? ''
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);
