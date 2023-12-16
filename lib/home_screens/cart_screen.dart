@@ -66,6 +66,10 @@ class _CartPageState extends State<CartPage> {
       future: getCartFuture,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          if (cartItems.isEmpty) {
+            return const Center(child: Text('Cart is empty!'));
+          }
+
           List<bool> checkboxValues =
               List.generate(cartItems.length, (index) => true);
 
