@@ -2,31 +2,36 @@ import 'dart:convert';
 
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/select_status_model.dart' as StatusModel;
+import 'package:ezye/profilescreens/select_address.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:searchfield/searchfield.dart';
 
-class AddAdress extends StatefulWidget {
-  const AddAdress({super.key});
+class AddAddress extends StatefulWidget {
+  const AddAddress({super.key});
 
   @override
-  State<AddAdress> createState() => _AddAdressState();
+  State<AddAddress> createState() => _AddAddressState();
 }
 
-class _AddAdressState extends State<AddAdress> {
-  List<String> _states = [];
+class _AddAddressState extends State<AddAddress> {
+  final List<String> _states = [];
   List<String> _filterStates = [];
   TextEditingController searchController = TextEditingController();
-  var _ad1 = new TextEditingController();
-  var _ad2 = new TextEditingController();
-  var _ad3 = new TextEditingController();
-  var _city = new TextEditingController();
-  var _state = new TextEditingController();
-  var _pincode = new TextEditingController();
+  final TextEditingController _ad1 = TextEditingController();
+  final TextEditingController _ad2 = TextEditingController();
+  final TextEditingController _ad3 = TextEditingController();
+  final TextEditingController _city = TextEditingController();
+  final TextEditingController _state = TextEditingController();
+  final TextEditingController _pincode = TextEditingController();
   String locCountry = "";
   String locState = "";
   String locCity = "";
   String manualAddress = "";
+  ShippingType shippingType = ShippingType.home;
   Color enabledColor = const Color(0xffE8E9EE);
   Color focusedColor = const Color(0xff7C7D85);
   final errorBorder = const BorderSide(
@@ -66,27 +71,30 @@ class _AddAdressState extends State<AddAdress> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_ad1.text.isEmpty || _ad2.text.isEmpty || _ad3.text.isEmpty) {
       setState(() {
         focusedColor = Colors.red;
         enabledColor = Colors.red;
-        print("Hello");
       });
     }
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_city.text.isEmpty &&
-          _ad1.text.isEmpty &&
-          _ad2.text.isEmpty &&
-          _ad3.text.isEmpty &&
-          _pincode.text.isEmpty &&
+      if (_city.text.isEmpty ||
+          _ad1.text.isEmpty ||
+          _ad2.text.isEmpty ||
+          _ad3.text.isEmpty ||
+          _pincode.text.isEmpty ||
           _state.text.isEmpty) {
         return;
       }
-    } else {
-      setState(() {});
+      _showMyDialog();
+      await addAddress();
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const SelectAddress()));
     }
   }
 
@@ -122,7 +130,7 @@ class _AddAdressState extends State<AddAdress> {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 56),
+                  minimumSize: const Size(double.infinity, 56),
                   backgroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15))),
@@ -147,6 +155,41 @@ class _AddAdressState extends State<AddAdress> {
                 const Text(
                   'Address',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    Radio<ShippingType>(
+                      value: ShippingType.home,
+                      groupValue: shippingType,
+                      onChanged: (ShippingType? value) {
+                        setState(() {
+                          shippingType = value!;
+                        });
+                      },
+                    ),
+                    const Text('Home'),
+                    Radio<ShippingType>(
+                      value: ShippingType.work,
+                      groupValue: shippingType,
+                      onChanged: (ShippingType? value) {
+                        setState(() {
+                          shippingType = value!;
+                        });
+                      },
+                    ),
+                    const Text('Work'),
+                    Radio<ShippingType>(
+                      value: ShippingType.others,
+                      groupValue: shippingType,
+                      onChanged: (ShippingType? value) {
+                        setState(() {
+                          shippingType = value!;
+                        });
+                      },
+                    ),
+                    const Text('Others'),
+                  ],
                 ),
                 const SizedBox(height: 5),
                 TextFormField(
@@ -356,4 +399,50 @@ class _AddAdressState extends State<AddAdress> {
       ),
     );
   }
+
+  Future<bool> addAddress() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${ApiService.url}addAddress.php'),
+        body: {
+          'userId': FirebaseUser.user?.uid,
+          'line1': _ad1.text,
+          'line2': _ad2.text,
+          'city': _city.text,
+          'pincode': _pincode.text,
+          'type': shippingType.name,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Processing....')
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
+
+enum ShippingType { home, work, others }

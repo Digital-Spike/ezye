@@ -177,7 +177,7 @@ class _AddressesState extends State<Addresses> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AddAdress()));
+                          builder: (context) => const AddAddress()));
                 },
                 child: const Text(
                   'Add Address',

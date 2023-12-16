@@ -76,7 +76,7 @@ class _SelectAddressState extends State<SelectAddress> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const AddAdress()));
+                                            const AddAddress()));
                               },
                               child: const Text(
                                 'Add Address',
@@ -264,7 +264,8 @@ class _SelectAddressState extends State<SelectAddress> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const AddAdress()));
+                                      builder: (context) =>
+                                          const AddAddress()));
                             },
                             child: const Text(
                               'Add Address',
