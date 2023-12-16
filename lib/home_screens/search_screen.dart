@@ -1,4 +1,4 @@
-import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -18,7 +18,7 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         elevation: 0,
-        title: TextFormField(
+        title: TextField(
           decoration: InputDecoration(
               isDense: true,
               prefixIcon: Padding(
@@ -44,6 +44,12 @@ class _SearchPageState extends State<SearchPage> {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   borderSide:
                       BorderSide(width: 1.5, color: Color(0xffE8E9EE)))),
+          onSubmitted: (value) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductList(searchText: value)));
+          },
         ),
       ),
     );
