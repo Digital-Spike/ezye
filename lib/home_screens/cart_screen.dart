@@ -630,12 +630,13 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                     const SizedBox(width: 10),
                                     GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
+                                      onTap: () async {
+                                        selectedAddress = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const SelectAddress()));
+                                        setState(() {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(3),

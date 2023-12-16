@@ -114,7 +114,10 @@ class _SelectAddressState extends State<SelectAddress> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               backgroundColor: Colors.black),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(
+                                context, addressList[selectedAddress]);
+                          },
                           child: const Text(
                             'Continue',
                             style: TextStyle(
