@@ -27,7 +27,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   bool isLoggedIn = false;
-  bool cashOndelivery = false;
+  bool cashOnDelivery = true;
   bool phonePe = false;
   bool isChecked = false;
   bool ezyeCoin = false;
@@ -694,11 +694,11 @@ class _CartPageState extends State<CartPage> {
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(7)),
-                                              value: cashOndelivery,
+                                              value: cashOnDelivery,
                                               onChanged: (bool? value) {
                                                 setState(() {
-                                                  cashOndelivery = value!;
-                                                  phonePe = false;
+                                                  cashOnDelivery = value!;
+                                                  // phonePe = false;
                                                 });
                                               }),
                                         ),
@@ -708,35 +708,35 @@ class _CartPageState extends State<CartPage> {
                                         )
                                       ],
                                     ),
-                                    const SizedBox(width: 5),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 24,
-                                          width: 30,
-                                          child: Checkbox.adaptive(
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              activeColor: Colors.black,
-                                              checkColor: Colors.white,
-                                              value: phonePe,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(7)),
-                                              onChanged: (bool? value) {
-                                                setState(() {
-                                                  phonePe = value!;
-                                                  cashOndelivery = false;
-                                                });
-                                              }),
-                                        ),
-                                        const Text(
-                                          'Phonepe',
-                                          style: TextStyle(fontSize: 16),
-                                        )
-                                      ],
-                                    ),
+                                    // const SizedBox(width: 5),
+                                    // Row(
+                                    //   children: [
+                                    //     SizedBox(
+                                    //       height: 24,
+                                    //       width: 30,
+                                    //       child: Checkbox.adaptive(
+                                    //           materialTapTargetSize:
+                                    //               MaterialTapTargetSize
+                                    //                   .shrinkWrap,
+                                    //           activeColor: Colors.black,
+                                    //           checkColor: Colors.white,
+                                    //           value: phonePe,
+                                    //           shape: RoundedRectangleBorder(
+                                    //               borderRadius:
+                                    //                   BorderRadius.circular(7)),
+                                    //           onChanged: (bool? value) {
+                                    //             setState(() {
+                                    //               phonePe = value!;
+                                    //               cashOnDelivery = false;
+                                    //             });
+                                    //           }),
+                                    //     ),
+                                    //     const Text(
+                                    //       'Phonepe',
+                                    //       style: TextStyle(fontSize: 16),
+                                    //     )
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -1244,11 +1244,11 @@ class _CartPageState extends State<CartPage> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             7)),
-                                                        value: cashOndelivery,
+                                                        value: cashOnDelivery,
                                                         onChanged:
                                                             (bool? value) {
                                                           setState(() {
-                                                            cashOndelivery =
+                                                            cashOnDelivery =
                                                                 value!;
                                                             phonePe = false;
                                                           });
@@ -1286,7 +1286,7 @@ class _CartPageState extends State<CartPage> {
                                                             (bool? value) {
                                                           setState(() {
                                                             phonePe = value!;
-                                                            cashOndelivery =
+                                                            cashOnDelivery =
                                                                 false;
                                                           });
                                                         }),
