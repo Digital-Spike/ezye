@@ -498,7 +498,7 @@ class _ProductScreenState extends State<ProductScreen> {
         "productName": product?.name ?? '',
         "size": product?.size ?? '',
         "color": product?.color ?? '',
-        "amount": getTotalPrice(),
+        "amount": product?.mrp,
         "cartId": SessionObject.user.cartId ?? "",
         "quantity": itemCount.toString(),
         "imageUrl": product?.image1Url ?? ''
