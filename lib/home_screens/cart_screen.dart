@@ -776,10 +776,10 @@ class _CartPageState extends State<CartPage> {
                                                   });
                                                 }),
                                           ),
-                                          const Expanded(
+                                          Expanded(
                                             child: Text(
-                                              'Use EZYE coins to purchase user order. You save ₹100',
-                                              style: TextStyle(
+                                              'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
+                                              style: const TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white),
                                               textAlign: TextAlign.left,
