@@ -65,7 +65,7 @@ class _WalletPageState extends State<WalletPage> {
                       style: TextStyle(fontSize: 18, color: Color(0xffBDC1CA)),
                     ),
                     const SizedBox(height: 60),
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Column(
@@ -108,7 +108,7 @@ class _WalletPageState extends State<WalletPage> {
                           ],
                         ),
                       ],
-                    )
+                    )*/
                   ],
                 ),
               ),
