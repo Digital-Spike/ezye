@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/profilescreens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/materialet {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
   @override
