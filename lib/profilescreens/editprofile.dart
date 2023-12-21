@@ -3,12 +3,7 @@ import 'dart:convert';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/profilescreens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
-
-class EditProfile extends StatefulWidget {
+import 'package:flutter/materialet {
   const EditProfile({super.key});
 
   @override
@@ -51,7 +46,8 @@ class _EditProfileState extends State<EditProfile> {
       } else {
         print('Failed to add job');
         print('Status Code: ${response.statusCode}');
-        print('Response Body: ${response.body}');
+        print(
+            'Response Body: ${(response.body).toString().replaceAll('connected', '')}');
       }
     }
 
@@ -255,7 +251,8 @@ class _EditProfileState extends State<EditProfile> {
     var response = await http.post(Uri.parse(apiUrl), body: {
       "userId": userId,
     });
-    var jsondata = json.decode(response.body);
+    var jsondata =
+        json.decode((response.body).toString().replaceAll('connected', ''));
     print(jsondata);
     setState(() {
       _name.text = jsondata[0]['name'];

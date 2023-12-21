@@ -253,7 +253,9 @@ class _ProductListState extends State<ProductList> {
       var productsResponse =
           await http.post(productsUrl, body: {'key': widget.searchText});
 
-      products = (json.decode(productsResponse.body) as List)
+      products = (json.decode((productsResponse.body)
+              .toString()
+              .replaceAll('connected', '')) as List)
           .map((item) => Product.fromJson(item))
           .toList();
 
@@ -285,7 +287,8 @@ class _ProductListState extends State<ProductList> {
       var response = await http.post(addToWishlistUrl, body: reqBody);
       if (response.statusCode == 200) {
         await getWishList();
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {
@@ -298,7 +301,9 @@ class _ProductListState extends State<ProductList> {
     String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
     var bookmarkResponse =
         await http.post(Uri.parse(bookmarkUrl), body: {"userId": user?.uid});
-    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+    bookmarkList = (json.decode(
+                (bookmarkResponse.body).toString().replaceAll('connected', ''))
+            as List)
         .map((item) => Product.fromJson(item))
         .toList();
   }
@@ -319,7 +324,8 @@ class _ProductListState extends State<ProductList> {
       var response = await http.post(removeFromWishlistUrl, body: reqBody);
       if (response.statusCode == 200) {
         await getWishList();
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {

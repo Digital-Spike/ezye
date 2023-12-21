@@ -114,7 +114,9 @@ class _SplashScreenState extends State<SplashScreen> {
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
         Map<String, dynamic> user =
-            (jsonDecode(response.body) as List).firstOrNull;
+            (jsonDecode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .firstOrNull;
         SessionObject.user = UserModel.fromJson(user);
         isUserExists = user['userId'] != null;
         return true;

@@ -223,9 +223,15 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
       var response = await http.post(getUserUrl, body: reqBody);
       if (response.statusCode == 200) {
         Map<String, dynamic> user =
-            (jsonDecode(response.body) as List).firstOrNull;
+            (jsonDecode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .firstOrNull;
         SessionObject.user = UserModel.fromJson(user);
-        return (jsonDecode(response.body) as List).first['userId'] != null;
+        return (jsonDecode(
+                        (response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .first['userId'] !=
+            null;
       }
       return false;
     } catch (e) {

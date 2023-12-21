@@ -13,7 +13,8 @@ class WalletService {
           Uri.parse('${ApiService.url}getWalletTransactions.php');
       var response = await http
           .post(transactionsUrl, body: {'userId': SessionObject.user.userId});
-      return (json.decode(response.body) as List)
+      return (json.decode(
+              (response.body).toString().replaceAll('connected', '')) as List)
           .map((item) => WalletTransactions.fromJson(item))
           .toList();
     } catch (e) {

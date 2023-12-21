@@ -1562,9 +1562,11 @@ class _CartPageState extends State<CartPage> {
           .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
 
       if (response.statusCode == 200) {
-        cartItems = (json.decode(response.body) as List)
-            .map((item) => CartItem.fromJson(item))
-            .toList();
+        cartItems =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => CartItem.fromJson(item))
+                .toList();
       }
       updateCartTotal();
       return true;
@@ -1668,7 +1670,8 @@ class _CartPageState extends State<CartPage> {
 
       var response = await http.post(removeFromWishlistUrl, body: reqBody);
       if (response.statusCode == 200) {
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {
@@ -1701,10 +1704,12 @@ class _CartPageState extends State<CartPage> {
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);
     if (response.statusCode == 200) {
-      selectedAddress = (json.decode(response.body) as List)
-          .map((item) => Address.fromJson(item))
-          .toList()
-          .first;
+      selectedAddress =
+          (json.decode((response.body).toString().replaceAll('connected', ''))
+                  as List)
+              .map((item) => Address.fromJson(item))
+              .toList()
+              .first;
     }
   }
 
@@ -1739,7 +1744,8 @@ class _CartPageState extends State<CartPage> {
       var response = await http.post(createOrderUrl, body: reqBody);
       if (response.statusCode == 200) {
         await UserService.updateUser();
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {

@@ -449,10 +449,12 @@ class _ProductScreenState extends State<ProductScreen> {
           await http.post(productUrl, body: {"productId": widget.productId});
 
       if (response.statusCode == 200) {
-        product = (json.decode(response.body) as List)
-            .map((item) => Product.fromJson(item))
-            .toList()
-            .first;
+        product =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => Product.fromJson(item))
+                .toList()
+                .first;
         if ((product?.image1Url ?? '').isNotEmpty) {
           imgList.add(product?.image1Url ?? '');
         }
@@ -506,7 +508,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
       var response = await http.post(addToCartUrl, body: reqBody);
       if (response.statusCode == 200) {
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {
@@ -551,7 +554,9 @@ class _ProductScreenState extends State<ProductScreen> {
     String bookmarkUrl = "${ApiService.url}getUserWishlist.php";
     var bookmarkResponse = await http
         .post(Uri.parse(bookmarkUrl), body: {"userId": auth.currentUser?.uid});
-    bookmarkList = (json.decode(bookmarkResponse.body) as List)
+    bookmarkList = (json.decode(
+                (bookmarkResponse.body).toString().replaceAll('connected', ''))
+            as List)
         .map((item) => Product.fromJson(item))
         .toList();
   }
@@ -575,7 +580,8 @@ class _ProductScreenState extends State<ProductScreen> {
       var response = await http.post(removeFromWishlistUrl, body: reqBody);
       if (response.statusCode == 200) {
         await getWishList();
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {
@@ -601,7 +607,8 @@ class _ProductScreenState extends State<ProductScreen> {
       var response = await http.post(addToWishlistUrl, body: reqBody);
       if (response.statusCode == 200) {
         await getWishList();
-        return !jsonDecode(response.body)['error'];
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
       }
       return false;
     } catch (e) {

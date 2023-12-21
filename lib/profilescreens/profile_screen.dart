@@ -268,7 +268,8 @@ class _ProfilePageState extends State<ProfilePage> {
     var response = await http.post(Uri.parse(apiUrl), body: {
       "userId": userId,
     });
-    var jsondata = json.decode(response.body);
+    var jsondata =
+        json.decode((response.body).toString().replaceAll('connected', ''));
     print(jsondata);
     setState(() {
       name = jsondata[0]['name'];

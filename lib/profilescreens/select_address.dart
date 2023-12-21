@@ -301,9 +301,11 @@ class _SelectAddressState extends State<SelectAddress> {
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);
     if (response.statusCode == 200) {
-      addressList = (json.decode(response.body) as List)
-          .map((item) => Address.fromJson(item))
-          .toList();
+      addressList =
+          (json.decode((response.body).toString().replaceAll('connected', ''))
+                  as List)
+              .map((item) => Address.fromJson(item))
+              .toList();
     }
 
     return true;

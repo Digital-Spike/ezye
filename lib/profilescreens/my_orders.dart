@@ -104,9 +104,11 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
       var response = await http.post(ordersUrl, body: reqBody);
       if (response.statusCode == 200) {
-        ordersList = (json.decode(response.body) as List)
-            .map((item) => Order.fromJson(item))
-            .toList();
+        ordersList =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => Order.fromJson(item))
+                .toList();
       }
     } catch (e) {
       debugPrint(e.toString());
