@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
+import 'package:ezye/model/cart_item.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
@@ -26,7 +27,9 @@ class _ProductScreenState extends State<ProductScreen> {
   int? _value = -1;
   List<String> imgList = [];
   List<Product> bookmarkList = [];
+  List<CartItem> cartItems = [];
   int currentIndex = 0;
+  int previousCartQty = 0;
   List<Color> colors = [
     const Color(0xff243B4C),
     const Color(0xff000000),
@@ -481,7 +484,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<bool> addToCart() async {
     try {
-/*      await getCartItems();
+      await getCartItems();
 
       List<CartItem> cartItem = cartItems
           .where((element) => element.productId == product?.productId)
@@ -491,7 +494,7 @@ class _ProductScreenState extends State<ProductScreen> {
         previousCartQty = int.parse(cartItems.first.quantity.toString());
         await updateCartQuantity();
         return true;
-      }*/
+      }
 
       var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
@@ -516,6 +519,46 @@ class _ProductScreenState extends State<ProductScreen> {
       debugPrint(e.toString());
       return false;
     }
+  }
+
+  Future<bool> updateCartQuantity() async {
+    try {
+      var updateCartCount =
+          Uri.parse('${ApiService.url}updateCartQuantity.php');
+      var reqBody = {
+        "quantity": (previousCartQty + itemCount).toString(),
+        "cartId": SessionObject.user.cartId ?? "",
+        "productId": product?.productId
+      };
+
+      var response = await http.post(updateCartCount, body: reqBody);
+      if (response.statusCode == 200) {
+        await getWishList();
+        return !jsonDecode(response.body)['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> getCartItems() async {
+    try {
+      var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
+      var response = await http
+          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
+
+      if (response.statusCode == 200) {
+        cartItems = (json.decode(response.body) as List)
+            .map((item) => CartItem.fromJson(item))
+            .toList();
+      }
+      return true;
+    } catch (error) {
+      print('Error: $error');
+    }
+    return false;
   }
 
   getTotalPrice() {
