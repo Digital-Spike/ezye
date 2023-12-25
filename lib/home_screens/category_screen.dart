@@ -315,7 +315,7 @@ class _CategoryPageState extends State<CategoryPage> {
         "category": product.category,
         "subCategory": product.subCategory,
         "MRP": product.mrp,
-        "sellingPrice": product.sellingPrice,
+        "sellingPrice": product.mrp,
         "description": product.description,
       };
 

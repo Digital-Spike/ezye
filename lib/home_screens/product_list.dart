@@ -281,6 +281,7 @@ class _ProductListState extends State<ProductList> {
         "category": product.category,
         "subCategory": product.subCategory,
         "MRP": product.mrp,
+        "sellingPrice": product.mrp,
         "description": product.description,
       };
 
