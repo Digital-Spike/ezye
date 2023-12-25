@@ -637,13 +637,13 @@ class _ProductScreenState extends State<ProductScreen> {
     try {
       var addToWishlistUrl = Uri.parse('${ApiService.url}wishList.php');
       var reqBody = {
-        "userId": FirebaseUser.user?.uid ?? '',
+        "userId": SessionObject.user.userId,
         "productId": product?.productId,
         "name": product?.name,
         "category": product?.category,
         "subCategory": product?.subCategory,
         "MRP": product?.mrp,
-        "sellingPrice": product?.sellingPrice,
+        "sellingPrice": product?.mrp,
         "description": product?.description,
       };
 
