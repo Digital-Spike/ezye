@@ -12,7 +12,6 @@ import 'package:ezye/paymentScreens/order_confirm_screen.dart';
 import 'package:ezye/profilescreens/select_address.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
-import 'package:ezye/services/auth.dart';
 import 'package:ezye/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -1550,7 +1549,7 @@ class _CartPageState extends State<CartPage> {
       var removeFromWishlistUrl =
           Uri.parse('${ApiService.url}removeCartItem.php');
       var reqBody = {
-        "userId": FirebaseUser.user?.uid ?? '',
+        "userId": SessionObject.user.userId,
         "productId": cartItem.productId
       };
 
@@ -1584,18 +1583,21 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> getAddress() async {
-    var removeFromWishlistUrl =
-        Uri.parse('${ApiService.url}getUserAddress.php');
-    var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
+    try {
+      var url = Uri.parse('${ApiService.url}getUserAddress.php');
+      var reqBody = {"userId": SessionObject.user.userId};
 
-    var response = await http.post(removeFromWishlistUrl, body: reqBody);
-    if (response.statusCode == 200) {
-      selectedAddress =
-          (json.decode((response.body).toString().replaceAll('connected', ''))
-                  as List)
-              .map((item) => Address.fromJson(item))
-              .toList()
-              .first;
+      var response = await http.post(url, body: reqBody);
+      if (response.statusCode == 200 && (response.body as List).isNotEmpty) {
+        selectedAddress =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => Address.fromJson(item))
+                .toList()
+                .first;
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -1619,7 +1621,7 @@ class _CartPageState extends State<CartPage> {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
         "cartId": SessionObject.user.cartId ?? "",
-        "userId": FirebaseUser.user?.uid,
+        "userId": SessionObject.user.userId,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": getCartTotal().toString(),
         "paymentMethod": 'cash',

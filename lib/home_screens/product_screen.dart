@@ -495,7 +495,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
       var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
-        "userId": FirebaseUser.user?.uid ?? '',
+        "userId": SessionObject.user.userId ?? '',
         "productId": product?.productId ?? '',
         "productName": product?.name ?? '',
         "size": product?.size ?? '',
