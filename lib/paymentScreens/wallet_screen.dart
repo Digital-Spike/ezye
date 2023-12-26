@@ -64,6 +64,13 @@ class _WalletPageState extends State<WalletPage> {
                       'Available Balance',
                       style: TextStyle(fontSize: 18, color: Color(0xffBDC1CA)),
                     ),
+                    Text(
+                      '${getWalletBalance()}',
+                      style: const TextStyle(
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
                     const SizedBox(height: 60),
                     /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -232,5 +239,12 @@ class _WalletPageState extends State<WalletPage> {
 
   Future<List<WalletTransactions>> getTransactions() async {
     return await WalletService.getWalletTransaction();
+  }
+
+  getWalletBalance() {
+    if((SessionObject.user.walletBalance ?? '').isNotEmpty){
+      return (SessionObject.user.walletBalance ?? '');
+    }
+    return '0';
   }
 }
