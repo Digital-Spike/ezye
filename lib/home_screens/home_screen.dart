@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 
+import 'notification.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -71,17 +73,25 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: false,
           actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Container(
-                height: 46,
-                width: 46,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                child: SvgPicture.asset(
-                  'assets/svg/notification.svg',
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationList()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Container(
+                  height: 46,
+                  width: 46,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xffE8E9EE).withOpacity(0.3)),
+                  child: SvgPicture.asset(
+                    'assets/svg/notification.svg',
+                  ),
                 ),
               ),
             ),
