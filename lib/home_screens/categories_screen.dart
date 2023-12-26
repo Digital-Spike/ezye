@@ -1,4 +1,5 @@
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/home_screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +32,12 @@ class _CategoriesState extends State<Categories> {
         ),
         centerTitle: true,
         actions: [
-          SvgPicture.asset('assets/svg/bag.svg'),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CartPage()));
+              },
+              child: SvgPicture.asset('assets/svg/bag.svg')),
           const SizedBox(width: 10)
         ],
       ),
