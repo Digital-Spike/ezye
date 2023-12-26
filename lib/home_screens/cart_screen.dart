@@ -677,7 +677,7 @@ class _CartPageState extends State<CartPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 child: Text(
-                                  '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+                                  '${selectedAddress?.line1 ?? ''}, ${selectedAddress?.line2 ?? ''}, ${selectedAddress?.city ?? ''}, ${selectedAddress?.pinCode ?? ''}.',
                                   style:
                                       const TextStyle(color: Color(0xff7C7D85)),
                                 ),
@@ -724,88 +724,63 @@ class _CartPageState extends State<CartPage> {
                                         )
                                       ],
                                     ),
-                                    // const SizedBox(width: 5),
-                                    // Row(
-                                    //   children: [
-                                    //     SizedBox(
-                                    //       height: 24,
-                                    //       width: 30,
-                                    //       child: Checkbox.adaptive(
-                                    //           materialTapTargetSize:
-                                    //               MaterialTapTargetSize
-                                    //                   .shrinkWrap,
-                                    //           activeColor: Colors.black,
-                                    //           checkColor: Colors.white,
-                                    //           value: phonePe,
-                                    //           shape: RoundedRectangleBorder(
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(7)),
-                                    //           onChanged: (bool? value) {
-                                    //             setState(() {
-                                    //               phonePe = value!;
-                                    //               cashOnDelivery = false;
-                                    //             });
-                                    //           }),
-                                    //     ),
-                                    //     const Text(
-                                    //       'Phonepe',
-                                    //       style: TextStyle(fontSize: 16),
-                                    //     )
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Stack(children: [
-                                  Image.asset('assets/png/Ezyecoinbar.png'),
-                                  Positioned(
-                                      top: 5,
-                                      bottom: 5,
-                                      left: 80,
-                                      right: 20,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 24,
-                                            width: 35,
-                                            child: Checkbox.adaptive(
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                                focusColor: Colors.white,
-                                                activeColor:
-                                                    const Color(0xffF0D7A7),
-                                                checkColor: Colors.black,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7)),
-                                                side: const BorderSide(
-                                                    color: Colors.white),
-                                                value: isEzyeCoinApplies,
-                                                onChanged: (bool? value) {
-                                                  setState(() {
-                                                    isEzyeCoinApplies = value!;
-                                                    updateAmount();
-                                                  });
-                                                }),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white),
-                                              textAlign: TextAlign.left,
-                                              maxLines: 2,
+                              Visibility(
+                                visible: showEzyeCoins(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Stack(children: [
+                                    Image.asset('assets/png/Ezyecoinbar.png'),
+                                    Positioned(
+                                        top: 5,
+                                        bottom: 5,
+                                        left: 80,
+                                        right: 20,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 24,
+                                              width: 35,
+                                              child: Checkbox.adaptive(
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  focusColor: Colors.white,
+                                                  activeColor:
+                                                      const Color(0xffF0D7A7),
+                                                  checkColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7)),
+                                                  side: const BorderSide(
+                                                      color: Colors.white),
+                                                  value: isEzyeCoinApplies,
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      isEzyeCoinApplies =
+                                                          value!;
+                                                      updateAmount();
+                                                    });
+                                                  }),
                                             ),
-                                          )
-                                        ],
-                                      )),
-                                ]),
+                                            Expanded(
+                                              child: Text(
+                                                'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.left,
+                                                maxLines: 2,
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  ]),
+                                ),
                               ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(
@@ -1703,5 +1678,13 @@ class _CartPageState extends State<CartPage> {
         isEzyeCoinApplies ? SessionObject.user.walletBalance ?? '0' : '0');
     totalAmountWithDiscount = getCartTotal() - ezyeCoin - couponDiscountAmount;
     orderTotal = getCartTotal() + ezyeCoin + couponDiscountAmount;
+  }
+
+  showEzyeCoins() {
+    if ((SessionObject.user.walletBalance ?? '').isNotEmpty &&
+        double.parse(SessionObject.user.walletBalance ?? '0') > 0) {
+      return true;
+    }
+    return false;
   }
 }
