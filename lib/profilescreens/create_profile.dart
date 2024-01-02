@@ -172,7 +172,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       const SizedBox(height: 5),
                       TextFormField(
                         controller: email,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintText: 'Enter Your Email',
                             isDense: true,

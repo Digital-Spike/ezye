@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
+import 'package:ezye/home_screens/category_screenfilter.dart';
 import 'package:ezye/home_screens/product_screen.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/profilescreens/wishlist_screen.dart';
@@ -139,7 +140,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                   backgroundColor: Colors.black,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5))),
-                              onPressed: () {},
+                              onPressed: () {
+                                 Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CategoryFilter()));
+                                             },
                               child: Row(
                                 children: [
                                   SvgPicture.asset('assets/svg/filter.svg'),
