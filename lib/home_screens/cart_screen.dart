@@ -6,12 +6,12 @@ import 'package:ezye/constants/string_util.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/model/address.dart';
 import 'package:ezye/model/cart_item.dart';
-import 'package:ezye/paymentScreens/coupan_screen.dart';
+import 'package:ezye/model/coupon.dart';
+import 'package:ezye/paymentScreens/coupon_screen.dart';
 import 'package:ezye/paymentScreens/order_confirm_screen.dart';
 import 'package:ezye/profilescreens/select_address.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
-import 'package:ezye/services/auth.dart';
 import 'package:ezye/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,14 +30,23 @@ class _CartPageState extends State<CartPage> {
   bool cashOnDelivery = true;
   bool phonePe = false;
   bool isChecked = false;
-  bool ezyeCoin = false;
+  bool isEzyeCoinApplies = false;
+  bool isCouponApplies = false;
+  Coupon? selectedCoupon;
+  double totalAmountWithDiscount = 0;
 
   Future<bool>? getCartFuture;
   List<CartItem> cartItems = [];
+  List<Coupon> couponList = [];
   Address? selectedAddress;
   double itemTotalAmount = 0.0;
   double discount = 0.0;
   double deliveryCost = 49.0;
+  double ezyeCoin = 0.0;
+  double couponDiscountAmount = 0;
+  double orderTotal = 0;
+
+  TextEditingController couponController = TextEditingController();
 
   @override
   void initState() {
@@ -98,9 +107,9 @@ class _CartPageState extends State<CartPage> {
                                   style: TextStyle(
                                       fontSize: 12, color: Color(0xff00CA14)),
                                 ),
-                                const Text(
-                                  '₹ 9,076',
-                                  style: TextStyle(
+                                Text(
+                                  '₹ ${(couponDiscountAmount + ezyeCoin).toString()}',
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xff00CA14)),
@@ -124,7 +133,7 @@ class _CartPageState extends State<CartPage> {
                                           color: Color(0xff7C7D85)),
                                     ),
                                     Text(
-                                      '₹ ${getCartTotal()}',
+                                      '₹ $totalAmountWithDiscount',
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700),
@@ -559,15 +568,19 @@ class _CartPageState extends State<CartPage> {
                                                         .size
                                                         .width /
                                                     3,
-                                                child: const TextField(
-                                                  decoration: InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                          'Enter coupon code',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Color(
-                                                              0xff7C7D85))),
+                                                child: TextFormField(
+                                                  controller: couponController,
+                                                  enabled: false,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintText:
+                                                              'Enter coupon code',
+                                                          hintStyle: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Color(
+                                                                  0xff7C7D85))),
                                                 ),
                                               )
                                             ],
@@ -597,12 +610,16 @@ class _CartPageState extends State<CartPage> {
                                         child: devider,
                                       ),
                                       GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          selectedCoupon = await Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const CoupanPage()));
+                                                      const CouponPage()));
+                                          couponController.text =
+                                              selectedCoupon?.code ?? '';
+                                          updateAmount();
+                                          setState(() {});
                                         },
                                         child: const Text(
                                           'VIEW COUPONS',
@@ -636,7 +653,6 @@ class _CartPageState extends State<CartPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const SelectAddress()));
-                                        setState(() {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(3),
@@ -661,7 +677,7 @@ class _CartPageState extends State<CartPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 child: Text(
-                                  '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+                                  '${selectedAddress?.line1 ?? ''}, ${selectedAddress?.line2 ?? ''}, ${selectedAddress?.city ?? ''}, ${selectedAddress?.pinCode ?? ''}.',
                                   style:
                                       const TextStyle(color: Color(0xff7C7D85)),
                                 ),
@@ -708,87 +724,63 @@ class _CartPageState extends State<CartPage> {
                                         )
                                       ],
                                     ),
-                                    // const SizedBox(width: 5),
-                                    // Row(
-                                    //   children: [
-                                    //     SizedBox(
-                                    //       height: 24,
-                                    //       width: 30,
-                                    //       child: Checkbox.adaptive(
-                                    //           materialTapTargetSize:
-                                    //               MaterialTapTargetSize
-                                    //                   .shrinkWrap,
-                                    //           activeColor: Colors.black,
-                                    //           checkColor: Colors.white,
-                                    //           value: phonePe,
-                                    //           shape: RoundedRectangleBorder(
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(7)),
-                                    //           onChanged: (bool? value) {
-                                    //             setState(() {
-                                    //               phonePe = value!;
-                                    //               cashOnDelivery = false;
-                                    //             });
-                                    //           }),
-                                    //     ),
-                                    //     const Text(
-                                    //       'Phonepe',
-                                    //       style: TextStyle(fontSize: 16),
-                                    //     )
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Stack(children: [
-                                  Image.asset('assets/png/Ezyecoinbar.png'),
-                                  Positioned(
-                                      top: 5,
-                                      bottom: 5,
-                                      left: 80,
-                                      right: 20,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 24,
-                                            width: 35,
-                                            child: Checkbox.adaptive(
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                                focusColor: Colors.white,
-                                                activeColor:
-                                                    const Color(0xffF0D7A7),
-                                                checkColor: Colors.black,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7)),
-                                                side: const BorderSide(
-                                                    color: Colors.white),
-                                                value: ezyeCoin,
-                                                onChanged: (bool? value) {
-                                                  setState(() {
-                                                    ezyeCoin = value!;
-                                                  });
-                                                }),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white),
-                                              textAlign: TextAlign.left,
-                                              maxLines: 2,
+                              Visibility(
+                                visible: showEzyeCoins(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Stack(children: [
+                                    Image.asset('assets/png/Ezyecoinbar.png'),
+                                    Positioned(
+                                        top: 5,
+                                        bottom: 5,
+                                        left: 80,
+                                        right: 20,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 24,
+                                              width: 35,
+                                              child: Checkbox.adaptive(
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  focusColor: Colors.white,
+                                                  activeColor:
+                                                      const Color(0xffF0D7A7),
+                                                  checkColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7)),
+                                                  side: const BorderSide(
+                                                      color: Colors.white),
+                                                  value: isEzyeCoinApplies,
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      isEzyeCoinApplies =
+                                                          value!;
+                                                      updateAmount();
+                                                    });
+                                                  }),
                                             ),
-                                          )
-                                        ],
-                                      )),
-                                ]),
+                                            Expanded(
+                                              child: Text(
+                                                'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.left,
+                                                maxLines: 2,
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  ]),
+                                ),
                               ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(
@@ -821,69 +813,49 @@ class _CartPageState extends State<CartPage> {
                                   ],
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Discount',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xff00CA14)),
-                                    ),
-                                    Text(
-                                      '-',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff00CA14)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Coupon Discount',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xff7C7D85)),
-                                    ),
-                                    Text(
-                                      '-',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              if (ezyeCoin == true)
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(
+                              Visibility(
+                                visible: isCouponApplies,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 3),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+                                      const Text(
+                                        'Coupon Discount',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xff00CA14)),
+                                      ),
                                       Text(
+                                        '₹ $couponDiscountAmount',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff00CA14)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (isEzyeCoinApplies == true)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
                                         'EZYE Coins',
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Color(0xff00CA14)),
                                       ),
                                       Text(
-                                        '-',
-                                        style: TextStyle(
+                                        '₹ $ezyeCoin',
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xff00CA14)),
@@ -914,29 +886,6 @@ class _CartPageState extends State<CartPage> {
                                   ],
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Tax',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xff7C7D85)),
-                                    ),
-                                    Text(
-                                      '-',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
@@ -956,7 +905,7 @@ class _CartPageState extends State<CartPage> {
                                             color: Color(0xff7C7D85)),
                                       ),
                                       Text(
-                                        '₹ ${getCartTotal()}',
+                                        '₹ $totalAmountWithDiscount',
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700),
@@ -1043,25 +992,19 @@ class _CartPageState extends State<CartPage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 8),
                                           color: const Color(0xffE8E9EE),
-                                          child: const Row(
+                                          child: Row(
                                             children: [
-                                              Row(
-                                                children: [
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    'Products',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color:
-                                                            Color(0xff7C7D85),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  )
-                                                ],
+                                              const Text(
+                                                'Products',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Color(0xff7C7D85),
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
                                               Text(
-                                                '(2)',
-                                                style: TextStyle(
+                                                '( ${cartItems.length} )',
+                                                style: const TextStyle(
                                                     fontSize: 14,
                                                     color: Color(0xff7C7D85),
                                                     fontWeight:
@@ -1159,49 +1102,12 @@ class _CartPageState extends State<CartPage> {
                                                                   CrossAxisAlignment
                                                                       .end,
                                                               children: [
-                                                                const Column(
-                                                                  children: [
-                                                                    Text(
-                                                                      '₹ 2,199',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color: Color(
-                                                                              0xffBDC1CA),
-                                                                          decoration:
-                                                                              TextDecoration.lineThrough),
-                                                                    ),
-                                                                    Text(
-                                                                      '₹2,000',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14),
-                                                                    ),
-                                                                  ],
+                                                                Text(
+                                                                  '₹${(double.parse(cartItem.mrp ?? '1') * double.parse(cartItem.quantity ?? '1'))}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          14),
                                                                 ),
-                                                                const SizedBox(
-                                                                    width: 2),
-                                                                Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          3),
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5),
-                                                                      color: const Color(
-                                                                          0xff00CA14)),
-                                                                  child:
-                                                                      const Text(
-                                                                    '10% Off',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Colors
-                                                                            .white),
-                                                                  ),
-                                                                )
                                                               ],
                                                             )
                                                           ],
@@ -1249,8 +1155,7 @@ class _CartPageState extends State<CartPage> {
                                                             (bool? value) {
                                                           setState(() {
                                                             cashOnDelivery =
-                                                                value!;
-                                                            phonePe = false;
+                                                                true;
                                                           });
                                                         }),
                                                   ),
@@ -1261,7 +1166,7 @@ class _CartPageState extends State<CartPage> {
                                                   )
                                                 ],
                                               ),
-                                              const SizedBox(width: 5),
+                                              /*const SizedBox(width: 5),
                                               Row(
                                                 children: [
                                                   SizedBox(
@@ -1297,7 +1202,7 @@ class _CartPageState extends State<CartPage> {
                                                         TextStyle(fontSize: 16),
                                                   )
                                                 ],
-                                              ),
+                                              ),*/
                                             ],
                                           ),
                                         ),
@@ -1332,70 +1237,47 @@ class _CartPageState extends State<CartPage> {
                                             ],
                                           ),
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Discount',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color(0xff00CA14)),
-                                              ),
-                                              Text(
-                                                '-',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xff00CA14)),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
+                                              const Text(
                                                 'Coupon Discount',
                                                 style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Color(0xff7C7D85)),
+                                                    color: Color(0xff00CA14)),
                                               ),
                                               Text(
-                                                '-',
-                                                style: TextStyle(
+                                                '₹ $couponDiscountAmount',
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.black),
+                                                    color: Color(0xff00CA14)),
                                               )
                                             ],
                                           ),
                                         ),
-                                        if (ezyeCoin == true)
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
+                                        if (isEzyeCoinApplies == true)
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 20, vertical: 0),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'EZYE Coins',
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Color(0xff00CA14)),
                                                 ),
                                                 Text(
-                                                  '-',
-                                                  style: TextStyle(
+                                                  '₹ $ezyeCoin',
+                                                  style: const TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -1427,29 +1309,6 @@ class _CartPageState extends State<CartPage> {
                                             ],
                                           ),
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Tax',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color(0xff7C7D85)),
-                                              ),
-                                              Text(
-                                                '-',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 10),
@@ -1472,7 +1331,7 @@ class _CartPageState extends State<CartPage> {
                                                       color: Color(0xff7C7D85)),
                                                 ),
                                                 Text(
-                                                  '₹ ${getCartTotal()}',
+                                                  '₹ $totalAmountWithDiscount',
                                                   style: const TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -1505,7 +1364,7 @@ class _CartPageState extends State<CartPage> {
                                                 color: Color(0xff7C7D85)),
                                           ),
                                           Text(
-                                            '₹ ${getCartTotal()}',
+                                            '₹ $totalAmountWithDiscount',
                                             style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w700),
@@ -1569,6 +1428,7 @@ class _CartPageState extends State<CartPage> {
                 .toList();
       }
       updateCartTotal();
+      await getCoupon();
       return true;
     } catch (error) {
       print('Error: $error');
@@ -1664,7 +1524,7 @@ class _CartPageState extends State<CartPage> {
       var removeFromWishlistUrl =
           Uri.parse('${ApiService.url}removeCartItem.php');
       var reqBody = {
-        "userId": FirebaseUser.user?.uid ?? '',
+        "userId": SessionObject.user.userId,
         "productId": cartItem.productId
       };
 
@@ -1698,18 +1558,21 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> getAddress() async {
-    var removeFromWishlistUrl =
-        Uri.parse('${ApiService.url}getUserAddress.php');
-    var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
+    try {
+      var url = Uri.parse('${ApiService.url}getUserAddress.php');
+      var reqBody = {"userId": SessionObject.user.userId};
 
-    var response = await http.post(removeFromWishlistUrl, body: reqBody);
-    if (response.statusCode == 200) {
-      selectedAddress =
-          (json.decode((response.body).toString().replaceAll('connected', ''))
-                  as List)
-              .map((item) => Address.fromJson(item))
-              .toList()
-              .first;
+      var response = await http.post(url, body: reqBody);
+      if (response.statusCode == 200 && (response.body as List).isNotEmpty) {
+        selectedAddress =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => Address.fromJson(item))
+                .toList()
+                .first;
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -1733,12 +1596,15 @@ class _CartPageState extends State<CartPage> {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
         "cartId": SessionObject.user.cartId ?? "",
-        "userId": FirebaseUser.user?.uid,
+        "userId": SessionObject.user.userId,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": getCartTotal().toString(),
         "paymentMethod": 'cash',
         "address":
             '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
+        "couponCode": selectedCoupon?.code ?? '',
+        "finalAmount": totalAmountWithDiscount.toString(),
+        "ezyeCoin": ezyeCoin.toString()
       };
 
       var response = await http.post(createOrderUrl, body: reqBody);
@@ -1751,6 +1617,25 @@ class _CartPageState extends State<CartPage> {
     } catch (e) {
       debugPrint(e.toString());
       return false;
+    }
+  }
+
+  Future getCoupon() async {
+    try {
+      var url = Uri.parse('${ApiService.url}getCoupons.php');
+      var response = await http.post(url, body: {});
+      if (response.statusCode == 200) {
+        couponList =
+            (json.decode((response.body).toString().replaceAll('connected', ''))
+                    as List)
+                .map((item) => Coupon.fromJson(item))
+                .toList();
+        selectedCoupon = couponList.first;
+        couponController.text = selectedCoupon?.code ?? '';
+        updateAmount();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -1779,5 +1664,27 @@ class _CartPageState extends State<CartPage> {
         );
       },
     );
+  }
+
+  updateAmount() {
+    if (getCartTotal() >= double.parse(selectedCoupon?.minimumAmount ?? '0')) {
+      isCouponApplies = true;
+      couponDiscountAmount = double.parse(selectedCoupon?.amount ?? '0');
+    } else {
+      isCouponApplies = false;
+      couponDiscountAmount = 0;
+    }
+    ezyeCoin = double.parse(
+        isEzyeCoinApplies ? SessionObject.user.walletBalance ?? '0' : '0');
+    totalAmountWithDiscount = getCartTotal() - ezyeCoin - couponDiscountAmount;
+    orderTotal = getCartTotal() + ezyeCoin + couponDiscountAmount;
+  }
+
+  showEzyeCoins() {
+    if ((SessionObject.user.walletBalance ?? '').isNotEmpty &&
+        double.parse(SessionObject.user.walletBalance ?? '0') > 0) {
+      return true;
+    }
+    return false;
   }
 }

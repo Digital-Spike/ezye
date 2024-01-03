@@ -203,35 +203,12 @@ class _WishListScreenState extends State<WishListScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            '₹${product.mrp}',
-                                            style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                                color: Color(0xff7C7D85),
-                                                fontSize: 14),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
                                             '₹${product.sellingPrice}',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
-                                          const SizedBox(width: 5),
-                                          Container(
-                                            padding: const EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
-                                                color: const Color(0xff00CA14)),
-                                            child: const Text(
-                                              '10% Off',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white),
-                                            ),
-                                          )
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 );

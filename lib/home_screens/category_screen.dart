@@ -5,6 +5,7 @@ import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
 import 'package:ezye/home_screens/category_screenfilter.dart';
 import 'package:ezye/home_screens/product_screen.dart';
+import 'package:ezye/home_screens/search_screen.dart';
 import 'package:ezye/model/product.dart';
 import 'package:ezye/profilescreens/wishlist_screen.dart';
 import 'package:ezye/providers/session_object.dart';
@@ -51,17 +52,25 @@ class _CategoryPageState extends State<CategoryPage> {
                 color: const Color(0xffE8E9EE),
               )),
           actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Container(
-                height: 46,
-                width: 46,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                child: SvgPicture.asset(
-                  'assets/svg/search.svg',
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SearchPage()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Container(
+                  height: 46,
+                  width: 46,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xffE8E9EE).withOpacity(0.3)),
+                  child: SvgPicture.asset(
+                    'assets/svg/search.svg',
+                  ),
                 ),
               ),
             ),
@@ -319,7 +328,7 @@ class _CategoryPageState extends State<CategoryPage> {
         "category": product.category,
         "subCategory": product.subCategory,
         "MRP": product.mrp,
-        "sellingPrice": product.sellingPrice,
+        "sellingPrice": product.mrp,
         "description": product.description,
       };
 

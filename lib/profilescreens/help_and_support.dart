@@ -51,10 +51,8 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
               color: const Color(0xffE8E9EE),
             )),
       ),
-      body: Column(
-        children: [
-          if (isLoggedIn == false)
-            Padding(
+      body: !isLoggedIn
+          ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -90,117 +88,127 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ))
                 ],
               ),
-            ),
-          if (isLoggedIn == true)
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Name',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Color(0xff7C7D85)),
-                          hintText: 'Enter your name',
-                          isDense: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(color: Colors.grey)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(
-                                  width: 1.5, color: Color(0xffE8E9EE)))),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Mobile Number',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Color(0xff7C7D85)),
-                          hintText: 'Enter your mobile number',
-                          isDense: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(color: Colors.grey)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(
-                                  width: 1.5, color: Color(0xffE8E9EE)))),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Email Address',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Color(0xff7C7D85)),
-                          hintText: 'Enter your email address',
-                          isDense: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(color: Colors.grey)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(
-                                  width: 1.5, color: Color(0xffE8E9EE)))),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Message',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      maxLength: 1000,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Color(0xff7C7D85)),
-                          hintText: 'Write your query here',
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(color: Colors.grey)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(
-                                  width: 1.5, color: Color(0xffE8E9EE)))),
-                    ),
-                    const Spacer(),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            minimumSize: const Size(double.infinity, 56)),
-                        onPressed: () {},
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        )),
-                    const SizedBox(height: 10)
-                  ],
+            )
+          : SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Name',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            hintStyle:
+                                const TextStyle(color: Color(0xff7C7D85)),
+                            hintText: 'Enter your name',
+                            isDense: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Mobile Number',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            hintStyle:
+                                const TextStyle(color: Color(0xff7C7D85)),
+                            hintText: 'Enter your mobile number',
+                            isDense: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Email Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            hintStyle:
+                                const TextStyle(color: Color(0xff7C7D85)),
+                            hintText: 'Enter your email address',
+                            isDense: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Message',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        maxLength: 1000,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                            hintStyle:
+                                const TextStyle(color: Color(0xff7C7D85)),
+                            hintText: 'Write your query here',
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              minimumSize: const Size(double.infinity, 56)),
+                          onPressed: () {},
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )),
+                      const SizedBox(height: 10)
+                    ],
+                  ),
                 ),
               ),
             ),
-        ],
-      ),
     );
   }
 }

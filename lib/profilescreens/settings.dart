@@ -1,10 +1,12 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/settings/privacy_policy.dart';
+import 'package:ezye/settings/return_policy.dart';
+import 'package:ezye/settings/terms_and_conditions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -105,7 +107,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           side: const BorderSide(
                               width: 1, color: Color(0xffE8E9EE)),
                           minimumSize: const Size(double.infinity, 64)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PrivacyPolicy()));
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -124,7 +131,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           side: const BorderSide(
                               width: 1, color: Color(0xffE8E9EE)),
                           minimumSize: const Size(double.infinity, 64)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ReturnPolicy()));
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -143,7 +155,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           side: const BorderSide(
                               width: 1, color: Color(0xffE8E9EE)),
                           minimumSize: const Size(double.infinity, 64)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TermsAndConditions()));
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
