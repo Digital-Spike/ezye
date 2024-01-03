@@ -10,6 +10,7 @@ import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
 
 import 'home_screens/main_screen.dart';
 
@@ -98,12 +99,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> getUser() async {
     try {
-      /* PhonePePaymentSdk.init("PRODUCTION", "testAppId", "DIGITALSPONLINE", true)
+      PhonePePaymentSdk.init("PRODUCTION", "testAppId", "JOBSUONLINE", true)
           .then((val) =>
               {print('**********'), print('PhonePe SDK Initialized - $val')})
           .catchError((error) {
         print(error);
-      });*/
+      });
       if (FirebaseUser.user?.uid == null) {
         return Future.value(false);
       }
