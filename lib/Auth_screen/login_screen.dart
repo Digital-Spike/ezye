@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:ezye/Auth_screen/otp_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
+import 'package:ezye/settings/terms_and_conditions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -170,24 +172,39 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Spacer(),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                       text: 'By clicking',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7D85),
                           fontWeight: FontWeight.w400),
                       children: [
-                        TextSpan(
+                        const TextSpan(
                             text: ' "GET OTP" ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff040707))),
-                        TextSpan(text: 'you confirm your acceptance of these '),
+                        const TextSpan(
+                            text: 'you confirm your acceptance of these '),
                         TextSpan(
                             text: 'terms and conditions.',
-                            style: TextStyle(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const TermsAndConditions()));
+                              },
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff040707)))
+
+                        /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TermsAndConditions()));*/
                       ]),
                   textAlign: TextAlign.center,
                 ),
