@@ -1,12 +1,17 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:ezye/Auth_screen/otp_screen.dart';
 import 'package:ezye/home_screens/home_screen.dart';
 import 'package:ezye/home_screens/main_screen.dart';
+import 'package:ezye/settings/terms_and_conditions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,8 +36,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void checkCurrentUser() async {
-    /*String? signature = await PhonePePaymentSdk.getPackageSignatureForAndroid();
-    print(signature);*/
+    String? signature = await PhonePePaymentSdk.getPackageSignatureForAndroid();
+    print("&***************************************");
+    print(signature);
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // User is already logged in, navigate to HomePage
@@ -68,36 +74,37 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.w700,
                           color: Color(0xffBDC1CA)),
                     ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(100, 36),
-                            backgroundColor: const Color(0xff040707),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12))),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MainScreen()));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'SKIP',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(width: 10),
-                            SvgPicture.asset(
-                              'assets/svg/arrow.svg',
-                              width: 22,
-                              color: Colors.white,
-                            )
-                          ],
-                        ))
+                    if (Platform.isIOS)
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(100, 36),
+                              backgroundColor: const Color(0xff040707),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MainScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'SKIP',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                              const SizedBox(width: 10),
+                              SvgPicture.asset(
+                                'assets/svg/arrow.svg',
+                                width: 22,
+                                color: Colors.white,
+                              )
+                            ],
+                          ))
                   ],
                 ),
                 const Text(
@@ -165,24 +172,39 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Spacer(),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                       text: 'By clicking',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7D85),
                           fontWeight: FontWeight.w400),
                       children: [
-                        TextSpan(
+                        const TextSpan(
                             text: ' "GET OTP" ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff040707))),
-                        TextSpan(text: 'you confirm your acceptance of these '),
+                        const TextSpan(
+                            text: 'you confirm your acceptance of these '),
                         TextSpan(
                             text: 'terms and conditions.',
-                            style: TextStyle(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const TermsAndConditions()));
+                              },
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff040707)))
+
+                        /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TermsAndConditions()));*/
                       ]),
                   textAlign: TextAlign.center,
                 ),
