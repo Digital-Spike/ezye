@@ -384,35 +384,41 @@ class _ProductScreenState extends State<ProductScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w600)),
                           SizedBox(
                               height: 50,
+                              
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: sizes.length,
                                 itemBuilder: (context, index) {
-                                  return ChoiceChip(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
-                                    label: Container(
-                                      height: 30,
-                                      width: 20,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        sizes[index],
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: ChoiceChip(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(6)),
+                                          
+                                      label: Container(
+                                        
+                                        height: 30,
+                                        width: 20,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          sizes[index],
+                                        ),
                                       ),
+                                      labelStyle: TextStyle(
+                                          color: _value == index
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 16),
+                                      selected: _value == index,
+                                      backgroundColor: _value == index
+                                          ? Colors.black
+                                          : const Color(0xffE8E9EE),
+                                      onSelected: (selected) {
+                                        setState(() {
+                                          _value = index;
+                                        });
+                                      },
                                     ),
-                                    labelStyle: TextStyle(
-                                        color: _value == index
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 16),
-                                    selected: _value == index,
-                                    backgroundColor: _value == index
-                                        ? Colors.black
-                                        : const Color(0xffE8E9EE),
-                                    onSelected: (selected) {
-                                      setState(() {
-                                        _value = index;
-                                      });
-                                    },
                                   );
                                 },
                               )),

@@ -172,7 +172,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             itemCount: products.length,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1 / 1.92,
+                                    childAspectRatio: 1 / 1.95,
                                     crossAxisSpacing: 10,
                                     crossAxisCount: 2),
                             itemBuilder: ((context, index) {
@@ -225,6 +225,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       children: [
                                         Container(
                                           padding: const EdgeInsets.all(3),
+                                          margin: EdgeInsets.only(left: 5),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(3),
@@ -236,42 +237,54 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 fontSize: 12),
                                           ),
                                         ),
-                                        GestureDetector(
-                                            onTap: () async {
-                                              isLiked = isSaved(product);
-                                              !isSaved(product)
-                                                  ? await addToWishlist(product)
-                                                  : await removeFromWishlist(
-                                                      product);
-                                              setState(() {
-                                                products[index].isSaved =
-                                                    !isLiked;
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              products[index].isSaved
-                                                  ? 'assets/svg/redheart.svg'
-                                                  : 'assets/svg/greyheart.svg',
-                                            ))
+                                        Container( 
+                                          margin: EdgeInsets.only(right: 5),
+                                          child: GestureDetector(
+                                              onTap: () async {
+                                                isLiked = isSaved(product);
+                                                !isSaved(product)
+                                                    ? await addToWishlist(product)
+                                                    : await removeFromWishlist(
+                                                        product);
+                                                setState(() {
+                                                  products[index].isSaved =
+                                                      !isLiked;
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                products[index].isSaved
+                                                    ? 'assets/svg/redheart.svg'
+                                                    : 'assets/svg/greyheart.svg',
+                                              )),
+                                        )
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 8,),
+                                    
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          product.name ?? "",
-                                          style: const TextStyle(fontSize: 14),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            
+                                            product.name ?? "",
+                                            style: const TextStyle(fontSize: 14,),
+                                            
+                                          ),
                                         ),
                                       ],
                                     ),
                                     const SizedBox(height: 8),
                                     Row(
                                       children: [
-                                        Text(
-                                          '₹ ${product.mrp ?? ""}',
-                                          style: const TextStyle(fontSize: 16),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            '₹ ${product.mrp ?? ""}',
+                                            style: const TextStyle(fontSize: 16),
+                                          ),
                                         ),
                                       ],
                                     )

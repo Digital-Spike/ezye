@@ -188,18 +188,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
 ),
 Row(
   children: [
-    // Padding(
-    //   padding: const EdgeInsets.only(left: 8),
-    //   child: ElevatedButton(
-    //     onPressed: () {},
-    //     child: Text('S'),
-    //     style: ElevatedButton.styleFrom(
-    //       shape: RoundedRectangleBorder(
-    //         borderRadius: BorderRadius.circular(2),
-    //       ),
-    //     ),
-    //   ),
-    // ),
+    
      Padding(
       padding: const EdgeInsets.only(left: 5),
       child: ElevatedButton(
@@ -319,7 +308,7 @@ Container(
           ),
           SizedBox(height: 2),
           SizedBox(
-  width: 180,
+  width: 160,
   child: Container(
   width: 180,
   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -346,7 +335,7 @@ Container(
           decoration: InputDecoration(
             border: InputBorder.none, // Hide TextField border
             hintText: 'Enter amount',
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(color: Colors.grey,fontSize: 13,),
             isDense: true,
             contentPadding: EdgeInsets.symmetric(vertical: 10),
           ),
@@ -368,7 +357,7 @@ Container(
           ),
           SizedBox(height: 1),
         SizedBox(
-  width: 180,
+  width: 160,
   child: Container(
   width: 180,
   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -395,7 +384,7 @@ Container(
           decoration: InputDecoration(
             border: InputBorder.none, // Hide TextField border
             hintText: 'Enter amount',
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(color: Colors.grey,fontSize: 13),
             isDense: true,
             contentPadding: EdgeInsets.symmetric(vertical: 10),
           ),

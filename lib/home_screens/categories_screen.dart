@@ -53,7 +53,7 @@ class _CategoriesState extends State<Categories> {
                             const CategoryPage(category: "Women")));
               },
               child: Container(
-                height: 115,
+                height: 100,
                 width: double.infinity,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -75,7 +75,7 @@ class _CategoriesState extends State<Categories> {
                             const CategoryPage(category: "Men")));
               },
               child: Container(
-                height: 115,
+                height: 100,
                 width: double.infinity,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -97,7 +97,7 @@ class _CategoriesState extends State<Categories> {
                             const CategoryPage(category: 'Boy')));
               },
               child: Container(
-                height: 115,
+                height: 100,
                 width: double.infinity,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -119,7 +119,7 @@ class _CategoriesState extends State<Categories> {
                             const CategoryPage(category: 'Girl')));
               },
               child: Container(
-                height: 115,
+                height: 100,
                 width: double.infinity,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -141,7 +141,7 @@ class _CategoriesState extends State<Categories> {
                             const CategoryPage(category: "Babies")));
               },
               child: Container(
-                height: 115,
+                height: 100,
                 width: double.infinity,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
