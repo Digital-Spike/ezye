@@ -88,6 +88,7 @@ class _CartPageState extends State<CartPage> {
             return Scaffold(
               backgroundColor: Colors.white,
               bottomNavigationBar: BottomAppBar(
+                padding: EdgeInsets.zero,
                 elevation: 0,
                 height: 90,
                 child: Column(
@@ -140,21 +141,24 @@ class _CartPageState extends State<CartPage> {
                                     )
                                   ],
                                 ),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        backgroundColor: Colors.black,
-                                        minimumSize: const Size(240, 46)),
-                                    onPressed: confirmOrder,
-                                    child: const Text(
-                                      'Checkout',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
-                                    ))
+                                SizedBox(width: 15),
+                                Expanded(
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          backgroundColor: Colors.black,
+                                          minimumSize: const Size(double.infinity, 40)),
+                                      onPressed: confirmOrder,
+                                      child: const Text(
+                                        'Checkout',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white),
+                                      )),
+                                )
                               ],
                             ),
                           )
@@ -531,11 +535,11 @@ class _CartPageState extends State<CartPage> {
                                       );
                                     }),
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 5),
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
-                                  'Coupons',
+                                  'COUPONS',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
@@ -562,12 +566,12 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               SvgPicture.asset(
                                                   'assets/svg/coupan.svg'),
-                                              const SizedBox(width: 10),
+                                              const SizedBox(width: 8),
                                               SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width /
-                                                    3,
+                                                    3.5,
                                                 child: TextFormField(
                                                   controller: couponController,
                                                   enabled: false,
@@ -593,7 +597,7 @@ class _CartPageState extends State<CartPage> {
                                                               8)),
                                                   backgroundColor: Colors.black,
                                                   minimumSize:
-                                                      const Size(130, 34)),
+                                                      const Size(125, 34)),
                                               onPressed: () {},
                                               child: const Text(
                                                 'APPLY COUPON',
@@ -1371,35 +1375,38 @@ class _CartPageState extends State<CartPage> {
                                           )
                                         ],
                                       ),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              backgroundColor: Colors.black,
-                                              minimumSize: const Size(240, 46)),
-                                          onPressed: () async {
-                                            showProcessingDialogue();
-                                            await placeOrder();
-                                            if (!mounted) {
-                                              return;
-                                            }
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const OrderConfirmScreen()),
-                                              (route) => false,
-                                            );
-                                          },
-                                          child: const Text(
-                                            'Confirm Order',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ))
+                                      SizedBox(width: 10,),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                backgroundColor: Colors.black,
+                                                minimumSize: const Size(240, 46)),
+                                            onPressed: () async {
+                                              showProcessingDialogue();
+                                              await placeOrder();
+                                              if (!mounted) {
+                                                return;
+                                              }
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const OrderConfirmScreen()),
+                                                (route) => false,
+                                              );
+                                            },
+                                            child: const Text(
+                                              'Confirm Order',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white),
+                                            )),
+                                      ),
                                     ],
                                   ),
                                 )

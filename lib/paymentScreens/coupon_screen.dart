@@ -174,7 +174,7 @@ class _CouponPageState extends State<CouponPage> {
                                           Navigator.pop(context, coupon);
                                         },
                                         child: const Text(
-                                          'APPLY COUPON',
+                                          'APPLY ',
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,

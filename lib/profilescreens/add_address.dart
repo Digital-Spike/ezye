@@ -127,7 +127,7 @@ class _AddAddressState extends State<AddAddress> {
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),

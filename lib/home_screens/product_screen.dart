@@ -80,15 +80,20 @@ class _ProductScreenState extends State<ProductScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
                 appBar: AppBar(
+                  surfaceTintColor: Colors.transparent,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  leading: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 6),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white.withOpacity(0.2)),
-                      child: const BackButton()),
+                  leadingWidth: 80,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 6),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white.withOpacity(0.2)),
+                        child: const BackButton()),
+                  ),
                   actions: [
                     GestureDetector(
                         onTap: () async {
@@ -101,32 +106,45 @@ class _ProductScreenState extends State<ProductScreen> {
                           }
                           setState(() {});
                         },
-                        child: SvgPicture.asset(
-                          isSaved()
-                              ? 'assets/svg/heart.svg'
-                              : 'assets/svg/redheart.svg',
-                          height: 30,
-                        )),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.symmetric(
+                        child: Container(
+                           padding: const EdgeInsets.all(5),
+                                              margin: const EdgeInsets.symmetric(
                           vertical: 6, horizontal: 6),
-                      decoration: BoxDecoration(
+                                              decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.white.withOpacity(0.2)),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const CartPage()));
-                          },
-                          child: SvgPicture.asset('assets/svg/cart.svg')),
+                          child: SvgPicture.asset(
+                            isSaved()
+                                ? 'assets/svg/heart.svg'
+                                : 'assets/svg/redheart.svg',
+                            height: 30,
+                          ),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 6),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white.withOpacity(0.2)),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const CartPage()));
+                            },
+                            child: SvgPicture.asset('assets/svg/cart.svg')),
+                      ),
                     ),
+                    SizedBox(width: 10,),
                   ],
                 ),
                 extendBodyBehindAppBar: true,
                 bottomNavigationBar: BottomAppBar(
+                  color: Colors.white,
                   elevation: 10,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -422,11 +440,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                   );
                                 },
                               )),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 15),
                           const Text('About Product',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w600)),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 2),
                           Text(
                             '${product?.fullDescription}',
                             style: const TextStyle(

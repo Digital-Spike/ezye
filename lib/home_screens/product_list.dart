@@ -73,7 +73,7 @@ class _ProductListState extends State<ProductList> {
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 5),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -195,7 +195,7 @@ class _ProductListState extends State<ProductList> {
                                             'EZYE',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 12),
+                                                fontSize: 16),
                                           ),
                                         ),
                                         GestureDetector(
@@ -233,7 +233,7 @@ class _ProductListState extends State<ProductList> {
                                       children: [
                                         Text(
                                           '₹ ${product.mrp ?? ""}',
-                                          style: const TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 26),
                                         ),
                                       ],
                                     )
