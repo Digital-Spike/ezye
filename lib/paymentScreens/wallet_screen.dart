@@ -4,6 +4,7 @@ import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/wallet_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -54,7 +55,7 @@ class _WalletPageState extends State<WalletPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${SessionObject.user.walletBalance}',
+                      '${Provider.of<SessionObject>(context, listen: false).user.walletBalance}',
                       style: const TextStyle(
                           fontSize: 34,
                           fontWeight: FontWeight.w700,
@@ -238,12 +239,19 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   Future<List<WalletTransactions>> getTransactions() async {
-    return await WalletService.getWalletTransaction();
+    return await WalletService.getWalletTransaction(context: context);
   }
 
   getWalletBalance() {
-    if((SessionObject.user.walletBalance ?? '').isNotEmpty){
-      return (SessionObject.user.walletBalance ?? '');
+    if ((Provider.of<SessionObject>(context, listen: false)
+                .user
+                .walletBalance ??
+            '')
+        .isNotEmpty) {
+      return (Provider.of<SessionObject>(context, listen: false)
+              .user
+              .walletBalance ??
+          '');
     }
     return '0';
   }

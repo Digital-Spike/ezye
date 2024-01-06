@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
@@ -14,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class CategoryPage extends StatefulWidget {
   final String category;
@@ -112,8 +114,15 @@ class _CategoryPageState extends State<CategoryPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                  child: SvgPicture.asset(
-                    'assets/svg/cart.svg',
+                  child: badges.Badge(
+                    badgeContent: Text(
+                        Provider.of<SessionObject>(context, listen: true)
+                                .user
+                                .cartItemCount ??
+                            ''),
+                    child: SvgPicture.asset(
+                      'assets/svg/cart.svg',
+                    ),
                   ),
                 ),
               ),
@@ -150,9 +159,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5))),
                               onPressed: () {
-                                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const CategoryFilter()));
-                                             },
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CategoryFilter()));
+                              },
                               child: Row(
                                 children: [
                                   SvgPicture.asset('assets/svg/filter.svg'),
@@ -178,7 +190,6 @@ class _CategoryPageState extends State<CategoryPage> {
                             itemBuilder: ((context, index) {
                               Product product = products[index];
                               products[index].isSaved = isSaved(product);
-                              print(products[index].isSaved);
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -237,13 +248,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 fontSize: 12),
                                           ),
                                         ),
-                                        Container( 
+                                        Container(
                                           margin: EdgeInsets.only(right: 5),
                                           child: GestureDetector(
                                               onTap: () async {
                                                 isLiked = isSaved(product);
                                                 !isSaved(product)
-                                                    ? await addToWishlist(product)
+                                                    ? await addToWishlist(
+                                                        product)
                                                     : await removeFromWishlist(
                                                         product);
                                                 setState(() {
@@ -259,8 +271,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                         )
                                       ],
                                     ),
-                                    const SizedBox(height: 8,),
-                                    
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -268,10 +281,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                         Container(
                                           margin: EdgeInsets.only(left: 5),
                                           child: Text(
-                                            
                                             product.name ?? "",
-                                            style: const TextStyle(fontSize: 14,),
-                                            
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -283,7 +296,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           margin: EdgeInsets.only(left: 5),
                                           child: Text(
                                             '₹ ${product.mrp ?? ""}',
-                                            style: const TextStyle(fontSize: 16),
+                                            style:
+                                                const TextStyle(fontSize: 16),
                                           ),
                                         ),
                                       ],
@@ -319,7 +333,8 @@ class _CategoryPageState extends State<CategoryPage> {
           .map((item) => Product.fromJson(item))
           .toList();
 
-      if (SessionObject.user.userId != null) {
+      if (Provider.of<SessionObject>(context, listen: false).user.userId !=
+          null) {
         await getWishList();
       }
 

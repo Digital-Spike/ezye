@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
@@ -11,6 +12,7 @@ import 'package:ezye/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   final String productId;
@@ -130,13 +132,23 @@ class _ProductScreenState extends State<ProductScreen> {
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white.withOpacity(0.2)),
                         child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const CartPage()));
-                            },
-                            child: SvgPicture.asset('assets/svg/cart.svg')),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CartPage()));
+                          },
+                          child: badges.Badge(
+                          badgeContent: Text(
+                              Provider.of<SessionObject>(context, listen: true)
+                                      .user
+                                      .cartItemCount ??
+                                  '0'),
+                          child: SvgPicture.asset(
+                            'assets/svg/cart.svg',
+                          ),
+                        ),
+                      ),
                       ),
                     ),
                     SizedBox(width: 10,),
@@ -402,7 +414,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w600)),
                           SizedBox(
                               height: 50,
-                              
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: sizes.length,
@@ -411,10 +422,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                     padding: const EdgeInsets.only(right: 5),
                                     child: ChoiceChip(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6)),
-                                          
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
                                       label: Container(
-                                        
                                         height: 30,
                                         width: 20,
                                         alignment: Alignment.center,
@@ -467,7 +477,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<bool> fetchData() async {
     try {
-      if (SessionObject.user.userId != null) {
+      if (Provider.of<SessionObject>(context, listen: false).user.userId !=
+          null) {
         await getWishList();
       }
 
@@ -522,19 +533,30 @@ class _ProductScreenState extends State<ProductScreen> {
 
       var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
-        "userId": SessionObject.user.userId ?? '',
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId ??
+                '',
         "productId": product?.productId ?? '',
         "productName": product?.name ?? '',
         "size": product?.size ?? '',
         "color": product?.color ?? '',
         "amount": product?.mrp,
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "quantity": itemCount.toString(),
         "imageUrl": product?.image1Url ?? ''
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);
       if (response.statusCode == 200) {
+        Provider.of<SessionObject>(context, listen: false).user.cartItemCount =
+            (int.parse(Provider.of<SessionObject>(context, listen: false)
+                            .user
+                            .cartItemCount ??
+                        '0') +
+                    1)
+                .toString();
         return !jsonDecode(
             (response.body).toString().replaceAll('connected', ''))['error'];
       }
@@ -551,7 +573,9 @@ class _ProductScreenState extends State<ProductScreen> {
           Uri.parse('${ApiService.url}updateCartQuantity.php');
       var reqBody = {
         "quantity": (previousCartQty + itemCount).toString(),
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "productId": product?.productId
       };
 
@@ -570,8 +594,10 @@ class _ProductScreenState extends State<ProductScreen> {
   Future<bool> getCartItems() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
-      var response = await http
-          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
+      var response = await http.post(productUrl, body: {
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ?? ""
+      });
 
       if (response.statusCode == 200) {
         cartItems = (json.decode(response.body) as List)
@@ -661,7 +687,8 @@ class _ProductScreenState extends State<ProductScreen> {
     try {
       var addToWishlistUrl = Uri.parse('${ApiService.url}wishList.php');
       var reqBody = {
-        "userId": SessionObject.user.userId,
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId,
         "productId": product?.productId,
         "name": product?.name,
         "category": product?.category,

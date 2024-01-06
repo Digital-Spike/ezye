@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
+import 'package:provider/provider.dart';
 
 import 'home_screens/main_screen.dart';
 
@@ -118,13 +119,34 @@ class _SplashScreenState extends State<SplashScreen> {
             (jsonDecode((response.body).toString().replaceAll('connected', ''))
                     as List)
                 .firstOrNull;
-        SessionObject.user = UserModel.fromJson(user);
+        Provider.of<SessionObject>(context, listen: false)
+            .updateUser(userObject: UserModel.fromJson(user));
+        await getCartItems();
         isUserExists = user['userId'] != null;
         return true;
       }
     } catch (e) {
       debugPrint(e.toString());
       return false;
+    }
+    return false;
+  }
+
+  Future<bool> getCartItems() async {
+    try {
+      var productUrl = Uri.parse('${ApiService.url}getCartDetails.php');
+      var response = await http.post(productUrl, body: {
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ?? ""
+      });
+
+      if (response.statusCode == 200) {
+        Provider.of<SessionObject>(context, listen: false).updateCartCount(
+            count: (json.decode(response.body) as List).length.toString());
+      }
+      return true;
+    } catch (error) {
+      print('Error: $error');
     }
     return false;
   }

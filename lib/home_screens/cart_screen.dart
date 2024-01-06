@@ -17,6 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -589,23 +590,75 @@ class _CartPageState extends State<CartPage> {
                                               )
                                             ],
                                           ),
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                  backgroundColor: Colors.black,
-                                                  minimumSize:
-                                                      const Size(125, 34)),
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'APPLY COUPON',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.white),
-                                              ))
+                                          isCouponApplies
+                                              ? ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      minimumSize:
+                                                          const Size(130, 34)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isCouponApplies =
+                                                          !isCouponApplies;
+                                                      updateAmount();
+                                                    });
+                                                  },
+                                                  child: const Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.check_circle,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 3,
+                                                      ),
+                                                      Text(
+                                                        'APPLIED',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      minimumSize:
+                                                          const Size(130, 34)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isCouponApplies =
+                                                          !isCouponApplies;
+                                                      updateAmount();
+                                                    });
+                                                  },
+                                                  child: const Text(
+                                                    'APPLY COUPON',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
                                         ],
                                       ),
                                       Padding(
@@ -773,7 +826,7 @@ class _CartPageState extends State<CartPage> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                'Use EZYE coins to purchase user order. You save ₹ ${SessionObject.user.walletBalance}',
+                                                'Use EZYE coins to purchase user order. You save ₹ ${Provider.of<SessionObject>(context, listen: false).user.walletBalance}',
                                                 style: const TextStyle(
                                                     fontSize: 14,
                                                     color: Colors.white),
@@ -1424,8 +1477,10 @@ class _CartPageState extends State<CartPage> {
     try {
       await getAddress();
       var productUrl = Uri.parse('${ApiService.url}getCartDetails.php');
-      var response = await http
-          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
+      var response = await http.post(productUrl, body: {
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ?? ""
+      });
 
       if (response.statusCode == 200) {
         cartItems =
@@ -1433,6 +1488,8 @@ class _CartPageState extends State<CartPage> {
                     as List)
                 .map((item) => CartItem.fromJson(item))
                 .toList();
+        Provider.of<SessionObject>(context, listen: false)
+            .updateCartCount(count: cartItems.length.toString());
       }
       updateCartTotal();
       await getCoupon();
@@ -1531,7 +1588,8 @@ class _CartPageState extends State<CartPage> {
       var removeFromWishlistUrl =
           Uri.parse('${ApiService.url}removeCartItem.php');
       var reqBody = {
-        "userId": SessionObject.user.userId,
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId,
         "productId": cartItem.productId
       };
 
@@ -1555,7 +1613,9 @@ class _CartPageState extends State<CartPage> {
           Uri.parse('${ApiService.url}updateCartQuantity.php');
       var reqBody = {
         "quantity": (int.parse(cartItem.quantity ?? '1') + count).toString(),
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "productId": cartItem.productId
       };
       await http.post(removeFromWishlistUrl, body: reqBody);
@@ -1567,7 +1627,9 @@ class _CartPageState extends State<CartPage> {
   Future<void> getAddress() async {
     try {
       var url = Uri.parse('${ApiService.url}getUserAddress.php');
-      var reqBody = {"userId": SessionObject.user.userId};
+      var reqBody = {
+        "userId": Provider.of<SessionObject>(context, listen: false).user.userId
+      };
 
       var response = await http.post(url, body: reqBody);
       if (response.statusCode == 200 && (response.body as List).isNotEmpty) {
@@ -1602,8 +1664,11 @@ class _CartPageState extends State<CartPage> {
     try {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
-        "cartId": SessionObject.user.cartId ?? "",
-        "userId": SessionObject.user.userId,
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": getCartTotal().toString(),
         "paymentMethod": 'cash',
@@ -1616,7 +1681,7 @@ class _CartPageState extends State<CartPage> {
 
       var response = await http.post(createOrderUrl, body: reqBody);
       if (response.statusCode == 200) {
-        await UserService.updateUser();
+        await UserService.updateUser(context: context);
         return !jsonDecode(
             (response.body).toString().replaceAll('connected', ''))['error'];
       }
@@ -1674,22 +1739,52 @@ class _CartPageState extends State<CartPage> {
   }
 
   updateAmount() {
-    if (getCartTotal() >= double.parse(selectedCoupon?.minimumAmount ?? '0')) {
+    if (isCouponApplies &&
+        getCartTotal() >= double.parse(selectedCoupon?.minimumAmount ?? '0')) {
       isCouponApplies = true;
       couponDiscountAmount = double.parse(selectedCoupon?.amount ?? '0');
-    } else {
+    }
+
+    if (isCouponApplies &&
+        getCartTotal() < double.parse(selectedCoupon?.minimumAmount ?? '0')) {
       isCouponApplies = false;
       couponDiscountAmount = 0;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please select valid coupon."),
+          backgroundColor: Colors.redAccent,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(5),
+        ),
+      );
     }
-    ezyeCoin = double.parse(
-        isEzyeCoinApplies ? SessionObject.user.walletBalance ?? '0' : '0');
+
+    if (!isCouponApplies) {
+      couponDiscountAmount = 0;
+    }
+
+    ezyeCoin = double.parse(isEzyeCoinApplies
+        ? Provider.of<SessionObject>(context, listen: false)
+                .user
+                .walletBalance ??
+            '0'
+        : '0');
     totalAmountWithDiscount = getCartTotal() - ezyeCoin - couponDiscountAmount;
     orderTotal = getCartTotal() + ezyeCoin + couponDiscountAmount;
   }
 
   showEzyeCoins() {
-    if ((SessionObject.user.walletBalance ?? '').isNotEmpty &&
-        double.parse(SessionObject.user.walletBalance ?? '0') > 0) {
+    if ((Provider.of<SessionObject>(context, listen: false)
+                    .user
+                    .walletBalance ??
+                '')
+            .isNotEmpty &&
+        double.parse(Provider.of<SessionObject>(context, listen: false)
+                    .user
+                    .walletBalance ??
+                '0') >
+            0) {
       return true;
     }
     return false;
