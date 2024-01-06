@@ -12,6 +12,7 @@ import 'package:ezye/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   final String productId;
@@ -123,8 +124,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                   builder: (context) => const CartPage()));
                         },
                         child: badges.Badge(
-                          badgeContent:
-                              Text(SessionObject.user.cartItemCount ?? '0'),
+                          badgeContent: Text(
+                              Provider.of<SessionObject>(context, listen: true)
+                                      .user
+                                      .cartItemCount ??
+                                  '0'),
                           child: SvgPicture.asset(
                             'assets/svg/cart.svg',
                           ),
@@ -455,7 +459,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Future<bool> fetchData() async {
     try {
-      if (SessionObject.user.userId != null) {
+      if (Provider.of<SessionObject>(context, listen: false).user.userId !=
+          null) {
         await getWishList();
       }
 
@@ -510,19 +515,30 @@ class _ProductScreenState extends State<ProductScreen> {
 
       var addToCartUrl = Uri.parse('${ApiService.url}addCart.php');
       var reqBody = {
-        "userId": SessionObject.user.userId ?? '',
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId ??
+                '',
         "productId": product?.productId ?? '',
         "productName": product?.name ?? '',
         "size": product?.size ?? '',
         "color": product?.color ?? '',
         "amount": product?.mrp,
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "quantity": itemCount.toString(),
         "imageUrl": product?.image1Url ?? ''
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);
       if (response.statusCode == 200) {
+        Provider.of<SessionObject>(context, listen: false).user.cartItemCount =
+            (int.parse(Provider.of<SessionObject>(context, listen: false)
+                            .user
+                            .cartItemCount ??
+                        '0') +
+                    1)
+                .toString();
         return !jsonDecode(
             (response.body).toString().replaceAll('connected', ''))['error'];
       }
@@ -539,7 +555,9 @@ class _ProductScreenState extends State<ProductScreen> {
           Uri.parse('${ApiService.url}updateCartQuantity.php');
       var reqBody = {
         "quantity": (previousCartQty + itemCount).toString(),
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "productId": product?.productId
       };
 
@@ -558,8 +576,10 @@ class _ProductScreenState extends State<ProductScreen> {
   Future<bool> getCartItems() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}/getCartDetails.php');
-      var response = await http
-          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
+      var response = await http.post(productUrl, body: {
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ?? ""
+      });
 
       if (response.statusCode == 200) {
         cartItems = (json.decode(response.body) as List)
@@ -649,7 +669,8 @@ class _ProductScreenState extends State<ProductScreen> {
     try {
       var addToWishlistUrl = Uri.parse('${ApiService.url}wishList.php');
       var reqBody = {
-        "userId": SessionObject.user.userId,
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId,
         "productId": product?.productId,
         "name": product?.name,
         "category": product?.category,

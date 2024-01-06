@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -226,7 +227,8 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
             (jsonDecode((response.body).toString().replaceAll('connected', ''))
                     as List)
                 .firstOrNull;
-        SessionObject.user = UserModel.fromJson(user);
+        Provider.of<SessionObject>(context, listen: false)
+            .updateUser(userObject: UserModel.fromJson(user));
         await getCartItems();
         return (jsonDecode(
                         (response.body).toString().replaceAll('connected', ''))
@@ -244,12 +246,14 @@ class _OTPScreenState extends State<OTPScreen> with CodeAutoFill {
   Future<bool> getCartItems() async {
     try {
       var productUrl = Uri.parse('${ApiService.url}getCartDetails.php');
-      var response = await http
-          .post(productUrl, body: {"cartId": SessionObject.user.cartId ?? ""});
+      var response = await http.post(productUrl, body: {
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ?? ""
+      });
 
       if (response.statusCode == 200) {
-        SessionObject.user.cartItemCount =
-            (json.decode(response.body) as List).length.toString();
+        Provider.of<SessionObject>(context, listen: false).updateCartCount(
+            count: (json.decode(response.body) as List).length.toString());
       }
       return true;
     } catch (error) {

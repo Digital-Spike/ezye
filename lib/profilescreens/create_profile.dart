@@ -9,6 +9,7 @@ import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -259,7 +260,8 @@ class _CreateProfileState extends State<CreateProfile> {
     );
 
     if (response.statusCode == 200) {
-      SessionObject.user = UserModel.fromJson(reqBody);
+      Provider.of<SessionObject>(context, listen: false).user =
+          UserModel.fromJson(reqBody);
       Navigator.pushAndRemoveUntil(
         context,
         PageRouteBuilder(

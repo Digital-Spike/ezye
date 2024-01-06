@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ProductList extends StatefulWidget {
   final String searchText;
@@ -113,7 +114,11 @@ class _ProductListState extends State<ProductList> {
                       borderRadius: BorderRadius.circular(12),
                       color: const Color(0xffE8E9EE).withOpacity(0.3)),
                   child: badges.Badge(
-                    badgeContent: Text(SessionObject.user.cartItemCount ?? '0'),
+                    badgeContent: Text(
+                        Provider.of<SessionObject>(context, listen: true)
+                                .user
+                                .cartItemCount ??
+                            '0'),
                     child: SvgPicture.asset(
                       'assets/svg/cart.svg',
                     ),
@@ -272,7 +277,8 @@ class _ProductListState extends State<ProductList> {
           .map((item) => Product.fromJson(item))
           .toList();
 
-      if (SessionObject.user.userId != null) {
+      if (Provider.of<SessionObject>(context, listen: false).user.userId !=
+          null) {
         await getWishList();
       }
 

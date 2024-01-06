@@ -10,6 +10,7 @@ import 'package:ezye/services/auth.dart';
 import 'package:ezye/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
   final Address address;
@@ -143,7 +144,9 @@ class _PaymentPageState extends State<PaymentPage> {
     try {
       var createOrderUrl = Uri.parse('${ApiService.url}createOrder.php');
       var reqBody = {
-        "cartId": SessionObject.user.cartId ?? "",
+        "cartId":
+            Provider.of<SessionObject>(context, listen: false).user.cartId ??
+                "",
         "userId": FirebaseUser.user?.uid,
         "orderId": StringUtil.getRandomString(8),
         "totalAmount": widget.totalAmount,
@@ -154,7 +157,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
       var response = await http.post(createOrderUrl, body: reqBody);
       if (response.statusCode == 200) {
-        await UserService.updateUser();
+        await UserService.updateUser(context: context);
         return !jsonDecode(
             (response.body).toString().replaceAll('connected', ''))['error'];
       }
