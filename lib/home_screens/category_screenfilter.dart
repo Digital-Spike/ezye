@@ -62,17 +62,17 @@ class _CategoryFilterState extends State<CategoryFilter> {
                     children: [
                       
                       Container(
-                        margin: const EdgeInsets.only(top: 6,left: 8),   // ONLY FOR CATE
+                        margin: EdgeInsets.only(left: 5,top: 8),
                         child: Text(
                           'Category',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 16,color: Colors.grey),
                         ),
                       ),
                       ListTileTheme(
   child: Column(
     children: [
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
           contentPadding: EdgeInsets.zero,  //PADDING FOR 1ST 
           title: Text(
@@ -89,7 +89,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
       ),
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
           contentPadding: EdgeInsets.only(left: 40), //PADDING FOR 1ST 
           title: Text(
@@ -106,9 +106,10 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
       ),
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
-          contentPadding: EdgeInsets.only(left: 40), //PADDING FOR 1ST 
+          contentPadding: EdgeInsets.only(left: 40),
+           //PADDING FOR 1ST 
           title: Text(
             "Subcategories name goes here",
             style: TextStyle(fontSize: 13),
@@ -123,7 +124,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
       ),
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
           contentPadding: EdgeInsets.zero,        //PADDING FOR 1ST 
           title: Text(
@@ -140,7 +141,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
       ),
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
           contentPadding: EdgeInsets.zero,            //PADDING FOR 1ST 
           title: Text(
@@ -157,7 +158,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
       ),
       SizedBox(
-        height: 30,
+        height: 25,
         child: CheckboxListTile(
           contentPadding: EdgeInsets.zero,                      //PADDING FOR 1ST 
           title: Text(
@@ -180,17 +181,17 @@ class _CategoryFilterState extends State<CategoryFilter> {
                        //Button part SIZE
 
                    Container(
-  margin: const EdgeInsets.only(top: 20, left: 8),
+  margin: const EdgeInsets.only(top: 30, left: 8,bottom: 10),
   child: Text(
     'Sizes',
-    style: TextStyle(fontSize: 20),
+    style: TextStyle(fontSize: 16,color: Colors.grey),
   ),
 ),
 Row(
   children: [
     
      Padding(
-      padding: const EdgeInsets.only(left: 5),
+      padding: const EdgeInsets.only(left: 10),
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -212,12 +213,13 @@ Row(
       padding: const EdgeInsets.only(left: 5),
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
           foregroundColor: MaterialStateProperty.all(Colors.black),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(2.0),
-              side: BorderSide(color: Colors.black), // Adjust the radius and color as needed
+              side: BorderSide(color: Colors.black), 
+              // Adjust the radius and color as needed
             ),
           ),
         ),
@@ -272,10 +274,10 @@ Row(
 
 
                     Container(
-  margin: const EdgeInsets.only(top: 8, left: 8),
+  margin: const EdgeInsets.only(top: 12, left: 8),
   child: Text(
     'Price',
-    style: TextStyle(fontSize: 20),
+    style: TextStyle(fontSize: 16,color: Colors.grey),
   ),
 ),
 RangeSlider(
@@ -294,7 +296,7 @@ RangeSlider(
 ),
 Container(
   padding: EdgeInsets.symmetric(horizontal: 10),
-  margin: EdgeInsets.only(bottom: 5),
+  margin: EdgeInsets.only(bottom: 0),
   child: Row(
     mainAxisSize: MainAxisSize.max,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -304,7 +306,7 @@ Container(
         children: [
           Text(
             'From',
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 16,color: Colors.grey),
           ),
           SizedBox(height: 2),
           SizedBox(
@@ -353,7 +355,7 @@ Container(
         children: [
           Text(
             'To',
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 16,color: Colors.grey),
           ),
           SizedBox(height: 1),
         SizedBox(
@@ -409,7 +411,7 @@ Container(
   margin: const EdgeInsets.only(left: 8, top: 6, bottom: 0),
   child: Text(
     'Discount',
-    style: TextStyle(fontSize: 20),
+    style: TextStyle(fontSize: 16,color: Colors.grey),
   ),
 ),
 
@@ -422,7 +424,7 @@ Row(
           contentPadding: EdgeInsets.zero,
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox7'] ?? false,
@@ -443,7 +445,7 @@ Row(
           contentPadding: EdgeInsets.symmetric(vertical: 0),
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox8'] ?? false,
@@ -468,7 +470,7 @@ Row(
           contentPadding: EdgeInsets.zero,
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox9'] ?? false,
@@ -489,7 +491,7 @@ Row(
           contentPadding: EdgeInsets.symmetric(vertical: 0),
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox10'] ?? false,
@@ -514,7 +516,7 @@ Row(
           contentPadding: EdgeInsets.zero,
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox11'] ?? false,
@@ -535,7 +537,7 @@ Row(
           contentPadding: EdgeInsets.symmetric(vertical: 0),
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox12'] ?? false,
@@ -560,7 +562,7 @@ Row(
           contentPadding: EdgeInsets.zero,
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox13'] ?? false,
@@ -581,7 +583,7 @@ Row(
           contentPadding: EdgeInsets.symmetric(vertical: 0),
           dense: true,
           title: Text(
-            "ABOVE 500",
+            "ABOVE ₹ 500",
             style: TextStyle(fontSize: 13),
           ),
           value: checkedValues['checkbox14'] ?? false,
@@ -606,14 +608,14 @@ Row(
                     //  elevted button//
                    
        Container(
-  margin: EdgeInsets.only(top: 40),
+  margin: EdgeInsets.only(top: 30),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       
       SizedBox(
-        width: 170,
-        height: 50,
+        width: 150,
+        height: 43,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -628,13 +630,13 @@ Row(
           onPressed: () {},
           child: Text(
             'Clear',
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.bold),
           ),
         ),
       ),
       SizedBox(
-        height: 50,
-        width: 170,
+        height: 43,
+        width: 150,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -649,7 +651,7 @@ Row(
           onPressed: () {},
           child: Text(
             'Apply Filter',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(fontSize: 14, color: Colors.white,fontWeight: FontWeight.bold),
           ),
         ),
       ),
