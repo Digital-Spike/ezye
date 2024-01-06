@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
@@ -115,13 +116,20 @@ class _ProductScreenState extends State<ProductScreen> {
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.white.withOpacity(0.2)),
                       child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const CartPage()));
-                          },
-                          child: SvgPicture.asset('assets/svg/cart.svg')),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CartPage()));
+                        },
+                        child: badges.Badge(
+                          badgeContent:
+                              Text(SessionObject.user.cartItemCount ?? '0'),
+                          child: SvgPicture.asset(
+                            'assets/svg/cart.svg',
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -384,7 +392,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w600)),
                           SizedBox(
                               height: 50,
-                              
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: sizes.length,
@@ -393,10 +400,9 @@ class _ProductScreenState extends State<ProductScreen> {
                                     padding: const EdgeInsets.only(right: 5),
                                     child: ChoiceChip(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6)),
-                                          
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
                                       label: Container(
-                                        
                                         height: 30,
                                         width: 20,
                                         alignment: Alignment.center,

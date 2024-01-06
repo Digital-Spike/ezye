@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/cart_screen.dart';
@@ -111,8 +112,11 @@ class _ProductListState extends State<ProductList> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                  child: SvgPicture.asset(
-                    'assets/svg/cart.svg',
+                  child: badges.Badge(
+                    badgeContent: Text(SessionObject.user.cartItemCount ?? '0'),
+                    child: SvgPicture.asset(
+                      'assets/svg/cart.svg',
+                    ),
                   ),
                 ),
               ),

@@ -9,6 +9,7 @@ class UserModel {
   String? image;
   String? subscriptionId;
   String? walletBalance;
+  String? cartItemCount;
 
   UserModel(
       {this.id,
@@ -20,7 +21,8 @@ class UserModel {
       this.status,
       this.image,
       this.subscriptionId,
-      this.walletBalance});
+      this.walletBalance,
+      this.cartItemCount});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -33,7 +35,8 @@ class UserModel {
         status: json['status'],
         image: json['image'],
         walletBalance: json['wallet_balance'],
-        subscriptionId: json['subscriptionId']);
+        subscriptionId: json['subscriptionId'],
+        cartItemCount: json['cartItemCount']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +49,7 @@ class UserModel {
         'status': status,
         'image': image,
         'wallet_balance': walletBalance,
-        'subscriptionId': subscriptionId
+        'subscriptionId': subscriptionId,
+        'cartItemCount': cartItemCount
       };
 }
