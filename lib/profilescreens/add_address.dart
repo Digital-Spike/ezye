@@ -366,16 +366,18 @@ class _AddAddressState extends State<AddAddress> {
                 ),
                 const SizedBox(height: 5),
                 TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: _pincode,
                   inputFormatters: [LengthLimitingTextInputFormatter(6)],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: 'Enter pincode',
                     hintStyle: const TextStyle(color: Color(0xff7C7D85)),
                     isDense: true,
+                    hintText: 'pincode',
                     focusedBorder: OutlineInputBorder(
+                      
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
                             width: 1.5, color: Color(0xff7C7D85))),
