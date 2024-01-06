@@ -142,7 +142,7 @@ class _CartPageState extends State<CartPage> {
                                     )
                                   ],
                                 ),
-                                SizedBox(width: 15),
+                                const SizedBox(width: 15),
                                 Expanded(
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -150,8 +150,11 @@ class _CartPageState extends State<CartPage> {
                                               borderRadius:
                                                   BorderRadius.circular(15)),
                                           backgroundColor: Colors.black,
-                                          minimumSize: const Size(double.infinity, 40)),
-                                      onPressed: confirmOrder,
+                                          minimumSize:
+                                              const Size(double.infinity, 40)),
+                                      onPressed: () {
+                                        confirmOrder();
+                                      },
                                       child: const Text(
                                         'Checkout',
                                         style: TextStyle(
@@ -733,11 +736,20 @@ class _CartPageState extends State<CartPage> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
-                                child: Text(
-                                  '${selectedAddress?.line1 ?? ''}, ${selectedAddress?.line2 ?? ''}, ${selectedAddress?.city ?? ''}, ${selectedAddress?.pinCode ?? ''}.',
-                                  style:
-                                      const TextStyle(color: Color(0xff7C7D85)),
-                                ),
+                                child: (selectedAddress?.line1 ?? "").isEmpty ||
+                                        (selectedAddress?.line2 ?? "")
+                                            .isEmpty ||
+                                        (selectedAddress?.city ?? "").isEmpty ||
+                                        (selectedAddress?.pinCode ?? "").isEmpty
+                                    ? const Text(
+                                        "Please add address.",
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    : Text(
+                                        '${selectedAddress?.line1 ?? ''}, ${selectedAddress?.line2 ?? ''}, ${selectedAddress?.city ?? ''}, ${selectedAddress?.pinCode ?? ''}.',
+                                        style: const TextStyle(
+                                            color: Color(0xff7C7D85)),
+                                      ),
                               ),
                               const SizedBox(height: 5),
                               const Padding(
@@ -991,7 +1003,16 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  void confirmOrder() {
+  Future<void> confirmOrder() async {
+    if ((selectedAddress?.line1 ?? "").isEmpty ||
+        (selectedAddress?.line2 ?? "").isEmpty ||
+        (selectedAddress?.city ?? "").isEmpty ||
+        (selectedAddress?.pinCode ?? "").isEmpty) {
+      selectedAddress = await Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SelectAddress()));
+      setState(() {});
+      return;
+    }
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -1428,7 +1449,9 @@ class _CartPageState extends State<CartPage> {
                                           )
                                         ],
                                       ),
-                                      SizedBox(width: 10,),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
                                       Expanded(
                                         child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
@@ -1437,7 +1460,8 @@ class _CartPageState extends State<CartPage> {
                                                         BorderRadius.circular(
                                                             15)),
                                                 backgroundColor: Colors.black,
-                                                minimumSize: const Size(240, 46)),
+                                                minimumSize:
+                                                    const Size(240, 46)),
                                             onPressed: () async {
                                               showProcessingDialogue();
                                               await placeOrder();
@@ -1632,7 +1656,8 @@ class _CartPageState extends State<CartPage> {
       };
 
       var response = await http.post(url, body: reqBody);
-      if (response.statusCode == 200 && (response.body as List).isNotEmpty) {
+      if (response.statusCode == 200 &&
+          (json.decode(response.body) as List).isNotEmpty) {
         selectedAddress =
             (json.decode((response.body).toString().replaceAll('connected', ''))
                     as List)
