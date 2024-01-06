@@ -586,23 +586,75 @@ class _CartPageState extends State<CartPage> {
                                               )
                                             ],
                                           ),
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                  backgroundColor: Colors.black,
-                                                  minimumSize:
-                                                      const Size(130, 34)),
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'APPLY COUPON',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.white),
-                                              ))
+                                          isCouponApplies
+                                              ? ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      minimumSize:
+                                                          const Size(130, 34)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isCouponApplies =
+                                                          !isCouponApplies;
+                                                      updateAmount();
+                                                    });
+                                                  },
+                                                  child: const Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.check_circle,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 3,
+                                                      ),
+                                                      Text(
+                                                        'APPLIED',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      minimumSize:
+                                                          const Size(130, 34)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isCouponApplies =
+                                                          !isCouponApplies;
+                                                      updateAmount();
+                                                    });
+                                                  },
+                                                  child: const Text(
+                                                    'APPLY COUPON',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
                                         ],
                                       ),
                                       Padding(
@@ -1680,13 +1732,31 @@ class _CartPageState extends State<CartPage> {
   }
 
   updateAmount() {
-    if (getCartTotal() >= double.parse(selectedCoupon?.minimumAmount ?? '0')) {
+    if (isCouponApplies &&
+        getCartTotal() >= double.parse(selectedCoupon?.minimumAmount ?? '0')) {
       isCouponApplies = true;
       couponDiscountAmount = double.parse(selectedCoupon?.amount ?? '0');
-    } else {
+    }
+
+    if (isCouponApplies &&
+        getCartTotal() < double.parse(selectedCoupon?.minimumAmount ?? '0')) {
       isCouponApplies = false;
       couponDiscountAmount = 0;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please select valid coupon."),
+          backgroundColor: Colors.redAccent,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(5),
+        ),
+      );
     }
+
+    if (!isCouponApplies) {
+      couponDiscountAmount = 0;
+    }
+
     ezyeCoin = double.parse(isEzyeCoinApplies
         ? Provider.of<SessionObject>(context, listen: false)
                 .user
