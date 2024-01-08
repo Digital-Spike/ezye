@@ -138,7 +138,7 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(left: 10),
+                                      margin: EdgeInsets.only(left: 12),
                                       child: Text(
                                         '₹ $totalAmountWithDiscount',
                                         style: const TextStyle(
