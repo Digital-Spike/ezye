@@ -111,7 +111,12 @@ class _WishListScreenState extends State<WishListScreen> {
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (products.isEmpty) {
-                        return const Center(child: Text("No items found!"));
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("No items found!"),
+                          ],
+                        );
                       }
 
                       return Expanded(
@@ -173,6 +178,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
+                                            margin: EdgeInsets.only(left: 5),
                                             padding: const EdgeInsets.all(3),
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -185,27 +191,36 @@ class _WishListScreenState extends State<WishListScreen> {
                                                   fontSize: 12),
                                             ),
                                           ),
-                                          SvgPicture.asset(
-                                              'assets/svg/redheart.svg')
+                                          Container(
+                                            margin: EdgeInsets.only(right: 5),
+                                            child: SvgPicture.asset(
+                                                'assets/svg/redheart.svg'),
+                                          )
                                         ],
                                       ),
                                       const SizedBox(height: 8),
                                       Row(
                                         children: [
-                                          Text(
-                                            '${product.name}',
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              '${product.name}',
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
                                       Row(
                                         children: [
-                                          Text(
-                                            '₹${product.sellingPrice}',
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              '₹${product.sellingPrice}',
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
                                           ),
                                         ],
                                       ),
