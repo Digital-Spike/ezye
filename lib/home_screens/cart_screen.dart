@@ -128,40 +128,49 @@ class _CartPageState extends State<CartPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Total Amount',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Color(0xff7C7D85)),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: const Text(
+                                        'Total Amount',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xff7C7D85)),
+                                      ),
                                     ),
-                                    Text(
-                                      '₹ $totalAmountWithDiscount',
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        '₹ $totalAmountWithDiscount',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                      ),
                                     )
                                   ],
                                 ),
-                                const SizedBox(width: 15),
+                                const SizedBox(width: 20),
                                 Expanded(
-                                  child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          backgroundColor: Colors.black,
-                                          minimumSize:
-                                              const Size(double.infinity, 40)),
-                                      onPressed: () {
-                                        confirmOrder();
-                                      },
-                                      child: const Text(
-                                        'Checkout',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 15),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            backgroundColor: Colors.black,
+                                            minimumSize:
+                                                const Size(double.infinity, 40)),
+                                        onPressed: () {
+                                          confirmOrder();
+                                        },
+                                        child: const Text(
+                                          'Checkout',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white),
+                                        )),
+                                  ),
                                 )
                               ],
                             ),
@@ -1435,18 +1444,24 @@ class _CartPageState extends State<CartPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Text(
-                                            'Total Amount',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xff7C7D85)),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 5),
+                                            child: const Text(
+                                              'Total Amount',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xff7C7D85)),
+                                            ),
                                           ),
-                                          Text(
-                                            '₹ $totalAmountWithDiscount',
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700),
-                                          )
+                                          Container(
+                                            margin: EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              '₹ $totalAmountWithDiscount',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       const SizedBox(
