@@ -107,16 +107,15 @@ class _WishListScreenState extends State<WishListScreen> {
                 )
               : FutureBuilder<void>(
                   future: listItems,
+
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (products.isEmpty) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("No items found!"),
-                          ],
-                        );
+                        return Container(
+                          margin: EdgeInsets.only(top: 300),
+
+                          child: Center(child: Text("No items found!")));
                       }
 
                       return Expanded(
