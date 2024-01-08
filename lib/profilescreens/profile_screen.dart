@@ -292,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: const Center(
               child: Text(
-                'Are you sure you want to\nlog out?.',
+                'Are you sure you want to\nlogout?.',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
@@ -339,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           });
                         },
                         child: const Text(
-                          'Confirm',
+                          'Logout',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
