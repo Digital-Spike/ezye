@@ -95,7 +95,9 @@ class _SelectAddressState extends State<SelectAddress> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               child: const Text(
                                 'Back',
                                 style: TextStyle(
