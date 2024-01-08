@@ -112,7 +112,11 @@ class _EditProfileState extends State<EditProfile> {
                 children: [
                   const Text(
                     "Name",
-                    style: subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xffBDC1CA)
+                    ),
                   ),
                   const SizedBox(height: 5),
                   TextFormField(
@@ -175,7 +179,11 @@ class _EditProfileState extends State<EditProfile> {
                   const SizedBox(height: 20),
                   const Text(
                     "Email",
-                    style: subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xffBDC1CA)
+                    ),
                   ),
                   const SizedBox(height: 5),
                   TextFormField(
