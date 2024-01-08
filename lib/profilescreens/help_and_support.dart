@@ -209,6 +209,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       const SizedBox(height: 5),
                       TextFormField(
                         controller: address,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
