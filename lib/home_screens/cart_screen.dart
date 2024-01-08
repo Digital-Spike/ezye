@@ -129,7 +129,7 @@ class _CartPageState extends State<CartPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(left: 10),
+                                      margin: EdgeInsets.only(left: 12),
                                       child: const Text(
                                         'Total Amount',
                                         style: TextStyle(
