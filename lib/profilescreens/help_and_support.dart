@@ -121,6 +121,12 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Enter your name',
                             isDense: true,
+                             border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    ),
+
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
@@ -158,11 +164,18 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       const SizedBox(height: 5),
                       TextFormField(
                         controller: mobile,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Enter your mobile number',
                             isDense: true,
+                             border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    ),
+
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
@@ -201,6 +214,11 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Enter your email address',
                             isDense: true,
+                             border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: const BorderSide(
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
@@ -241,6 +259,11 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Write your query here',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)
+                                    ),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
@@ -278,12 +301,12 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           {
                               if(_formKey.currentState!.validate()) 
                               {
-                                name.text.isEmpty&&mobile.text.isEmpty&&address.text.isEmpty&&message.text.isEmpty;
-
+                                
+                              Navigator.pop(context);
+// 
                                
                               } else{
 
-                              // Navigator.pop(context);
 
 
                               }
