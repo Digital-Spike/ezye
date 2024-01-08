@@ -284,6 +284,8 @@ class _ProfilePageState extends State<ProfilePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.white,
             alignment: Alignment.center,
             insetPadding: const EdgeInsets.all(30),
             shape:

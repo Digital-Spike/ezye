@@ -1526,6 +1526,7 @@ class _CartPageState extends State<CartPage> {
 
   showDeleteWarning(CartItem cartItem) {
     return showModalBottomSheet(
+      backgroundColor: Colors.white,
       elevation: 5,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -1534,8 +1535,12 @@ class _CartPageState extends State<CartPage> {
       context: context,
       builder: (context) => Padding(
         padding: MediaQuery.of(context).viewInsets,
-        child: SizedBox(
-          height: 200,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          height: 220,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -1561,16 +1566,17 @@ class _CartPageState extends State<CartPage> {
                       child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                               elevation: 0,
-                              backgroundColor: Colors.grey[300],
+                              backgroundColor: Colors.white,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
+                                  borderRadius: BorderRadius.circular(15)),
+                              side: BorderSide(width: 1.5)),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                           child: const Text(
                             'Cancel',
-                            style: subtitle1,
+                            style: subtitle,
                           )),
                     ),
                     const SizedBox(width: 10),
@@ -1581,7 +1587,7 @@ class _CartPageState extends State<CartPage> {
                               backgroundColor: buttonColor,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
+                                  borderRadius: BorderRadius.circular(15))),
                           onPressed: () async {
                             await removeCartItem(cartItem);
                             Navigator.pop(context);
