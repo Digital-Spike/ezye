@@ -90,9 +90,11 @@ class _EditProfileState extends State<EditProfile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
+              
               const Text(
                 'Profile Picture',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16,
+                color:  Color(0xffBDC1CA) ),
               ),
               const SizedBox(height: 5),
               Container(
@@ -159,7 +161,8 @@ class _EditProfileState extends State<EditProfile> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextFormField(
-                          initialValue: _phone ?? '',
+                          keyboardType: TextInputType.number,
+                          initialValue: _phone ?? '',                        
                           style: const TextStyle(fontWeight: FontWeight.w700),
                           decoration: InputDecoration(
                               filled: true,
