@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
           title: 'Ezye',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            appBarTheme:
+                const AppBarTheme(surfaceTintColor: Colors.transparent),
             primarySwatch: Colors.grey,
             fontFamily: 'Satoshi',
           ),

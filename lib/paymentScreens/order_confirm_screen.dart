@@ -17,7 +17,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
     return WillPopScope(
       onWillPop: () {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const MainScreen()));
+            MaterialPageRoute(builder: (context) => const MainScreen(indeX: 0,)));
         return Future.value(true);
       },
       child: Scaffold(
@@ -89,7 +89,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MainScreen()));
+                              builder: (context) => const MainScreen(indeX: 0,)));
                     },
                     child: const Text(
                       'Explore',

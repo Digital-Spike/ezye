@@ -85,7 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const MainScreen()));
+                                    builder: (context) => const MainScreen(
+                                          indeX: 0,
+                                        )));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

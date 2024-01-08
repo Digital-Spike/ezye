@@ -106,11 +106,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       height: width / 1.3,
                       width: width,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30)),
-                          color: const Color(0xff040707)),
+                          color: Color(0xff040707)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +160,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: const Text(
                                 'EDIT PROFILE',
                                 style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff28282B)),
                               ))
                         ],
                       ),
@@ -293,7 +295,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 textAlign: TextAlign.center,
               ),
             ),
-            actionsPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            actionsPadding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             actions: [
               Row(
                 children: [

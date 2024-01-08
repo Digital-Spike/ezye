@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:badges/badges.dart' as badges;
@@ -159,9 +161,8 @@ class _ProductScreenState extends State<ProductScreen> {
                   color: Colors.white,
                   elevation: 10,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    height: 80,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                     child: Row(
                       children: [
                         Expanded(
@@ -288,13 +289,14 @@ class _ProductScreenState extends State<ProductScreen> {
                                       'assets/png/cloth.png',
                                       height: 110,
                                       width: double.infinity,
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                   imageBuilder: (context, image) => Image(
                                     image: image,
                                     height: 400,
-                                    fit: BoxFit.contain,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               );

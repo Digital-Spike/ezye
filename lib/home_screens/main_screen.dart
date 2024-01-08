@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int indeX;
+  const MainScreen({super.key, required this.indeX});
 
   static const String id = 'main-screen';
 
@@ -28,6 +29,12 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _selectedIndex = widget.indeX;
+    super.initState();
   }
 
   @override

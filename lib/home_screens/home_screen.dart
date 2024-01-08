@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:ezye/home_screens/category_screen.dart';
+import 'package:ezye/home_screens/main_screen.dart';
 import 'package:ezye/home_screens/product_list.dart';
 import 'package:ezye/home_screens/product_screen.dart';
 import 'package:ezye/home_screens/search_screen.dart';
@@ -85,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   height: 46,
                   width: 46,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: const Color(0xffE8E9EE).withOpacity(0.3)),
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   height: 46,
                   width: 46,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: const Color(0xffE8E9EE).withOpacity(0.3)),
@@ -224,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                                   height:
                                       MediaQuery.of(context).size.height / 5,
                                   aspectRatio: 3 / 2,
-                                  viewportFraction: 1.0,
+                                  viewportFraction: 0.99,
                                   enlargeCenterPage: true,
                                   onPageChanged: (index, reason) {
                                     setState(() {
@@ -251,23 +252,32 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Categories',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w700),
                           ),
-                          Text(
-                            'VIEW ALL',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff00CA14)),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MainScreen(indeX: 1)));
+                            },
+                            child: const Text(
+                              'VIEW ALL',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff00CA14)),
+                            ),
                           ),
                         ],
                       ),
@@ -301,24 +311,29 @@ class _HomePageState extends State<HomePage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              '${ApiService.uploads}${categoriesList[index]}',
-                                          placeholder: (context, url) =>
-                                              const CircleAvatar(
-                                            backgroundColor: Colors.white30,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(0),
-                                            child: Image.asset(
-                                                'assets/png/woman.png',
-                                                fit: BoxFit.cover),
-                                          ),
-                                          imageBuilder: (context, image) =>
-                                              Image(
-                                                  image: image,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${ApiService.uploads}${categoriesList[index]}',
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              backgroundColor: Colors.white30,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Padding(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Image.asset(
+                                                  'assets/png/woman.png',
                                                   fit: BoxFit.cover),
+                                            ),
+                                            imageBuilder: (context, image) =>
+                                                Image(
+                                                    image: image,
+                                                    fit: BoxFit.cover),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 5),
@@ -600,24 +615,29 @@ class _HomePageState extends State<HomePage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              '${ApiService.uploads}${(homeContent['Men'] as List)[index]['image1Url']}',
-                                          placeholder: (context, url) =>
-                                              const CircleAvatar(
-                                            backgroundColor: Colors.white30,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(0),
-                                            child: Image.asset(
-                                                'assets/png/flyer2.png',
-                                                fit: BoxFit.cover),
-                                          ),
-                                          imageBuilder: (context, image) =>
-                                              Image(
-                                                  image: image,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${ApiService.uploads}${(homeContent['Men'] as List)[index]['image1Url']}',
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              backgroundColor: Colors.white30,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Padding(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Image.asset(
+                                                  'assets/png/flyer2.png',
                                                   fit: BoxFit.cover),
+                                            ),
+                                            imageBuilder: (context, image) =>
+                                                Image(
+                                                    image: image,
+                                                    fit: BoxFit.cover),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 5),
@@ -669,24 +689,29 @@ class _HomePageState extends State<HomePage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              '${ApiService.uploads}${(homeContent['Women'] as List)[index]['image1Url']}',
-                                          placeholder: (context, url) =>
-                                              const CircleAvatar(
-                                            backgroundColor: Colors.white30,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(0),
-                                            child: Image.asset(
-                                                'assets/png/flyer2.png',
-                                                fit: BoxFit.cover),
-                                          ),
-                                          imageBuilder: (context, image) =>
-                                              Image(
-                                                  image: image,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${ApiService.uploads}${(homeContent['Women'] as List)[index]['image1Url']}',
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              backgroundColor: Colors.white30,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Padding(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Image.asset(
+                                                  'assets/png/flyer2.png',
                                                   fit: BoxFit.cover),
+                                            ),
+                                            imageBuilder: (context, image) =>
+                                                Image(
+                                                    image: image,
+                                                    fit: BoxFit.cover),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 5),
@@ -738,24 +763,29 @@ class _HomePageState extends State<HomePage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15)),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              '${ApiService.uploads}${(homeContent['Kids'] as List)[index]['image1Url']}',
-                                          placeholder: (context, url) =>
-                                              const CircleAvatar(
-                                            backgroundColor: Colors.white30,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Padding(
-                                            padding: const EdgeInsets.all(0),
-                                            child: Image.asset(
-                                                'assets/png/flyer2.png',
-                                                fit: BoxFit.cover),
-                                          ),
-                                          imageBuilder: (context, image) =>
-                                              Image(
-                                                  image: image,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${ApiService.uploads}${(homeContent['Kids'] as List)[index]['image1Url']}',
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              backgroundColor: Colors.white30,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Padding(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Image.asset(
+                                                  'assets/png/flyer2.png',
                                                   fit: BoxFit.cover),
+                                            ),
+                                            imageBuilder: (context, image) =>
+                                                Image(
+                                                    image: image,
+                                                    fit: BoxFit.cover),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 5),
