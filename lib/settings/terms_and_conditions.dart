@@ -24,7 +24,7 @@ class TermsAndConditionsState extends State<TermsAndConditions> {
         ),
         body: const SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(left: 25,right: 25),
             child: Text(
               "Welcome to Ezye.in There are some basic terms and conditions that you need to be aware of while making a purchase on Ezye.in, These Terms may be subject to amendment, So You should carefully read them prior to placing any order.\n "
               "If You have any questions about the Terms & Condition or the Privacy Policy, You may access our website or contact us through Mail.\n\n "

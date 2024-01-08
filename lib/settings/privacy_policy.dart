@@ -24,7 +24,7 @@ class PrivacyPolicyState extends State<PrivacyPolicy> {
         ),
         body: const SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(left: 25,right: 25),
             child: Text(
               "Ezye.in is a venture of digital spike technologies takes the privacy of your information seriously. This Privacy Notice describes the types of personal information we collect from you through our stores, website (including sub-domains and microsites) and mobile applications. It also describes the purposes for which we collect that personal information, the other parties with whom we may share it and the measures we take to protect the security of your data. It also tells you about your rights and choices with respect to your personal information, and how you can contact us about our privacy practices."
               "You are advised to carefully read this Privacy Notice before using or availing any of our products and/or services.\n"

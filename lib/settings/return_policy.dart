@@ -24,7 +24,7 @@ class ReturnPolicyState extends State<ReturnPolicy> {
         ),
         body: const SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(left: 25,right: 25),
             child: Text(
               "Return & Refund Policy\n"
               "In all such instances when a customer changed their mind, or the fabrics didn’t meet their set expectations, and wish to return part or whole of the order, Ezye.in shall accept the returns, given that returned products qualify the conditions mentioned in clause 1. In such cases, customer shall bear the full shipping charges, and there shall be no reverse pick-up facility to avail. The refund shall be processed within 5-7 days from the date of receipt of returned order back at the shipping source.\n\n"
