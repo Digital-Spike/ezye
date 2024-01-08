@@ -44,7 +44,7 @@ class _CategoriesState extends State<Categories> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            GestureDetector(
+            GestureDetector( 
               onTap: () {
                 Navigator.push(
                     context,
@@ -62,7 +62,7 @@ class _CategoriesState extends State<Categories> {
                 ),
                 child: Image.asset(
                   'assets/png/women.png',
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fill, 
                 ),
               ),
             ),
