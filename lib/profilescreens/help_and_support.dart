@@ -12,6 +12,13 @@ class HelpAndSupport extends StatefulWidget {
 }
 
 class _HelpAndSupportState extends State<HelpAndSupport> {
+ TextEditingController name=TextEditingController();
+  TextEditingController mobile=TextEditingController();
+ TextEditingController address=TextEditingController();
+ TextEditingController message=TextEditingController();
+   final _formKey = GlobalKey<FormState>();
+
+
   bool isLoggedIn = false;
   void checkLoginStatus() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -30,7 +37,8 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
   var size, height, width;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+   {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -95,7 +103,9 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                  child: Column(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
@@ -105,6 +115,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
+                        controller: name,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
@@ -114,11 +125,30 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
                                     const BorderSide(color: Colors.grey)),
+                                    errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)
+                                    ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: const BorderSide(
-                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                                    width: 1.5, color: Color(0xffE8E9EE)
+                                    )
+                                    ),
+                                    ),
+                                    validator: (value) 
+                                    {
+                                      if(value==null||value.isEmpty)
+                                      {
+                                        return 'please enter the name';
+                                      }
+                                      return null;
+                                    },
+                                    
+                                    
                       ),
+                     
                       const SizedBox(height: 20),
                       const Text(
                         'Mobile Number',
@@ -127,6 +157,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
+                        controller: mobile,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
@@ -136,10 +167,25 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
                                     const BorderSide(color: Colors.grey)),
+                                    errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)
+                                    ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: const BorderSide(
-                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    ),
+                                    ),
+                                       validator: (value) 
+                                    {
+                                      if(value==null||value.isEmpty)
+                                      {
+                                        return 'please enter the mobile number';
+                                      }
+                                      return null;
+                                    },
                       ),
                       const SizedBox(height: 20),
                       const Text(
@@ -149,6 +195,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
+                        controller: address,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
@@ -157,11 +204,27 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
-                                    const BorderSide(color: Colors.grey)),
+                                    const BorderSide(color: Colors.grey)
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)
+                                    ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: const BorderSide(
-                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    ),                              
+                                    ),
+                                       validator: (value) 
+                                    {
+                                      if(value==null||value.isEmpty)
+                                      {
+                                        return 'please enter the address';
+                                      }
+                                      return null;
+                                    },
                       ),
                       const SizedBox(height: 20),
                       const Text(
@@ -171,12 +234,18 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
+                        controller: message,
                         maxLength: 1000,
                         maxLines: 5,
                         decoration: InputDecoration(
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Write your query here',
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)
+                                    ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
@@ -184,7 +253,17 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: const BorderSide(
-                                    width: 1.5, color: Color(0xffE8E9EE)))),
+                                    width: 1.5, color: Color(0xffE8E9EE))
+                                    )
+                                    ),
+                                       validator: (value) 
+                                    {
+                                      if(value==null||value.isEmpty)
+                                      {
+                                        return 'please enter the message';
+                                      }
+                                      return null;
+                                    },
                       ),
                       const SizedBox(
                         height: 10,
@@ -195,17 +274,33 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
                               minimumSize: const Size(double.infinity, 56)),
-                          onPressed: () {},
+                          onPressed: () 
+                          {
+                              if(_formKey.currentState!.validate()) 
+                              {
+                                name.text.isEmpty&&mobile.text.isEmpty&&address.text.isEmpty&&message.text.isEmpty;
+
+                               
+                              } else{
+
+                              // Navigator.pop(context);
+
+
+                              }
+                          },
                           child: const Text(
                             'Submit',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
-                          )),
+                          )
+                          ),
                       const SizedBox(height: 10)
                     ],
                   ),
+                  ),
+                  
                 ),
               ),
             ),
