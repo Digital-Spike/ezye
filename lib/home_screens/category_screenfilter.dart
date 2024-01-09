@@ -28,7 +28,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
   };
   RangeValues _currentRangeValues = const RangeValues(40, 80);
 
-  bool checkedValue = false; // Define the checkedValue variable
+  // bool checkedValue = false; // Define the checkedValue variable
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
                     children: [
                       
                       Container(
-                        margin: EdgeInsets.only(left: 5,top: 8),
+                        margin: EdgeInsets.only(left: 5,top: 8,bottom: 5),
                         child: Text(
                           'Category',
                           style: TextStyle(fontSize: 16,color: Colors.grey),
@@ -71,108 +71,130 @@ class _CategoryFilterState extends State<CategoryFilter> {
                       ListTileTheme(
   child: Column(
     children: [
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,  //PADDING FOR 1ST 
-          title: Text(
-            "Categories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox1'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+      Row(
+        children: [
+            SizedBox(
+              height: 25,
+              child: Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox1'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox1'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
+                        }
+                        );
+                      },
+                    ),
+            ),
+      Text('Categories name goes here'),
+        ],
+      ),
+    
+     Padding(
+       padding: const EdgeInsets.only(left: 35),
+       child: Row(
+          children: [
+              SizedBox(
+                height: 25,
+                child: Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox2'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox2'] = newValue!;
+                          }
+                          );
+                        },
+                      ),
+              ),
+        Text('Subcategories name goes here'),
+          ],
+        ),
+     ),
+      Padding(
+        padding: const EdgeInsets.only(left: 35),
+        child: Row(
+          children: [
+              SizedBox(
+                height: 25,
+                child: Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox3'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox3'] = newValue!;
+                          }
+                          );
+                        },
+                      ),
+              ),
+        Text('Subcategories name goes here'),
+          ],
         ),
       ),
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.only(left: 40), //PADDING FOR 1ST 
-          title: Text(
-            "Subcategories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox2'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox2'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.only(left: 40),
-           //PADDING FOR 1ST 
-          title: Text(
-            "Subcategories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox3'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox3'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,        //PADDING FOR 1ST 
-          title: Text(
-            "Categories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox4'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+      Row(
+        children: [
+            SizedBox(
+              height: 25,
+              child: Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox4'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox4'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,            //PADDING FOR 1ST 
-          title: Text(
-            "Categories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox5'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+                        }
+                        );
+                      },
+                    ),
+            ),
+      Text('Categories name goes here'),
+        ],
+      ),Row(
+        children: [
+            SizedBox(
+              height: 25,
+              child: Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox5'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox5'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-      SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,                      //PADDING FOR 1ST 
-          title: Text(
-            "Categories name goes here",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox6'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+                        }
+                        );
+                      },
+                    ),
+            ),
+      Text('Categories name goes here'),
+        ],
+      ),Row(
+        children: [
+            SizedBox(
+              height: 25,
+              child: Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox6'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox6'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
+                        }
+                        );
+                      },
+                    ),
+            ),
+      Text('Categories name goes here'),
+        ],
       ),
     ],
   ),
@@ -181,7 +203,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
                        //Button part SIZE
 
                    Container(
-  margin: const EdgeInsets.only(top: 30, left: 8,bottom: 10),
+  margin: const EdgeInsets.only(top: 10, left: 8,bottom: 5),
   child: Text(
     'Sizes',
     style: TextStyle(fontSize: 16,color: Colors.grey),
@@ -408,198 +430,161 @@ Container(
                   //Discount start
 
                  Container(
-  margin: const EdgeInsets.only(left: 8, top: 6, bottom: 0),
+  margin: const EdgeInsets.only(left: 8, top: 10, bottom: 5),
   child: Text(
     'Discount',
     style: TextStyle(fontSize: 16,color: Colors.grey),
   ),
 ),
 
-Row(
-  children: [
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox7'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+SizedBox(
+  height: 30,
+  child: Row(
+    children: [
+  
+        Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox7'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox7'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),
-    SizedBox(width: 10), // Adjust the width between checkboxes
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox8'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox8'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),   
-  ],
+                        }
+                        );
+                      },
+                    ),
+        const Text('Above ₹ 500'),
+      
+      SizedBox(width: 35), 
+  
+      Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox8'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox8'] = newValue!;
+                          }
+                          );
+                        },
+                      ),// 
+               const Text('Above ₹ 500'),
+    ],
+  ),
 ),
-
-Row(
-  children: [
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox9'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+SizedBox(
+  height: 30,
+  child: Row(
+    children: [
+  
+        Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox9'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox9'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),
-    SizedBox(width: 10), // Adjust the width between checkboxes
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox10'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox10'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),   
-  ],
+                        }
+                        );
+                      },
+                    ),
+        const Text('Above ₹ 500'),
+      
+      SizedBox(width: 35), 
+      
+      Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox10'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox10'] = newValue!;
+                          }
+                          );
+                        },
+                      ),// 
+               const Text('Above ₹ 500'),
+    ],
+  ),
 ),
-
-Row(
-  children: [
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox11'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+SizedBox(
+  height: 30,
+  child: Row(
+    children: [
+  
+        Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox11'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox11'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),
-    SizedBox(width: 10), // Adjust the width between checkboxes
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox12'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox12'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),   
-  ],
+                        }
+                        );
+                      },
+                    ),
+        const Text('Above ₹ 500'),
+      
+      SizedBox(width: 35), 
+      
+      Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox12'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox12'] = newValue!;
+                          }
+                          );
+                        },
+                      ),// 
+               const Text('Above ₹ 500'),
+    ],
+  ),
 ),
-
-Row(
-  children: [
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox13'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
+SizedBox(
+  height: 30,
+  child: Row(
+    children: [
+  
+        Checkbox(
+                       // The named parameter 'title' isn't defined.
+                      value: checkedValues['checkbox13'] ?? false,
+                      onChanged: (newValue) 
+                      { 
+                        setState(()
+                        {
               checkedValues['checkbox13'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),
-    SizedBox(width: 10), // Adjust the width between checkboxes
-    Flexible(
-      child: SizedBox(
-        height: 25,
-        child: CheckboxListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
-          dense: true,
-          title: Text(
-            "ABOVE ₹ 500",
-            style: TextStyle(fontSize: 13),
-          ),
-          value: checkedValues['checkbox14'] ?? false,
-          onChanged: (newValue) {
-            setState(() {
-              checkedValues['checkbox14'] = newValue!;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-      ),
-    ),   
-  ],
+                        }
+                        );
+                      },
+                    ),
+        const Text('Above ₹ 500'),
+      
+      SizedBox(width: 35), 
+      
+      Checkbox(
+                         // The named parameter 'title' isn't defined.
+                        value: checkedValues['checkbox14'] ?? false,
+                        onChanged: (newValue) 
+                        { 
+                          setState(()
+                          {
+                checkedValues['checkbox14'] = newValue!;
+                          }
+                          );
+                        },
+                      ),// 
+               const Text('Above ₹ 500'),
+    ],
+  ),
 ),
-
-
 
 
 
@@ -608,7 +593,7 @@ Row(
                     //  elevted button//
                    
        Container(
-  margin: EdgeInsets.only(top: 30),
+  margin: EdgeInsets.only(top: 20),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -627,7 +612,10 @@ Row(
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () 
+          {
+
+          },
           child: Text(
             'Clear',
             style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.bold),
@@ -648,7 +636,10 @@ Row(
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: ()
+           {
+
+           },
           child: Text(
             'Apply Filter',
             style: TextStyle(fontSize: 14, color: Colors.white,fontWeight: FontWeight.bold),
