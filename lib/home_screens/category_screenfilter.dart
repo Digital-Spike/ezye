@@ -614,7 +614,9 @@ SizedBox(
           ),
           onPressed: () 
           {
-
+            setState(() {
+                Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => const CategoryFilter()));
+            });
           },
           child: Text(
             'Clear',
@@ -638,7 +640,7 @@ SizedBox(
           ),
           onPressed: ()
            {
-
+                Navigator.pop(context);
            },
           child: Text(
             'Apply Filter',
