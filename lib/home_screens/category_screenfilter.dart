@@ -93,7 +93,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
       ),
     
      Padding(
-       padding: const EdgeInsets.only(left: 36),
+       padding: const EdgeInsets.only(left: 30),
        child: Row(
           children: [
               SizedBox(
@@ -116,7 +116,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
         ),
      ),
       Padding(
-        padding: const EdgeInsets.only(left: 36),
+        padding: const EdgeInsets.only(left: 30),
         child: Row(
           children: [
               SizedBox(
