@@ -62,6 +62,7 @@ class _SelectAddressState extends State<SelectAddress> {
             bottomNavigationBar: BottomAppBar(
                 elevation: 0,
                 padding: const EdgeInsets.all(20),
+                
                 child: Row(children: [
                   (addressList.isEmpty)
                       ? Expanded(
@@ -128,7 +129,9 @@ class _SelectAddressState extends State<SelectAddress> {
                                 color: Colors.white),
                           )),
                     ),
-                ])),
+                ])
+                ),
+
             body: Column(
               children: [
                 if (addressList.isEmpty)
