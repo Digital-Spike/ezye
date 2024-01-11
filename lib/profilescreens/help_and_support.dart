@@ -350,7 +350,6 @@ class _HelpAndSupportState extends State<HelpAndSupport>
           'email': email.text,
           'message': message.text,
           'userId': FirebaseUser.user?.uid,
-
         }
       );
       

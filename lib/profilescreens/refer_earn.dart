@@ -136,7 +136,7 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Your referral code',
+                                      ' Your referral code ',
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xff7C7D85)),
