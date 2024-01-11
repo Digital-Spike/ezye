@@ -242,7 +242,7 @@ class _CreateProfileState extends State<CreateProfile> {
         );
       },
     );
-  }
+  } 
 
   Future<dynamic> _saveUserData() async {
     String userId = FirebaseAuth.instance.currentUser?.uid ?? '';

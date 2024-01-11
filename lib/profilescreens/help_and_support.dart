@@ -1,20 +1,25 @@
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart' as http; 
 
-class HelpAndSupport extends StatefulWidget {
+class HelpAndSupport extends StatefulWidget
+ {
   const HelpAndSupport({super.key});
 
   @override
   State<HelpAndSupport> createState() => _HelpAndSupportState();
 }
 
-class _HelpAndSupportState extends State<HelpAndSupport> {
+class _HelpAndSupportState extends State<HelpAndSupport> 
+{
  TextEditingController name=TextEditingController();
   TextEditingController mobile=TextEditingController();
- TextEditingController address=TextEditingController();
+ TextEditingController email=TextEditingController();
  TextEditingController message=TextEditingController();
    final _formKey = GlobalKey<FormState>();
 
@@ -208,7 +213,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
-                        controller: address,
+                        controller: email,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintStyle:
@@ -249,14 +254,14 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       const Text(
                         'Message',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700),
+                            fontSize: 16, fontWeight: FontWeight.w700), 
                       ),
                       const SizedBox(height: 5),
                       TextFormField(
                         controller: message,
                         maxLength: 1000,
                         maxLines: 5,
-                        decoration: InputDecoration(
+                        decoration: InputDecoration(  
                             hintStyle:
                                 const TextStyle(color: Color(0xff7C7D85)),
                             hintText: 'Write your query here',
@@ -308,7 +313,8 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                
                               } else{
 
-
+             helpAndSupport();
+             
 
                               }
                           },
@@ -329,5 +335,35 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
               ),
             ),
     );
+    
+  
+        
+        }
+        
+        
+                Future<bool> helpAndSupport() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${ApiService.url}helpSupport.php'),
+        body: {
+          'mobile': mobile.text,
+          'email': email.text,
+          'message': message.text,
+          'userId': FirebaseUser.user?.uid,
+
+        }
+      );
+      
+      if (response.statusCode == 200) {
+        // Navigator.pop(context);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
-}
+
+  }
+

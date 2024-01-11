@@ -132,21 +132,25 @@ class _ReferAndEarnState extends State<ReferAndEarn> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Column(
+                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Your referral code',
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xff7C7D85)),
                                     ),
-                                    Text(
-                                      'XKGBKJ84513DFBKJ8',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width/2.2,
+                                      child: const Text(
+                                        'XKGBKJ84513DFBKJ8',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white),overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                      ),
                                     )
                                   ],
                                 ),
