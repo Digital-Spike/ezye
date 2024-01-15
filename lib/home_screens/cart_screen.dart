@@ -158,8 +158,8 @@ class _CartPageState extends State<CartPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             backgroundColor: Colors.black,
-                                            minimumSize:
-                                                const Size(double.infinity, 40)),
+                                            minimumSize: const Size(
+                                                double.infinity, 40)),
                                         onPressed: () {
                                           confirmOrder();
                                         },
@@ -722,6 +722,7 @@ class _CartPageState extends State<CartPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const SelectAddress()));
+                                        setState(() {});
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(3),
