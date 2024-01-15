@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/select_status_model.dart' as StatusModel;
+import 'package:ezye/profilescreens/addresses_screen.dart';
 import 'package:ezye/profilescreens/select_address.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:ezye/services/auth.dart';
@@ -11,7 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:searchfield/searchfield.dart';
 
 class AddAddress extends StatefulWidget {
-  const AddAddress({super.key});
+  final bool? isAddAddress;
+  const AddAddress({super.key, this.isAddAddress});
 
   @override
   State<AddAddress> createState() => _AddAddressState();
@@ -93,6 +95,11 @@ class _AddAddressState extends State<AddAddress> {
       await addAddress();
       if (!mounted) return;
       Navigator.of(context).pop();
+      if (widget.isAddAddress ?? false) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Addresses()));
+        return;
+      }
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const SelectAddress()));
     }

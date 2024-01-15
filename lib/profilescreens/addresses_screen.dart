@@ -155,7 +155,17 @@ class _AddressesState extends State<Addresses> {
                                             ),
                                             const SizedBox(width: 10),
                                             GestureDetector(
-                                              onTap: () {},
+                                              onTap: () async {
+                                                showDialogue();
+                                                await deleteAddress(
+                                                    id: address.id ?? '');
+                                                if (!mounted) return;
+                                                Navigator.of(context).pop();
+                                                setState(() {
+                                                  getAddressFuture =
+                                                      getAddress();
+                                                });
+                                              },
                                               child: Container(
                                                 height: 24,
                                                 width: 83,
@@ -199,24 +209,26 @@ class _AddressesState extends State<Addresses> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 25),
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            minimumSize: const Size(double.infinity, 56)),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AddAddress()));
-                        },
-                        child: const Text(
-                          'Add Address',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        )),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          minimumSize: const Size(double.infinity, 56)),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddAddress(isAddAddress: true)));
+                      },
+                      child: const Text(
+                        'Add Address',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
                   )
                 ],
               );
@@ -249,5 +261,40 @@ class _AddressesState extends State<Addresses> {
     }
 
     return true;
+  }
+
+  Future<bool> deleteAddress({required String id}) async {
+    try {
+      var deleteAddress = Uri.parse('${ApiService.url}deleteAddress.php');
+      var reqBody = {"id": id};
+
+      var response = await http.post(deleteAddress, body: reqBody);
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  Future<void> showDialogue() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Processing....')
+            ],
+          ),
+        );
+      },
+    );
   }
 }
