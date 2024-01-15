@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/model/address.dart';
 import 'package:ezye/profilescreens/add_address.dart';
-import 'package:ezye/services/auth.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../services/api_service.dart';
 
@@ -62,7 +63,6 @@ class _SelectAddressState extends State<SelectAddress> {
             bottomNavigationBar: BottomAppBar(
                 elevation: 0,
                 padding: const EdgeInsets.all(20),
-                
                 child: Row(children: [
                   (addressList.isEmpty)
                       ? Expanded(
@@ -129,9 +129,7 @@ class _SelectAddressState extends State<SelectAddress> {
                                 color: Colors.white),
                           )),
                     ),
-                ])
-                ),
-
+                ])),
             body: Column(
               children: [
                 if (addressList.isEmpty)
@@ -302,7 +300,9 @@ class _SelectAddressState extends State<SelectAddress> {
   Future<bool> getAddress() async {
     var removeFromWishlistUrl =
         Uri.parse('${ApiService.url}getUserAddress.php');
-    var reqBody = {"userId": FirebaseUser.user?.uid ?? ''};
+    var reqBody = {
+      "userId": Provider.of<SessionObject>(context, listen: false).user.userId
+    };
 
     var response = await http.post(removeFromWishlistUrl, body: reqBody);
     if (response.statusCode == 200) {
