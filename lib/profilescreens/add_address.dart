@@ -159,36 +159,45 @@ class _AddAddressState extends State<AddAddress> {
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    Radio<ShippingType>(
-                      value: ShippingType.home,
-                      groupValue: shippingType,
-                      onChanged: (ShippingType? value) {
-                        setState(() {
-                          shippingType = value!;
-                        });
-                      },
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Home'),
+                        value: ShippingType.home,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
                     ),
-                    const Text('Home'),
-                    Radio<ShippingType>(
-                      value: ShippingType.work,
-                      groupValue: shippingType,
-                      onChanged: (ShippingType? value) {
-                        setState(() {
-                          shippingType = value!;
-                        });
-                      },
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Work'),
+                        value: ShippingType.work,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
                     ),
-                    const Text('Work'),
-                    Radio<ShippingType>(
-                      value: ShippingType.others,
-                      groupValue: shippingType,
-                      onChanged: (ShippingType? value) {
-                        setState(() {
-                          shippingType = value!;
-                        });
-                      },
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Others'),
+                        value: ShippingType.others,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
                     ),
-                    const Text('Others'),
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -377,7 +386,6 @@ class _AddAddressState extends State<AddAddress> {
                     isDense: true,
                     hintText: 'pincode',
                     focusedBorder: OutlineInputBorder(
-                      
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
                             width: 1.5, color: Color(0xff7C7D85))),
