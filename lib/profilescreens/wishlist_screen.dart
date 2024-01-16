@@ -4,12 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/Auth_screen/login_screen.dart';
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/product_screen.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../model/product.dart';
 
@@ -107,15 +109,14 @@ class _WishListScreenState extends State<WishListScreen> {
                 )
               : FutureBuilder<void>(
                   future: listItems,
-
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (products.isEmpty) {
                         return Container(
-                          margin: EdgeInsets.only(top: 300),
-
-                          child: Center(child: Text("No items found!")));
+                            margin: const EdgeInsets.only(top: 300),
+                            child:
+                                const Center(child: Text("No items found!")));
                       }
 
                       return Expanded(
@@ -177,7 +178,8 @@ class _WishListScreenState extends State<WishListScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(left: 5),
+                                            margin:
+                                                const EdgeInsets.only(left: 5),
                                             padding: const EdgeInsets.all(3),
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -190,10 +192,20 @@ class _WishListScreenState extends State<WishListScreen> {
                                                   fontSize: 12),
                                             ),
                                           ),
-                                          Container(
-                                            margin: EdgeInsets.only(right: 5),
-                                            child: SvgPicture.asset(
-                                                'assets/svg/redheart.svg'),
+                                          InkWell(
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 5),
+                                              child: SvgPicture.asset(
+                                                  'assets/svg/redheart.svg'),
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                products.removeAt(index);
+                                              });
+                                              removeFromWishlist(
+                                                  product.productId);
+                                            },
                                           )
                                         ],
                                       ),
@@ -201,7 +213,8 @@ class _WishListScreenState extends State<WishListScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(left: 5),
+                                            margin:
+                                                const EdgeInsets.only(left: 5),
                                             child: Text(
                                               '${product.name}',
                                               style:
@@ -214,7 +227,8 @@ class _WishListScreenState extends State<WishListScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(left: 5),
+                                            margin:
+                                                const EdgeInsets.only(left: 5),
                                             child: Text(
                                               '₹${product.sellingPrice}',
                                               style:
@@ -257,6 +271,29 @@ class _WishListScreenState extends State<WishListScreen> {
               .toList();
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<bool> removeFromWishlist(String? productId) async {
+    try {
+      var removeFromWishlistUrl =
+          Uri.parse('${ApiService.url}removeWishlist.php');
+      var reqBody = {
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId ??
+                '',
+        "productId": productId
+      };
+
+      var response = await http.post(removeFromWishlistUrl, body: reqBody);
+      if (response.statusCode == 200) {
+        return !jsonDecode(
+            (response.body).toString().replaceAll('connected', ''))['error'];
+      }
+      return false;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
     }
   }
 }
