@@ -120,11 +120,13 @@ class _AddressesState extends State<Addresses> {
                                           children: [
                                             GestureDetector(
                                               onTap: () {
-                                                Navigator.push(
+                                                Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const EditAddress()));
+                                                            EditAddress(
+                                                              address: address,
+                                                            )));
                                               },
                                               child: Container(
                                                 height: 24,

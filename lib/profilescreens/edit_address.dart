@@ -2,27 +2,36 @@ import 'dart:convert';
 
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/select_status_model.dart' as StatusModel;
+import 'package:ezye/model/address.dart';
+import 'package:ezye/paymentScreens/checkout_screen.dart';
+import 'package:ezye/profilescreens/addresses_screen.dart';
+import 'package:ezye/providers/session_object.dart';
+import 'package:ezye/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 
 class EditAddress extends StatefulWidget {
-  const EditAddress({super.key});
+  final Address address;
+  const EditAddress({super.key, required this.address});
 
   @override
   State<EditAddress> createState() => _EditAddressState();
 }
 
 class _EditAddressState extends State<EditAddress> {
-  List<String> _states = [];
+  final List<String> _states = [];
   List<String> _filterStates = [];
   TextEditingController searchController = TextEditingController();
-  var _ad1 = new TextEditingController();
-  var _ad2 = new TextEditingController();
-  var _ad3 = new TextEditingController();
-  var _city = new TextEditingController();
-  var _state = new TextEditingController();
-  var _pincode = new TextEditingController();
+  final TextEditingController _ad1 = TextEditingController();
+  final TextEditingController _ad2 = TextEditingController();
+  final TextEditingController _ad3 = TextEditingController();
+  final TextEditingController _city = TextEditingController();
+  final TextEditingController _state = TextEditingController();
+  final TextEditingController _pincode = TextEditingController();
+  ShippingType shippingType = ShippingType.home;
   String locCountry = "";
   String locState = "";
   String locCity = "";
@@ -33,6 +42,7 @@ class _EditAddressState extends State<EditAddress> {
     width: 1.5,
     color: Colors.red,
   );
+
   Future getResponse() async {
     var res = await rootBundle.loadString('assets/json/country.json');
     return jsonDecode(res);
@@ -66,33 +76,39 @@ class _EditAddressState extends State<EditAddress> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  void _submitForm() {
-    if (_ad1.text.isEmpty || _ad2.text.isEmpty || _ad3.text.isEmpty) {
-      setState(() {
-        focusedColor = Colors.red;
-        enabledColor = Colors.red;
-        print("Hello");
-      });
-    }
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_city.text.isEmpty &&
-          _ad1.text.isEmpty &&
-          _ad2.text.isEmpty &&
-          _ad3.text.isEmpty &&
-          _pincode.text.isEmpty &&
+      if (_city.text.isEmpty ||
+          _ad1.text.isEmpty ||
+          _ad2.text.isEmpty ||
+          _ad3.text.isEmpty ||
+          _pincode.text.isEmpty ||
           _state.text.isEmpty) {
         return;
       }
-    } else {
-      setState(() {});
+
+      _showMyDialog();
+      await saveAddress();
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Addresses()));
+      return;
     }
   }
 
   @override
   void initState() {
     getState();
+
+    _city.text = widget.address.city ?? '';
+    _ad1.text = widget.address.line1 ?? '';
+    _ad2.text = widget.address.line2 ?? '';
+    _ad3.text = widget.address.line3 ?? '';
+    _pincode.text = widget.address.pinCode ?? '';
+    _state.text = widget.address.state ?? '';
     super.initState();
   }
 
@@ -182,6 +198,50 @@ class _EditAddressState extends State<EditAddress> {
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 5),
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Home'),
+                        value: ShippingType.home,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Work'),
+                        value: ShippingType.work,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile<ShippingType>(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Others'),
+                        value: ShippingType.others,
+                        groupValue: shippingType,
+                        onChanged: (ShippingType? value) {
+                          setState(() {
+                            shippingType = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
                 TextFormField(
                   controller: _ad1,
                   decoration: InputDecoration(
@@ -198,6 +258,13 @@ class _EditAddressState extends State<EditAddress> {
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(color: enabledColor)),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter address';
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -228,6 +295,13 @@ class _EditAddressState extends State<EditAddress> {
                       borderSide: BorderSide(color: enabledColor),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter address';
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -251,7 +325,7 @@ class _EditAddressState extends State<EditAddress> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter complete address';
+                      return 'Please enter address';
                     } else {
                       return null;
                     }
@@ -358,6 +432,7 @@ class _EditAddressState extends State<EditAddress> {
                 TextFormField(
                   controller: _pincode,
                   inputFormatters: [LengthLimitingTextInputFormatter(6)],
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -387,6 +462,56 @@ class _EditAddressState extends State<EditAddress> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<bool> saveAddress() async {
+    try {
+      var body = {
+        'userId':
+            Provider.of<SessionObject>(context, listen: false).user.userId,
+        'line1': _ad1.text,
+        'line2': _ad2.text,
+        'line3': _ad3.text,
+        'city': _city.text,
+        'pincode': _pincode.text,
+        'state': _state.text,
+        'type': shippingType.name,
+        'id': widget.address.id
+      };
+      jsonEncode(body);
+      final response = await http.post(
+        Uri.parse('${ApiService.url}editAddress.php'),
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 5,
+              ),
+              Text('Processing....')
+            ],
+          ),
+        );
+      },
     );
   }
 }
