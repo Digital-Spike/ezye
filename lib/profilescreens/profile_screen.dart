@@ -26,6 +26,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isLoggedIn = false;
+  String imageUrl = '';
   final user = FirebaseAuth.instance.currentUser;
   late String? _phone;
   String? name, phone;
@@ -33,6 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getUser();
+    imageUrl =
+        'https://ezys.in/customerApp/uploads/${FirebaseAuth.instance.currentUser?.uid}.jpg';
+    print(imageUrl);
     _phone = user?.phoneNumber;
     checkLoginStatus(); // Call the function to fetch carousel data
   }
@@ -120,13 +124,24 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 86,
                             width: 86,
                             decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                    image: AssetImage('assets/png/user.png')),
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(18),
                                 border: Border.all(
                                     width: 1.5,
                                     color: const Color(0xffE8E9EE))),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image.asset('assets/png/user.png'),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 8),
                           Text(

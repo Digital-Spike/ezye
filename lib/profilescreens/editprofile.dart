@@ -115,12 +115,12 @@ class _EditProfileState extends State<EditProfile> {
                     // print(choosedimage);
                     String baseimage = base64Encode(imageBytes);
                     print(baseimage);
-                    String employerId =
+                    String userId =
                         FirebaseAuth.instance.currentUser?.uid ?? '';
                     String apiUrl =
                         'https://ezys.in/customerApp/uploadImage.php';
                     var response = await http.post(Uri.parse(apiUrl),
-                        body: {'userId': employerId, 'imageUrl': baseimage});
+                        body: {'userId': userId, 'imageUrl': baseimage});
 
                     if (response.statusCode == 200) {
                       print(response.body);
@@ -141,12 +141,15 @@ class _EditProfileState extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                           width: 1.5, color: const Color(0xffE8E9EE))),
-                  child: Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.person);
-                    },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(Icons.person);
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -313,7 +316,7 @@ class _EditProfileState extends State<EditProfile> {
       _name.text = jsondata[0]['name'];
       _phone = jsondata[0]['mobile'];
       _email.text = jsondata[0]['email'];
-      imageUrl = 'https://ezys.in/customerApp/upload/$userId.php';
+      imageUrl = 'https://ezys.in/customerApp/uploads/$userId.jpg';
     });
   }
 
