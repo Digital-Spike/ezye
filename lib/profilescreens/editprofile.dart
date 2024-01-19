@@ -5,6 +5,7 @@ import 'package:ezye/profilescreens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -16,6 +17,10 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final user = FirebaseAuth.instance.currentUser;
   late String? _phone;
+  String baseimage = "";
+  ImagePicker picker = ImagePicker();
+  XFile? uploadimage;
+  String imageUrl = "";
   var _name = new TextEditingController();
   var _mobile = new TextEditingController();
   var _email = new TextEditingController();
@@ -90,22 +95,60 @@ class _EditProfileState extends State<EditProfile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              
               const Text(
                 'Profile Picture',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16,
-                color:  Color(0xffBDC1CA) ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: Color(0xffBDC1CA)),
               ),
               const SizedBox(height: 5),
-              Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        image: AssetImage('assets/png/user.png')),
-                    borderRadius: BorderRadius.circular(18),
-                    border:
-                        Border.all(width: 1.5, color: const Color(0xffE8E9EE))),
+              InkWell(
+                onTap: () async {
+                  try {
+                    var choosedimage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      uploadimage = choosedimage;
+                    });
+                    List<int> imageBytes = await uploadimage!.readAsBytes();
+                    // print(choosedimage);
+                    String baseimage = base64Encode(imageBytes);
+                    print(baseimage);
+                    String employerId =
+                        FirebaseAuth.instance.currentUser?.uid ?? '';
+                    String apiUrl =
+                        'https://ezys.in/customerApp/uploadImage.php';
+                    var response = await http.post(Uri.parse(apiUrl),
+                        body: {'userId': employerId, 'imageUrl': baseimage});
+
+                    if (response.statusCode == 200) {
+                      print(response.body);
+
+                      setState(() {
+                        imageUrl = response.body;
+                        getUser();
+                      });
+                    } else {}
+                  } catch (error) {
+                    // Show a Snackbar for any unexpected errors
+                  }
+                },
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                          width: 1.5, color: const Color(0xffE8E9EE))),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.person);
+                    },
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Column(
@@ -115,10 +158,9 @@ class _EditProfileState extends State<EditProfile> {
                   const Text(
                     "Name",
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xffBDC1CA)
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xffBDC1CA)),
                   ),
                   const SizedBox(height: 5),
                   TextFormField(
@@ -162,7 +204,7 @@ class _EditProfileState extends State<EditProfile> {
                       Expanded(
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          initialValue: _phone ?? '',                        
+                          initialValue: _phone ?? '',
                           style: const TextStyle(fontWeight: FontWeight.w700),
                           decoration: InputDecoration(
                               filled: true,
@@ -183,10 +225,9 @@ class _EditProfileState extends State<EditProfile> {
                   const Text(
                     "Email",
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xffBDC1CA)
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xffBDC1CA)),
                   ),
                   const SizedBox(height: 5),
                   TextFormField(
@@ -272,6 +313,7 @@ class _EditProfileState extends State<EditProfile> {
       _name.text = jsondata[0]['name'];
       _phone = jsondata[0]['mobile'];
       _email.text = jsondata[0]['email'];
+      imageUrl = 'https://ezys.in/customerApp/upload/$userId.php';
     });
   }
 

@@ -40,6 +40,7 @@ dependencies:
   animate_do: ^3.1.2
   phonepe_payment_sdk: ^1.0.0
   badges: ^3.1.2
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:

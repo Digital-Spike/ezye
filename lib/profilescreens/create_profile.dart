@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/model/user.dart';
 import 'package:ezye/orderscreens/confirmation_screen.dart';
@@ -10,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -25,9 +28,29 @@ class _CreateProfileState extends State<CreateProfile> {
   var email = TextEditingController();
   var referral = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String baseimage = "";
+  ImagePicker picker = ImagePicker();
+  XFile? uploadimage;
+  String imageUrl = "";
+  void getUser() async {
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    String apiUrl = "https://ezys.in/customerApp/getUser.php";
+    var response = await http.post(Uri.parse(apiUrl), body: {
+      "userId": userId,
+    });
+    var jsondata =
+        json.decode((response.body).toString().replaceAll('connected', ''));
+    print(jsondata);
+    setState(() {
+      // name = jsondata[0]['name'];
+      // phone = jsondata[0]['mobile'];
+      imageUrl = 'https://ezys.in/customerApp/upload/$userId.php';
+    });
+  }
 
   @override
   void initState() {
+    getUser();
     _phone = user!.phoneNumber?.replaceFirst('+91', '');
     super.initState();
   }
@@ -87,15 +110,55 @@ class _CreateProfileState extends State<CreateProfile> {
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                   ),
                   const SizedBox(height: 5),
-                  Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                        image: const DecorationImage(
-                            image: AssetImage('assets/png/user.png')),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                            width: 1.5, color: const Color(0xffE8E9EE))),
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        var choosedimage =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        setState(() {
+                          uploadimage = choosedimage;
+                        });
+                        List<int> imageBytes = await uploadimage!.readAsBytes();
+                        // print(choosedimage);
+                        String baseimage = base64Encode(imageBytes);
+                        print(baseimage);
+                        String employerId =
+                            FirebaseAuth.instance.currentUser?.uid ?? '';
+                        String apiUrl =
+                            'https://ezys.in/customerApp/uploadImage.php';
+                        var response = await http.post(Uri.parse(apiUrl),
+                            body: {
+                              'userId': employerId,
+                              'imageUrl': baseimage
+                            });
+
+                        if (response.statusCode == 200) {
+                          print(response.body);
+
+                          setState(() {
+                            imageUrl = response.body;
+                            getUser();
+                          });
+                        } else {}
+                      } catch (error) {
+                        // Show a Snackbar for any unexpected errors
+                      }
+                    },
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                              width: 1.5, color: const Color(0xffE8E9EE))),
+                      child: Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.person);
+                        },
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Column(
@@ -242,7 +305,7 @@ class _CreateProfileState extends State<CreateProfile> {
         );
       },
     );
-  } 
+  }
 
   Future<dynamic> _saveUserData() async {
     String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
