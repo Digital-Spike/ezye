@@ -111,12 +111,12 @@ class _ProductScreenState extends State<ProductScreen> {
                           setState(() {});
                         },
                         child: Container(
-                           padding: const EdgeInsets.all(5),
-                                              margin: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 6),
-                                              decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white.withOpacity(0.2)),
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 6),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white.withOpacity(0.2)),
                           child: SvgPicture.asset(
                             isSaved()
                                 ? 'assets/svg/heart.svg'
@@ -141,19 +141,22 @@ class _ProductScreenState extends State<ProductScreen> {
                                     builder: (context) => const CartPage()));
                           },
                           child: badges.Badge(
-                          badgeContent: Text(
-                              Provider.of<SessionObject>(context, listen: true)
-                                      .user
-                                      .cartItemCount ??
-                                  '0'),
-                          child: SvgPicture.asset(
-                            'assets/svg/cart.svg',
+                            badgeContent: Text(Provider.of<SessionObject>(
+                                        context,
+                                        listen: true)
+                                    .user
+                                    .cartItemCount ??
+                                '0'),
+                            child: SvgPicture.asset(
+                              'assets/svg/cart.svg',
+                            ),
                           ),
                         ),
                       ),
-                      ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                   ],
                 ),
                 extendBodyBehindAppBar: true,
@@ -489,12 +492,7 @@ class _ProductScreenState extends State<ProductScreen> {
           await http.post(productUrl, body: {"productId": widget.productId});
 
       if (response.statusCode == 200) {
-        product =
-            (json.decode((response.body).toString().replaceAll('connected', ''))
-                    as List)
-                .map((item) => Product.fromJson(item))
-                .toList()
-                .first;
+        product = Product.fromJson(json.decode(response.body));
         if ((product?.image1Url ?? '').isNotEmpty) {
           imgList.add(product?.image1Url ?? '');
         }
