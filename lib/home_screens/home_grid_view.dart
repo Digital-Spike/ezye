@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ezye/home_screens/product_screen.dart';
+import 'package:ezye/home_screens/grid_items.dart';
 import 'package:ezye/model/home_list.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +57,8 @@ class HomeGridViewState extends State<HomeGridView> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProductScreen(
-                                  productId: homeItem.category ?? "",
-                                )));
+                            builder: (context) =>
+                                GridItems(category: homeItem.category ?? '')));
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),

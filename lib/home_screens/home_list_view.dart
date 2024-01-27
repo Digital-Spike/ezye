@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ezye/home_screens/category_screen.dart';
+import 'package:ezye/home_screens/grid_items.dart';
 import 'package:ezye/model/home_list.dart';
 import 'package:ezye/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class HomeListViewState extends State<HomeListView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CategoryPage(
+                              builder: (context) => GridItems(
                                   category: homeItem.category ?? '')));
                     },
                     child: Column(

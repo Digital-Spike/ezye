@@ -17,16 +17,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class CategoryPage extends StatefulWidget {
+class GridItems extends StatefulWidget {
   final String category;
 
-  const CategoryPage({super.key, required this.category});
+  const GridItems({super.key, required this.category});
 
   @override
-  State<CategoryPage> createState() => _CategoryPageState();
+  State<GridItems> createState() => _GridItemsState();
 }
 
-class _CategoryPageState extends State<CategoryPage> {
+class _GridItemsState extends State<GridItems> {
   bool isLiked = false;
   Future<bool>? listItems;
   List<Product> products = [];
@@ -142,17 +142,18 @@ class _CategoryPageState extends State<CategoryPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${widget.category}'s Collections",
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
-                              Text('${products.length} Products')
-                            ],
-                          ),
+                          // Column(
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     Text(
+                          //       "${widget.category}'s Collections",
+                          //       style: const TextStyle(
+                          //           fontSize: 20, fontWeight: FontWeight.w600),
+                          //     ),
+                          //     Text('${products.length} Products')
+                          //   ],
+                          // ),
+                          Text('${products.length} Products'),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,
