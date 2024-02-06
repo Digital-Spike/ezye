@@ -51,6 +51,12 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
         future: orderListFuture,
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            if (orderList.isEmpty) {
+              return const Center(
+                child: Text("No orders found!"),
+              );
+            }
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
@@ -66,7 +72,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   const SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: 10,
+                        itemCount: orderList.length,
                         itemBuilder: (context, index) {
                           Order order = orderList[index];
                           return Container(
