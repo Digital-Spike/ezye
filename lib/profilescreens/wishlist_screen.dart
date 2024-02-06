@@ -6,7 +6,6 @@ import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/home_screens/product_screen.dart';
 import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
-import 'package:ezye/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -261,9 +260,11 @@ class _WishListScreenState extends State<WishListScreen> {
 
   Future<void> getItems() async {
     try {
-      var response = await http.post(
-          Uri.parse('${ApiService.url}getUserWishlist.php'),
-          body: {"userId": FirebaseUser.user?.uid ?? ''});
+      var response = await http
+          .post(Uri.parse('${ApiService.url}getUserWishlist.php'), body: {
+        "userId":
+            Provider.of<SessionObject>(context, listen: false).user.userId ?? ''
+      });
       products = (json.decode(response.body) as List)
           .map((item) => Product.fromJson(item))
           .toList();
