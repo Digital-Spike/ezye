@@ -4,11 +4,12 @@ import 'package:ezye/custom_widgets/constants.dart';
 import 'package:ezye/custom_widgets/select_status_model.dart' as StatusModel;
 import 'package:ezye/profilescreens/addresses_screen.dart';
 import 'package:ezye/profilescreens/select_address.dart';
+import 'package:ezye/providers/session_object.dart';
 import 'package:ezye/services/api_service.dart';
-import 'package:ezye/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 
 class AddAddress extends StatefulWidget {
@@ -422,7 +423,8 @@ class _AddAddressState extends State<AddAddress> {
       final response = await http.post(
         Uri.parse('${ApiService.url}addAddress.php'),
         body: {
-          'userId': FirebaseUser.user?.uid,
+          'userId':
+              Provider.of<SessionObject>(context, listen: false).user.userId,
           'line1': _ad1.text,
           'line2': _ad2.text,
           'line3': _ad3.text,

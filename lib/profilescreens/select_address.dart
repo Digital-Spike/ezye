@@ -253,31 +253,32 @@ class _SelectAddressState extends State<SelectAddress> {
                               ],
                             );
                           }),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 10),
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                side: const BorderSide(
-                                    width: 1.5, color: Colors.black),
-                                minimumSize: const Size(double.infinity, 56)),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddAddress()));
-                            },
-                            child: const Text(
-                              'Add Address',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black),
-                            )),
-                      )
+                      if (addressList.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 10),
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  side: const BorderSide(
+                                      width: 1.5, color: Colors.black),
+                                  minimumSize: const Size(double.infinity, 56)),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddAddress()));
+                              },
+                              child: const Text(
+                                'Add Address',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black),
+                              )),
+                        )
                     ],
                   ),
                 ),
