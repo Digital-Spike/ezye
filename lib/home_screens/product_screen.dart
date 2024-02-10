@@ -342,16 +342,25 @@ class _ProductScreenState extends State<ProductScreen> {
                                 fontSize: 20, color: Colors.black),
                           ),
                           const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Text(
-                                '₹ ${product?.mrp}',
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
+                           Row(
+                                      children: 
+                                      [
+                                        Text('₹ 2,199',style: TextStyle(fontSize: 12,color: Color(0xffBDC1CA),decoration: TextDecoration.lineThrough),),
+                                        SizedBox(width: 5,),
+                                        Text('₹${product?.mrp ?? ""}',style: TextStyle(fontSize: 16,color: Color(0xff000000)),
+                                        ),
+                                        SizedBox(width: 5,),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff00CA14),
+                                            borderRadius: BorderRadius.circular(5)
+                                          ),
+                                          child: Text(' 10% Off ',style: TextStyle(fontSize: 12,color: Color(0xffFFFFFF),
+                                          ),),
+                                        )
+                                      ],
+                                    ),
+                           SizedBox(height: 5),
                           const Text(
                             'Colors',
                             style: TextStyle(

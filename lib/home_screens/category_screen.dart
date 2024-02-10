@@ -179,13 +179,13 @@ class _CategoryPageState extends State<CategoryPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 2),
                       Expanded(
                         child: GridView.builder(
                             itemCount: products.length,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1 / 1.95,
+                                    childAspectRatio: 1 / 2,
                                     crossAxisSpacing: 10,
                                     crossAxisCount: 2),
                             itemBuilder: ((context, index) {
@@ -230,7 +230,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 2),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -273,7 +273,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 8,
+                                      height: 2,
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -290,19 +290,25 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
+                                    
                                     Row(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            '₹ ${product.mrp ?? ""}',
-                                            style:
-                                                const TextStyle(fontSize: 16),
-                                          ),
+                                      children: 
+                                      [
+                                        Text('₹ 2,199',style: TextStyle(fontSize: 12,color: Color(0xffBDC1CA),decoration: TextDecoration.lineThrough),),
+                                        SizedBox(width: 5,),
+                                        Text('₹${product.mrp ?? ""}',style: TextStyle(fontSize: 16,color: Color(0xff000000)),
                                         ),
+                                        SizedBox(width: 5,),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff00CA14),
+                                            borderRadius: BorderRadius.circular(5)
+                                          ),
+                                          child: Text(' 10% Off ',style: TextStyle(fontSize: 12,color: Color(0xffFFFFFF),
+                                          ),),
+                                        )
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               );
