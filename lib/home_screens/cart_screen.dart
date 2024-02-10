@@ -42,7 +42,7 @@ class _CartPageState extends State<CartPage> {
   Address? selectedAddress;
   double itemTotalAmount = 0.0;
   double discount = 0.0;
-  double deliveryCost = 49.0;
+  double deliveryCharge = 50.0;
   double ezyeCoin = 0.0;
   double couponDiscountAmount = 0;
   double orderTotal = 0;
@@ -956,7 +956,7 @@ class _CartPageState extends State<CartPage> {
                                           color: Color(0xff7C7D85)),
                                     ),
                                     Text(
-                                      '₹ $deliveryCost',
+                                      '₹ $deliveryCharge',
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -1388,7 +1388,7 @@ class _CartPageState extends State<CartPage> {
                                                     color: Color(0xff7C7D85)),
                                               ),
                                               Text(
-                                                '₹ $deliveryCost',
+                                                '₹ $deliveryCharge',
                                                 style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w600,
@@ -1704,7 +1704,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   getCartTotal() {
-    return itemTotalAmount + deliveryCost;
+    return itemTotalAmount + deliveryCharge;
   }
 
   Future<bool> placeOrder() async {
@@ -1722,8 +1722,10 @@ class _CartPageState extends State<CartPage> {
         "address":
             '${selectedAddress?.line1}, ${selectedAddress?.line2}, ${selectedAddress?.city}, ${selectedAddress?.pinCode}.',
         "couponCode": selectedCoupon?.code ?? '',
+        "couponAmount": couponDiscountAmount,
         "finalAmount": totalAmountWithDiscount.toString(),
-        "ezyeCoin": ezyeCoin.toString()
+        "ezyeCoin": ezyeCoin.toString(),
+        "deliveryCharge": deliveryCharge
       };
 
       var response = await http.post(createOrderUrl, body: reqBody);

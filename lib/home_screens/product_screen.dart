@@ -549,12 +549,14 @@ class _ProductScreenState extends State<ProductScreen> {
         "productName": product?.name ?? '',
         "size": product?.size ?? '',
         "color": product?.color ?? '',
-        "amount": product?.mrp,
+        "amount": (product?.variant ?? []).first.amount,
         "cartId":
             Provider.of<SessionObject>(context, listen: false).user.cartId ??
                 "",
         "quantity": itemCount.toString(),
-        "imageUrl": product?.image1Url ?? ''
+        "imageUrl": product?.image1Url ?? '',
+        "mrp": product?.mrp,
+        "discount": product?.discount
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);

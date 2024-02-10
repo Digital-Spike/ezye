@@ -18,6 +18,7 @@ class Product {
   String? stockStatus;
   String? stockNumber;
   bool isSaved;
+  String? discount;
   List<ProductVariant>? variant;
 
   Product(
@@ -40,7 +41,8 @@ class Product {
       this.stockNumber,
       this.stockStatus,
       this.isSaved = false,
-      this.variant});
+      this.variant,
+      this.discount});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -62,6 +64,7 @@ class Product {
         size: json['size'],
         stockNumber: json['stock_status'],
         stockStatus: json['stock_number'],
+        discount: json['discount'],
         variant: json['varientDetails'] != null
             ? (json['varientDetails'] as List)
                 .map((variant) => ProductVariant.fromJson(variant))

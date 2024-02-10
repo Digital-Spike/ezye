@@ -1,18 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/order.dart';
 import 'package:ezye/orderscreens/cancel_order.dart';
-import 'package:ezye/orderscreens/return_order.dart';
+import 'package:ezye/services/api_service.dart';
+import 'package:ezye/util/order_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderDetail extends StatefulWidget {
-  const OrderDetail({super.key});
+  final Order order;
+  const OrderDetail({super.key, required this.order});
 
   @override
   State<OrderDetail> createState() => _OrderDetailState();
 }
 
 class _OrderDetailState extends State<OrderDetail> {
-  bool popMenu = false;
   bool returnOrder = false;
   bool orderPlaced = true;
   bool reurnRefunded = false;
@@ -35,27 +37,27 @@ class _OrderDetailState extends State<OrderDetail> {
               height: 1,
               color: const Color(0xffE8E9EE),
             )),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                popMenu = !popMenu;
-                print(popMenu);
-              });
-            },
-            child: Container(
-                width: 46,
-                height: 46,
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                child: SvgPicture.asset(
-                  popMenu ? 'assets/svg/clear.svg' : 'assets/svg/popmenu.svg',
-                )),
-          ),
-        ],
+        // actions: [
+        //   GestureDetector(
+        //     onTap: () {
+        //       setState(() {
+        //         popMenu = !popMenu;
+        //         print(popMenu);
+        //       });
+        //     },
+        //     child: Container(
+        //         width: 46,
+        //         height: 46,
+        //         padding: const EdgeInsets.all(10),
+        //         margin: const EdgeInsets.all(8),
+        //         decoration: BoxDecoration(
+        //             borderRadius: BorderRadius.circular(12),
+        //             color: const Color(0xffE8E9EE).withOpacity(0.3)),
+        //         child: SvgPicture.asset(
+        //           popMenu ? 'assets/svg/clear.svg' : 'assets/svg/popmenu.svg',
+        //         )),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Stack(
@@ -69,393 +71,371 @@ class _OrderDetailState extends State<OrderDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ORD02134567',
-                          ),
-                          Text(
-                            '07 Oct 2023  05:23 PM',
-                            style: TextStyle(color: Color(0xffBDC1CA)),
-                          )
-                        ],
-                      ),
-                      if (returnOrder == true)
-                        Row(
-                          children: [
-                            SvgPicture.asset('assets/svg/spinner.svg'),
-                            const SizedBox(width: 5),
-                            const Text('Return Requested')
-                          ],
-                        ),
-                      if (orderPlaced == true)
-                        Row(
-                          children: [
-                            SvgPicture.asset('assets/svg/checkgreen.svg'),
-                            const SizedBox(width: 5),
-                            const Text('Order Placed'),
-                          ],
-                        ),
-                      if (reurnRefunded == true)
-                        Row(
-                          children: [
-                            SvgPicture.asset('assets/svg/checkgreen.svg'),
-                            const SizedBox(width: 5),
-                            const Text('Returned & Refunded')
-                          ],
-                        )
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  if (returnOrder == true)
-                    if (reurnRefunded == true)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                color:
-                                    const Color(0xffE8E9EE).withOpacity(0.3)),
-                            child: const Text(
-                              'Products(3)',
-                              style: TextStyle(color: Color(0xff7C7D85)),
-                            ),
+                          Text(
+                            '${widget.order.orderId}',
                           ),
-                          const SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 5),
-                            child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                itemCount: 1,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              height: 80,
-                                              width: 60,
-                                              child: Image.asset(
-                                                'assets/png/cloth.png',
-                                                fit: BoxFit.cover,
-                                              )),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.6,
-                                              child: const Text(
-                                                'Men Blue Washed Denim Jacket men Blue',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            const Text(
-                                              'SIZE: XL',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xffBDC1CA)),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                const Column(
-                                                  children: [
-                                                    Text(
-                                                      '₹ 2,199',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color:
-                                                              Color(0xffBDC1CA),
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough),
-                                                    ),
-                                                    Text(
-                                                      '₹2,000',
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(width: 2),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      color: const Color(
-                                                          0xff00CA14)),
-                                                  child: const Text(
-                                                    '10% Off',
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                          const SizedBox(height: 15),
-                          const Text('Pickup Location',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700)),
-                          const SizedBox(width: 15),
-                          const Text(
-                            '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
-                            style: TextStyle(color: Color(0xff7C7D85)),
-                          ),
-                          const SizedBox(height: 15),
-                          const Text(
-                            'Refund Details',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(height: 5),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Refundable Amount',
-                                style: TextStyle(color: Color(0xff7C7D85)),
-                              ),
-                              Text(
-                                '₹ 2,000.00',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Refund Status',
-                                style: TextStyle(color: Color(0xff7C7D85)),
-                              ),
-                              Text(
-                                'Pending',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xffF3A100)),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 25),
+                          Text(
+                            '${widget.order.created}',
+                            style: const TextStyle(color: Color(0xffBDC1CA)),
+                          )
                         ],
                       ),
-                  if (reurnRefunded == true)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                          child: const Text(
-                            'Products(3)',
-                            style: TextStyle(color: Color(0xff7C7D85)),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 5),
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            height: 80,
-                                            width: 60,
-                                            child: Image.asset(
-                                              'assets/png/cloth.png',
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.6,
-                                            child: const Text(
-                                              'Men Blue Washed Denim Jacket men Blue',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  overflow:
-                                                      TextOverflow.ellipsis),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          const Text(
-                                            'SIZE: XL',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xffBDC1CA)),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              const Column(
-                                                children: [
-                                                  Text(
-                                                    '₹ 2,199',
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xffBDC1CA),
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough),
-                                                  ),
-                                                  Text(
-                                                    '₹2,000',
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(width: 2),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    color: const Color(
-                                                        0xff00CA14)),
-                                                child: const Text(
-                                                  '10% Off',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.white),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ),
-                        const SizedBox(height: 15),
-                        const Text('Pickup Location',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700)),
-                        const SizedBox(width: 15),
-                        const Text(
-                          '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
-                          style: TextStyle(color: Color(0xff7C7D85)),
-                        ),
-                        const SizedBox(height: 15),
-                        const Text(
-                          'Refund Details',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 5),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Refundable Amount',
-                              style: TextStyle(color: Color(0xff7C7D85)),
-                            ),
-                            Text(
-                              '₹ 2,000.00',
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Refund Status',
-                              style: TextStyle(color: Color(0xff7C7D85)),
-                            ),
-                            Text(
-                              'Paid',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff00CA14)),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 25),
-                      ],
-                    ),
+                      OrderUtil.instance
+                          .getOrderStatus(status: widget.order.status ?? "")
+                    ],
+                  ),
+                  // const SizedBox(height: 15),
+                  // if (returnOrder == true)
+                  //   if (reurnRefunded == true)
+                  //     Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Container(
+                  //           width: double.infinity,
+                  //           padding: const EdgeInsets.symmetric(
+                  //               horizontal: 10, vertical: 5),
+                  //           decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(7),
+                  //               color:
+                  //                   const Color(0xffE8E9EE).withOpacity(0.3)),
+                  //           child: const Text(
+                  //             'Products(3)',
+                  //             style: TextStyle(color: Color(0xff7C7D85)),
+                  //           ),
+                  //         ),
+                  //         const SizedBox(height: 5),
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(
+                  //               horizontal: 0, vertical: 5),
+                  //           child: ListView.builder(
+                  //               padding: EdgeInsets.zero,
+                  //               shrinkWrap: true,
+                  //               itemCount: 1,
+                  //               itemBuilder: (context, index) {
+                  //                 return Container(
+                  //                   padding: const EdgeInsets.only(bottom: 5),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.start,
+                  //                     crossAxisAlignment:
+                  //                         CrossAxisAlignment.start,
+                  //                     children: [
+                  //                       ClipRRect(
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(5),
+                  //                         child: Container(
+                  //                             decoration: BoxDecoration(
+                  //                                 borderRadius:
+                  //                                     BorderRadius.circular(5)),
+                  //                             height: 80,
+                  //                             width: 60,
+                  //                             child: Image.asset(
+                  //                               'assets/png/cloth.png',
+                  //                               fit: BoxFit.cover,
+                  //                             )),
+                  //                       ),
+                  //                       const SizedBox(width: 5),
+                  //                       Column(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.spaceBetween,
+                  //                         crossAxisAlignment:
+                  //                             CrossAxisAlignment.start,
+                  //                         children: [
+                  //                           SizedBox(
+                  //                             width: MediaQuery.of(context)
+                  //                                     .size
+                  //                                     .width /
+                  //                                 1.6,
+                  //                             child: const Text(
+                  //                               'Men Blue Washed Denim Jacket men Blue',
+                  //                               style: TextStyle(
+                  //                                   fontSize: 16,
+                  //                                   overflow:
+                  //                                       TextOverflow.ellipsis),
+                  //                               overflow: TextOverflow.ellipsis,
+                  //                               maxLines: 1,
+                  //                             ),
+                  //                           ),
+                  //                           const SizedBox(height: 5),
+                  //                           const Text(
+                  //                             'SIZE: XL',
+                  //                             style: TextStyle(
+                  //                                 fontSize: 12,
+                  //                                 color: Color(0xffBDC1CA)),
+                  //                           ),
+                  //                           const SizedBox(height: 5),
+                  //                           Row(
+                  //                             crossAxisAlignment:
+                  //                                 CrossAxisAlignment.end,
+                  //                             children: [
+                  //                               const Column(
+                  //                                 children: [
+                  //                                   Text(
+                  //                                     '₹ 2,199',
+                  //                                     style: TextStyle(
+                  //                                         fontSize: 12,
+                  //                                         color:
+                  //                                             Color(0xffBDC1CA),
+                  //                                         decoration:
+                  //                                             TextDecoration
+                  //                                                 .lineThrough),
+                  //                                   ),
+                  //                                   Text(
+                  //                                     '₹2,000',
+                  //                                     style: TextStyle(
+                  //                                         fontSize: 14),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                               const SizedBox(width: 2),
+                  //                               Container(
+                  //                                 padding:
+                  //                                     const EdgeInsets.all(3),
+                  //                                 decoration: BoxDecoration(
+                  //                                     borderRadius:
+                  //                                         BorderRadius.circular(
+                  //                                             5),
+                  //                                     color: const Color(
+                  //                                         0xff00CA14)),
+                  //                                 child: const Text(
+                  //                                   '10% Off',
+                  //                                   style: TextStyle(
+                  //                                       fontSize: 12,
+                  //                                       color: Colors.white),
+                  //                                 ),
+                  //                               )
+                  //                             ],
+                  //                           )
+                  //                         ],
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 );
+                  //               }),
+                  //         ),
+                  //         const SizedBox(height: 15),
+                  //         const Text('Pickup Location',
+                  //             style: TextStyle(
+                  //                 fontSize: 16, fontWeight: FontWeight.w700)),
+                  //         const SizedBox(width: 15),
+                  //         const Text(
+                  //           '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
+                  //           style: TextStyle(color: Color(0xff7C7D85)),
+                  //         ),
+                  //         const SizedBox(height: 15),
+                  //         const Text(
+                  //           'Refund Details',
+                  //           style: TextStyle(
+                  //               fontSize: 16, fontWeight: FontWeight.w700),
+                  //         ),
+                  //         const SizedBox(height: 5),
+                  //         const Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text(
+                  //               'Refundable Amount',
+                  //               style: TextStyle(color: Color(0xff7C7D85)),
+                  //             ),
+                  //             Text(
+                  //               '₹ 2,000.00',
+                  //               style: TextStyle(fontWeight: FontWeight.w700),
+                  //             )
+                  //           ],
+                  //         ),
+                  //         const SizedBox(height: 5),
+                  //         const Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text(
+                  //               'Refund Status',
+                  //               style: TextStyle(color: Color(0xff7C7D85)),
+                  //             ),
+                  //             Text(
+                  //               'Pending',
+                  //               style: TextStyle(
+                  //                   fontWeight: FontWeight.w700,
+                  //                   color: Color(0xffF3A100)),
+                  //             )
+                  //           ],
+                  //         ),
+                  //         const SizedBox(height: 25),
+                  //       ],
+                  //     ),
+                  // if (reurnRefunded == true)
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         width: double.infinity,
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 10, vertical: 5),
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(7),
+                  //             color: const Color(0xffE8E9EE).withOpacity(0.3)),
+                  //         child: const Text(
+                  //           'Products(3)',
+                  //           style: TextStyle(color: Color(0xff7C7D85)),
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 5),
+                  //       Padding(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 0, vertical: 5),
+                  //         child: ListView.builder(
+                  //             padding: EdgeInsets.zero,
+                  //             shrinkWrap: true,
+                  //             itemCount: 1,
+                  //             itemBuilder: (context, index) {
+                  //               return Container(
+                  //                 padding: const EdgeInsets.only(bottom: 5),
+                  //                 child: Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                   crossAxisAlignment:
+                  //                       CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     ClipRRect(
+                  //                       borderRadius: BorderRadius.circular(5),
+                  //                       child: Container(
+                  //                           decoration: BoxDecoration(
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(5)),
+                  //                           height: 80,
+                  //                           width: 60,
+                  //                           child: Image.asset(
+                  //                             'assets/png/cloth.png',
+                  //                             fit: BoxFit.cover,
+                  //                           )),
+                  //                     ),
+                  //                     const SizedBox(width: 5),
+                  //                     Column(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.spaceBetween,
+                  //                       crossAxisAlignment:
+                  //                           CrossAxisAlignment.start,
+                  //                       children: [
+                  //                         SizedBox(
+                  //                           width: MediaQuery.of(context)
+                  //                                   .size
+                  //                                   .width /
+                  //                               1.6,
+                  //                           child: const Text(
+                  //                             'Men Blue Washed Denim Jacket men Blue',
+                  //                             style: TextStyle(
+                  //                                 fontSize: 16,
+                  //                                 overflow:
+                  //                                     TextOverflow.ellipsis),
+                  //                             overflow: TextOverflow.ellipsis,
+                  //                             maxLines: 1,
+                  //                           ),
+                  //                         ),
+                  //                         const SizedBox(height: 5),
+                  //                         const Text(
+                  //                           'SIZE: XL',
+                  //                           style: TextStyle(
+                  //                               fontSize: 12,
+                  //                               color: Color(0xffBDC1CA)),
+                  //                         ),
+                  //                         const SizedBox(height: 5),
+                  //                         Row(
+                  //                           crossAxisAlignment:
+                  //                               CrossAxisAlignment.end,
+                  //                           children: [
+                  //                             const Column(
+                  //                               children: [
+                  //                                 Text(
+                  //                                   '₹ 2,199',
+                  //                                   style: TextStyle(
+                  //                                       fontSize: 12,
+                  //                                       color:
+                  //                                           Color(0xffBDC1CA),
+                  //                                       decoration:
+                  //                                           TextDecoration
+                  //                                               .lineThrough),
+                  //                                 ),
+                  //                                 Text(
+                  //                                   '₹2,000',
+                  //                                   style:
+                  //                                       TextStyle(fontSize: 14),
+                  //                                 ),
+                  //                               ],
+                  //                             ),
+                  //                             const SizedBox(width: 2),
+                  //                             Container(
+                  //                               padding:
+                  //                                   const EdgeInsets.all(3),
+                  //                               decoration: BoxDecoration(
+                  //                                   borderRadius:
+                  //                                       BorderRadius.circular(
+                  //                                           5),
+                  //                                   color: const Color(
+                  //                                       0xff00CA14)),
+                  //                               child: const Text(
+                  //                                 '10% Off',
+                  //                                 style: TextStyle(
+                  //                                     fontSize: 12,
+                  //                                     color: Colors.white),
+                  //                               ),
+                  //                             )
+                  //                           ],
+                  //                         )
+                  //                       ],
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               );
+                  //             }),
+                  //       ),
+                  //       const SizedBox(height: 15),
+                  //       const Text('Pickup Location',
+                  //           style: TextStyle(
+                  //               fontSize: 16, fontWeight: FontWeight.w700)),
+                  //       const SizedBox(width: 15),
+                  //       const Text(
+                  //         '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
+                  //         style: TextStyle(color: Color(0xff7C7D85)),
+                  //       ),
+                  //       const SizedBox(height: 15),
+                  //       const Text(
+                  //         'Refund Details',
+                  //         style: TextStyle(
+                  //             fontSize: 16, fontWeight: FontWeight.w700),
+                  //       ),
+                  //       const SizedBox(height: 5),
+                  //       const Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           Text(
+                  //             'Refundable Amount',
+                  //             style: TextStyle(color: Color(0xff7C7D85)),
+                  //           ),
+                  //           Text(
+                  //             '₹ 2,000.00',
+                  //             style: TextStyle(fontWeight: FontWeight.w700),
+                  //           )
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 5),
+                  //       const Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           Text(
+                  //             'Refund Status',
+                  //             style: TextStyle(color: Color(0xff7C7D85)),
+                  //           ),
+                  //           Text(
+                  //             'Paid',
+                  //             style: TextStyle(
+                  //                 fontWeight: FontWeight.w700,
+                  //                 color: Color(0xff00CA14)),
+                  //           )
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 25),
+                  //     ],
+                  //   ),
                   Container(
                     width: double.infinity,
                     padding:
@@ -463,9 +443,9 @@ class _OrderDetailState extends State<OrderDetail> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
                         color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                    child: const Text(
-                      'Products(2)',
-                      style: TextStyle(color: Colors.black),
+                    child: Text(
+                      'Products ( ${widget.order.items?.length ?? "0"} )',
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -474,8 +454,9 @@ class _OrderDetailState extends State<OrderDetail> {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 2,
+                        itemCount: widget.order.items?.length ?? 0,
                         itemBuilder: (context, index) {
+                          OrderItem item = (widget.order.items ?? [])[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 15),
                             child: SizedBox(
@@ -484,19 +465,45 @@ class _OrderDetailState extends State<OrderDetail> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  // ClipRRect(
+                                  //   borderRadius: BorderRadius.circular(5),
+                                  //   child: Container(
+                                  //       decoration: BoxDecoration(
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(5)),
+                                  //       height: 100,
+                                  //       width: 80,
+                                  //       child: Image.asset(
+                                  //         'assets/png/cloth.png',
+                                  //         fit: BoxFit.cover,
+                                  //       )),
+                                  // ),
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        height: 100,
-                                        width: 80,
-                                        child: Image.asset(
-                                          'assets/png/cloth.png',
-                                          fit: BoxFit.cover,
-                                        )),
-                                  ),
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            '${ApiService.uploads}${item.productId}01.jpg',
+                                        placeholder: (context, url) =>
+                                            const CircleAvatar(
+                                          backgroundColor: Colors.white30,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Padding(
+                                          padding: const EdgeInsets.all(0),
+                                          child: Image.asset(
+                                            'assets/png/cloth.png',
+                                            fit: BoxFit.contain,
+                                            height: 100,
+                                            width: 80,
+                                          ),
+                                        ),
+                                        imageBuilder: (context, image) => Image(
+                                          image: image,
+                                          height: 100,
+                                          width: 80,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      )),
                                   const SizedBox(width: 5),
                                   Column(
                                     mainAxisAlignment:
@@ -515,9 +522,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                                     .size
                                                     .width /
                                                 1.5,
-                                            child: const Text(
-                                              'Men Blue Washed Denim Jacket men Blue',
-                                              style: TextStyle(
+                                            child: Text(
+                                              '${item.name}',
+                                              style: const TextStyle(
                                                   fontSize: 16,
                                                   overflow:
                                                       TextOverflow.ellipsis),
@@ -525,9 +532,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                               maxLines: 1,
                                             ),
                                           ),
-                                          const Text(
-                                            'SIZE: XL',
-                                            style: TextStyle(
+                                          Text(
+                                            'SIZE: ${item.size ?? ''}',
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xffBDC1CA)),
                                           ),
@@ -537,23 +544,23 @@ class _OrderDetailState extends State<OrderDetail> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          const Column(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '₹ 2,199',
-                                                style: TextStyle(
+                                                '₹ ${item.mrp ?? ''}',
+                                                style: const TextStyle(
                                                     fontSize: 12,
                                                     color: Color(0xffBDC1CA),
                                                     decoration: TextDecoration
                                                         .lineThrough),
                                               ),
                                               Text(
-                                                '₹2,000',
-                                                style: TextStyle(
+                                                '₹ ${item.amount ?? ''}',
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.w700),
@@ -567,9 +574,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 borderRadius:
                                                     BorderRadius.circular(5),
                                                 color: const Color(0xff00CA14)),
-                                            child: const Text(
-                                              '10% Off',
-                                              style: TextStyle(
+                                            child: Text(
+                                              '${item.discount ?? ''}% Off',
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.white),
                                             ),
@@ -588,14 +595,14 @@ class _OrderDetailState extends State<OrderDetail> {
                     'Payment Details',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Payment Method',
                         style: TextStyle(color: Color(0xff7C7D85)),
                       ),
-                      Text('Phone Pay')
+                      Text((widget.order.paymentMethod ?? '').toUpperCase())
                     ],
                   ),
                   const Row(
@@ -617,9 +624,9 @@ class _OrderDetailState extends State<OrderDetail> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    '392, 1st Floor, Jnana Marga, 1st Stage, Siddhartha Layout, Mysuru, Karnataka 570011',
-                    style: TextStyle(color: Color(0xff7C7D85)),
+                  Text(
+                    widget.order.address ?? '',
+                    style: const TextStyle(color: Color(0xff7C7D85)),
                   ),
                   const SizedBox(height: 25),
                   const Text(
@@ -627,102 +634,85 @@ class _OrderDetailState extends State<OrderDetail> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Total MRP',
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
                       ),
                       Text(
-                        '₹ 12,894.00',
-                        style: TextStyle(
+                        '₹ ${widget.order.totalAmount}',
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
                       )
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Discount',
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff00CA14)),
                       ),
                       Text(
-                        '- ₹ 8,976.00',
-                        style: TextStyle(
+                        '- ₹ ${getDiscount()}',
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff00CA14)),
                       )
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Coupon Discount',
                         style:
-                            TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
+                            TextStyle(fontSize: 16, color: Color(0xff00CA14)),
                       ),
                       Text(
-                        '-',
-                        style: TextStyle(
+                        '- ₹ ${widget.order.couponAmount ?? ''}',
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black),
+                            color: Color(0xff00CA14)),
                       )
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'EZYE Coins',
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff00CA14)),
                       ),
                       Text(
-                        '- ₹ 100.00',
-                        style: TextStyle(
+                        '- ₹ ${widget.order.ezyeCoins ?? ''}',
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff00CA14)),
                       )
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Delivery Charges',
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
                       ),
                       Text(
-                        '₹ 150.00',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                      )
-                    ],
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Tax',
-                        style:
-                            TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
-                      ),
-                      Text(
-                        '₹ 320.00',
-                        style: TextStyle(
+                        '₹ ${widget.order.deliveryCharge ?? ''}',
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
@@ -735,17 +725,17 @@ class _OrderDetailState extends State<OrderDetail> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
                         color: const Color(0xffE8E9EE).withOpacity(0.3)),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Total Amount',
                           style:
                               TextStyle(fontSize: 16, color: Color(0xff7C7D85)),
                         ),
                         Text(
-                          '₹ 3,818.00',
-                          style: TextStyle(
+                          '₹ ${widget.order.finalAmount ?? ''}',
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w700),
                         )
                       ],
@@ -778,58 +768,68 @@ class _OrderDetailState extends State<OrderDetail> {
                 ],
               ),
             ),
-            if (popMenu)
-              Positioned(
-                  top: 0,
-                  left: MediaQuery.of(context).size.width / 2.2,
-                  right: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45.withOpacity(0.1),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ReturnOrder()));
-                          },
-                          child: const Text(
-                            'Return Order',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: devider,
-                        ),
-                        MaterialButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Download Invoice',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      ],
-                    ),
-                  )),
+            // if (popMenu)
+            //   Positioned(
+            //     top: 0,
+            //     left: MediaQuery.of(context).size.width / 2.2,
+            //     right: 5,
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(15),
+            //         color: Colors.white,
+            //         boxShadow: [
+            //           BoxShadow(
+            //             color: Colors.black45.withOpacity(0.1),
+            //             spreadRadius: 5,
+            //             blurRadius: 7,
+            //             offset: const Offset(0, 3),
+            //           ),
+            //         ],
+            //       ),
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           MaterialButton(
+            //             onPressed: () {
+            //               Navigator.push(
+            //                   context,
+            //                   MaterialPageRoute(
+            //                       builder: (context) => const ReturnOrder()));
+            //             },
+            //             child: const Text(
+            //               'Return Order',
+            //               style: TextStyle(
+            //                   fontSize: 18, fontWeight: FontWeight.w500),
+            //             ),
+            //           ),
+            //           Padding(
+            //             padding: const EdgeInsets.symmetric(horizontal: 10),
+            //             child: devider,
+            //           ),
+            //           MaterialButton(
+            //             onPressed: () {},
+            //             child: const Text(
+            //               'Download Invoice',
+            //               style: TextStyle(
+            //                   fontSize: 18, fontWeight: FontWeight.w500),
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),
     );
+  }
+
+  getDiscount() {
+    double discount = 0;
+    for (var item in widget.order.items ?? []) {
+      discount +=
+          double.parse(item.mrp ?? "0") - double.parse(item.amount ?? "0");
+    }
+    return discount.toString();
   }
 }
