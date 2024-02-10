@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/cart_item.dart';
 import 'package:ezye/model/order.dart';
 import 'package:ezye/orderscreens/cancel_order.dart';
 import 'package:ezye/services/api_service.dart';
@@ -456,7 +457,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         shrinkWrap: true,
                         itemCount: widget.order.items?.length ?? 0,
                         itemBuilder: (context, index) {
-                          OrderItem item = (widget.order.items ?? [])[index];
+                          CartItem item = (widget.order.items ?? [])[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 15),
                             child: SizedBox(
@@ -753,7 +754,9 @@ class _OrderDetailState extends State<OrderDetail> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const CancelOrder()));
+                                builder: (context) => CancelOrder(
+                                      order: widget.order,
+                                    )));
                       },
                       child: const Text(
                         'Cancel Order',

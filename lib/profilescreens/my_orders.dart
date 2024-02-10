@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/cart_item.dart';
 import 'package:ezye/model/order.dart';
 import 'package:ezye/orderscreens/order_detail_screen.dart';
 import 'package:ezye/providers/session_object.dart';
@@ -124,7 +125,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                 itemCount: (order.items ?? []).length,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  OrderItem item = (order.items ?? [])[index];
+                                  CartItem item = (order.items ?? [])[index];
                                   return Container(
                                     padding: const EdgeInsets.only(bottom: 5),
                                     child: Row(

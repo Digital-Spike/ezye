@@ -1,3 +1,5 @@
+import 'package:ezye/model/cart_item.dart';
+
 class Order {
   String? id;
   String? orderId;
@@ -12,7 +14,7 @@ class Order {
   String? couponAmount;
   String? finalAmount;
   String? ezyeCoins;
-  List<OrderItem>? items;
+  List<CartItem>? items;
   String? deliveryCharge;
 
   Order(
@@ -45,56 +47,13 @@ class Order {
         userId: json['userId'],
         couponCode: json['couponCode'],
         couponAmount: json['couponAmount'] ?? '0',
-        items: (json['productDetails'] as List).map((item) {
-          return OrderItem.fromJson(item);
-        }).toList(),
+        items: (json['productDetails'] != null)
+            ? (json['productDetails'] as List).map((item) {
+                return CartItem.fromJson(item);
+              }).toList()
+            : [],
         ezyeCoins: json['ezyeCoins'],
         finalAmount: json['finalAmount'],
         deliveryCharge: json['deliveryCharge'] ?? '50');
-  }
-}
-
-class OrderItem {
-  String? id;
-  String? userId;
-  String? productId;
-  String? name;
-  String? size;
-  String? color;
-  String? quantity;
-  String? amount;
-  String? cartId;
-  String? status;
-  String? discount;
-  String? mrp;
-
-  OrderItem(
-      {this.id,
-      this.userId,
-      this.productId,
-      this.name,
-      this.size,
-      this.color,
-      this.quantity,
-      this.amount,
-      this.cartId,
-      this.status,
-      this.discount,
-      this.mrp});
-
-  factory OrderItem.fromJson(Map<String, dynamic> json) {
-    return OrderItem(
-        id: json['id'],
-        userId: json['userId'],
-        productId: json['productId'],
-        name: json['productName'],
-        size: json['size'],
-        color: json['color'],
-        quantity: json['quantity'],
-        amount: json['amount'],
-        cartId: json['cartId'],
-        status: json['status'],
-        discount: json['discount'],
-        mrp: json['MRP'] ?? '520');
   }
 }

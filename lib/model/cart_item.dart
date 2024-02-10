@@ -9,6 +9,9 @@ class CartItem {
   String? mrp;
   String? cartId;
   String? status;
+  String? variantId;
+  String? discount;
+  String? amount;
 
   CartItem(
       {this.size,
@@ -20,7 +23,10 @@ class CartItem {
       this.name,
       this.quantity,
       this.status,
-      this.userId});
+      this.userId,
+      this.variantId,
+      this.discount,
+      this.amount});
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
@@ -31,8 +37,11 @@ class CartItem {
         size: json['size'],
         color: json['color'],
         quantity: json['quantity'],
-        mrp: json['amount'],
+        mrp: json['mrp'],
         cartId: json['cartId'],
-        status: json['status']);
+        status: json['status'],
+        variantId: json['varientId'],
+        discount: json['discount'],
+        amount: json['amount']);
   }
 }

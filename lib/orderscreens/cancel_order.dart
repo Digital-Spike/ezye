@@ -1,13 +1,17 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ezye/custom_widgets/constants.dart';
+import 'package:ezye/model/cart_item.dart';
+import 'package:ezye/model/order.dart';
 import 'package:ezye/orderscreens/confirmation_screen.dart';
+import 'package:ezye/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CancelOrder extends StatefulWidget {
-  const CancelOrder({super.key});
+  final Order order;
+  const CancelOrder({super.key, required this.order});
 
   @override
   State<CancelOrder> createState() => _CancelOrderState();
@@ -16,7 +20,7 @@ class CancelOrder extends StatefulWidget {
 class _CancelOrderState extends State<CancelOrder> {
   bool continueN = false;
   bool continueN1 = true;
-  bool checkboxValues = false;
+  List<String> selectedItems = [];
   int count = 1;
   void incrementCounter() {
     setState(() {
@@ -290,8 +294,9 @@ class _CancelOrderState extends State<CancelOrder> {
                   child: ListView.builder(
                       shrinkWrap: true,
                       primary: false,
-                      itemCount: 5,
+                      itemCount: (widget.order.items ?? []).length,
                       itemBuilder: (context, index) {
+                        CartItem item = (widget.order.items ?? [])[index];
                         return Stack(
                           children: [
                             Padding(
@@ -304,18 +309,32 @@ class _CancelOrderState extends State<CancelOrder> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          height: 100,
-                                          width: 80,
-                                          child: Image.asset(
-                                            'assets/png/cloth.png',
-                                            fit: BoxFit.cover,
-                                          )),
-                                    ),
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              '${ApiService.uploads}${item.variantId}01.jpg',
+                                          placeholder: (context, url) =>
+                                              const CircleAvatar(
+                                            backgroundColor: Colors.white30,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Padding(
+                                            padding: const EdgeInsets.all(0),
+                                            child: Image.asset(
+                                              'assets/png/cloth.png',
+                                              fit: BoxFit.contain,
+                                              height: 110,
+                                              width: 80,
+                                            ),
+                                          ),
+                                          imageBuilder: (context, image) =>
+                                              Image(
+                                            image: image,
+                                            height: 110,
+                                            width: 80,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        )),
                                     const SizedBox(width: 5),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -329,9 +348,9 @@ class _CancelOrderState extends State<CancelOrder> {
                                                   .size
                                                   .width /
                                               1.7,
-                                          child: const Text(
-                                            'Men Blue Washed Denim Jacket men Blue',
-                                            style: TextStyle(
+                                          child: Text(
+                                            '${item.name}',
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 overflow:
                                                     TextOverflow.ellipsis),
@@ -349,16 +368,10 @@ class _CancelOrderState extends State<CancelOrder> {
                                                   color: Colors.black),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
-                                          child: Row(
-                                            children: [
-                                              const Text(
-                                                'XL',
-                                                style: TextStyle(fontSize: 12),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              SvgPicture.asset(
-                                                  'assets/svg/arrowdown.svg')
-                                            ],
+                                          child: Text(
+                                            '${item.size}',
+                                            style:
+                                                const TextStyle(fontSize: 12),
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -366,7 +379,7 @@ class _CancelOrderState extends State<CancelOrder> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Column(
+                                            /*Column(
                                               children: [
                                                 Container(
                                                   width: 90,
@@ -419,27 +432,18 @@ class _CancelOrderState extends State<CancelOrder> {
                                                       .size
                                                       .width /
                                                   10,
-                                            ),
+                                            ),*/
                                             Column(
                                               children: [
                                                 Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.end,
                                                   children: [
-                                                    const Text(
-                                                      '₹2,000',
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                    const SizedBox(width: 2),
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
                                                       children: [
-                                                        const Text(
-                                                          '₹ 2,199',
-                                                          style: TextStyle(
+                                                        Text(
+                                                          '₹ ${item.mrp}',
+                                                          style: const TextStyle(
                                                               fontSize: 12,
                                                               color: Color(
                                                                   0xffBDC1CA),
@@ -447,6 +451,20 @@ class _CancelOrderState extends State<CancelOrder> {
                                                                   TextDecoration
                                                                       .lineThrough),
                                                         ),
+                                                        Text(
+                                                          '₹ ${item.amount}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(width: 2),
+                                                    Column(
+                                                      // crossAxisAlignment:
+                                                      //     CrossAxisAlignment
+                                                      //         .end,
+                                                      children: [
                                                         Container(
                                                           padding:
                                                               const EdgeInsets
@@ -458,12 +476,14 @@ class _CancelOrderState extends State<CancelOrder> {
                                                                           5),
                                                               color: const Color(
                                                                   0xff00CA14)),
-                                                          child: const Text(
-                                                            '10% Off',
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .white),
+                                                          child: Text(
+                                                            '${item.discount} % Off',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white),
                                                           ),
                                                         )
                                                       ],
@@ -490,13 +510,18 @@ class _CancelOrderState extends State<CancelOrder> {
                                 checkColor: Colors.white,
                                 side: const BorderSide(
                                     width: 1, color: Colors.black),
-                                value: checkboxValues,
+                                value: selectedItems.contains(item.productId),
                                 onChanged: (bool? value) {
-                                  setState(() {
-                                    checkboxValues = value!;
-
-                                    print(value);
-                                  });
+                                  if (!selectedItems.contains(item.productId)) {
+                                    setState(() {
+                                      selectedItems.add(item.productId ?? '');
+                                    });
+                                  } else {
+                                    setState(() {
+                                      selectedItems
+                                          .remove(item.productId ?? '');
+                                    });
+                                  }
                                 },
                               ),
                             ),
