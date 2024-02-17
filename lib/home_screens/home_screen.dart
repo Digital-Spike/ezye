@@ -195,15 +195,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget homeItemView(HomeList homeList) {
-    if (homeList.bannerStyle == 'Slider') {
+    if ((homeList.bannerStyle ?? '').toLowerCase() == 'slider') {
       return HomeSlider(homeList: homeList);
     }
 
-    if (homeList.bannerStyle == 'ListView') {
+    if ((homeList.bannerStyle ?? '').toLowerCase() == 'listview') {
       return HomeListView(homeList: homeList);
     }
 
-    if (homeList.bannerStyle == 'GridView') {
+    if ((homeList.bannerStyle ?? '').toLowerCase() == 'gridview') {
       return HomeGridView(homeList: homeList);
     }
 
