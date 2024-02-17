@@ -28,7 +28,7 @@ class HomeSliderState extends State<HomeSlider> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Stack(
@@ -42,7 +42,7 @@ class HomeSliderState extends State<HomeSlider> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ProductList(
-                                          searchText: item.category ?? '')));
+                                          searchText: item.tags ?? '')));
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),

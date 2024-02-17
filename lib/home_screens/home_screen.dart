@@ -156,13 +156,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 500,
-                    child: ListView.builder(
-                        itemCount: homeList.length,
-                        itemBuilder: (context, index) {
-                          return homeItemView(homeList[index]);
-                        }),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: ListView.builder(
+                          itemCount: homeList.length,
+                          itemBuilder: (context, index) {
+                            return homeItemView(homeList[index]);
+                          }),
+                    ),
                   ),
                 ],
               );
@@ -193,15 +195,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget homeItemView(HomeList homeList) {
-    if (homeList.tag == 'sliderImages') {
+    if (homeList.bannerStyle == 'Slider') {
       return HomeSlider(homeList: homeList);
     }
 
-    if (homeList.isListView && homeList.isVisible) {
+    if (homeList.bannerStyle == 'ListView') {
       return HomeListView(homeList: homeList);
     }
 
-    if (!homeList.isListView && homeList.isVisible) {
+    if (homeList.bannerStyle == 'GridView') {
       return HomeGridView(homeList: homeList);
     }
 
