@@ -223,24 +223,43 @@ class _WishListScreenState extends State<WishListScreen> {
                                         ],
                                       ),
                                       const SizedBox(height: 8),
-                                       Row(
-                                      children: 
-                                      [
-                                        Text('₹ 2,199',style: TextStyle(fontSize: 12,color: Color(0xffBDC1CA),decoration: TextDecoration.lineThrough),),
-                                        SizedBox(width: 5,),
-                                        Text('₹${product.mrp ?? ""}',style: TextStyle(fontSize: 16,color: Color(0xff000000)),
-                                        ),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(0xff00CA14),
-                                            borderRadius: BorderRadius.circular(5)
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '₹ 2,199',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xffBDC1CA),
+                                                decoration:
+                                                    TextDecoration.lineThrough),
                                           ),
-                                          child: Text(' 10% Off ',style: TextStyle(fontSize: 12,color: Color(0xffFFFFFF),
-                                          ),),
-                                        )
-                                      ],
-                                    ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            '₹${product.variant?.first.mrp ?? ""}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xff000000)),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Color(0xff00CA14),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: Text(
+                                              ' 10% Off ',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xffFFFFFF),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 );

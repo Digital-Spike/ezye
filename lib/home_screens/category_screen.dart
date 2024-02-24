@@ -237,7 +237,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                       children: [
                                         Container(
                                           padding: const EdgeInsets.all(3),
-                                          margin: EdgeInsets.only(left: 5),
+                                          margin:
+                                              const EdgeInsets.only(left: 5),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(3),
@@ -250,7 +251,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(right: 5),
+                                          margin:
+                                              const EdgeInsets.only(right: 5),
                                           child: GestureDetector(
                                               onTap: () async {
                                                 isLiked = isSaved(product);
@@ -280,7 +282,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(left: 5),
+                                          margin:
+                                              const EdgeInsets.only(left: 5),
                                           child: Text(
                                             product.name ?? "",
                                             style: const TextStyle(
@@ -290,22 +293,40 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                       ],
                                     ),
-                                    
                                     Row(
-                                      children: 
-                                      [
-                                        Text('₹ 2,199',style: TextStyle(fontSize: 12,color: Color(0xffBDC1CA),decoration: TextDecoration.lineThrough),),
-                                        SizedBox(width: 5,),
-                                        Text('₹${product.mrp ?? ""}',style: TextStyle(fontSize: 16,color: Color(0xff000000)),
+                                      children: [
+                                        const Text(
+                                          '₹ 2,199',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xffBDC1CA),
+                                              decoration:
+                                                  TextDecoration.lineThrough),
                                         ),
-                                        SizedBox(width: 5,),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          '₹${product.variant?.first.mrp ?? ""}',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xff000000)),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Color(0xff00CA14),
-                                            borderRadius: BorderRadius.circular(5)
+                                              color: const Color(0xff00CA14),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: const Text(
+                                            ' 10% Off ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xffFFFFFF),
+                                            ),
                                           ),
-                                          child: Text(' 10% Off ',style: TextStyle(fontSize: 12,color: Color(0xffFFFFFF),
-                                          ),),
                                         )
                                       ],
                                     ),
@@ -362,8 +383,8 @@ class _CategoryPageState extends State<CategoryPage> {
         "name": product.name,
         "category": product.category,
         "subCategory": product.subCategory,
-        "MRP": product.mrp,
-        "sellingPrice": product.mrp,
+        "MRP": product.variant?.first.mrp,
+        "sellingPrice": product.variant?.first.sellingPrice,
         "description": product.description,
       };
 

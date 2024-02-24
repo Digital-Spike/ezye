@@ -342,25 +342,41 @@ class _ProductScreenState extends State<ProductScreen> {
                                 fontSize: 20, color: Colors.black),
                           ),
                           const SizedBox(height: 5),
-                           Row(
-                                      children: 
-                                      [
-                                        Text('₹ 2,199',style: TextStyle(fontSize: 12,color: Color(0xffBDC1CA),decoration: TextDecoration.lineThrough),),
-                                        SizedBox(width: 5,),
-                                        Text('₹${product?.mrp ?? ""}',style: TextStyle(fontSize: 16,color: Color(0xff000000)),
-                                        ),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(0xff00CA14),
-                                            borderRadius: BorderRadius.circular(5)
-                                          ),
-                                          child: Text(' 10% Off ',style: TextStyle(fontSize: 12,color: Color(0xffFFFFFF),
-                                          ),),
-                                        )
-                                      ],
-                                    ),
-                           SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Text(
+                                '₹ 2,199',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xffBDC1CA),
+                                    decoration: TextDecoration.lineThrough),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                '₹${product?.variant?.first.mrp ?? ""}',
+                                style: TextStyle(
+                                    fontSize: 16, color: Color(0xff000000)),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xff00CA14),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Text(
+                                  ' 10% Off ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xffFFFFFF),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 5),
                           const Text(
                             'Colors',
                             style: TextStyle(
@@ -502,21 +518,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
       if (response.statusCode == 200) {
         product = Product.fromJson(json.decode(response.body));
-        if ((product?.image1Url ?? '').isNotEmpty) {
-          imgList.add(product?.image1Url ?? '');
-        }
-        if ((product?.image2Url ?? '').isNotEmpty) {
-          imgList.add(product?.image2Url ?? '');
-        }
-        if ((product?.image3Url ?? '').isNotEmpty) {
-          imgList.add(product?.image3Url ?? '');
-        }
-        if ((product?.image4Url ?? '').isNotEmpty) {
-          imgList.add(product?.image4Url ?? '');
-        }
-        if ((product?.image5url ?? '').isNotEmpty) {
-          imgList.add(product?.image5url ?? '');
-        }
+        imgList = product?.variant?.first.image?.substring(1).split(',') ?? [];
       }
 
       return true;
@@ -547,16 +549,16 @@ class _ProductScreenState extends State<ProductScreen> {
                 '',
         "productId": product?.productId ?? '',
         "productName": product?.name ?? '',
-        "size": product?.size ?? '',
-        "color": product?.color ?? '',
+        "size": product?.variant?.first.size ?? '',
+        "color": product?.variant?.first.color ?? '',
         "amount": (product?.variant ?? []).first.amount,
         "cartId":
             Provider.of<SessionObject>(context, listen: false).user.cartId ??
                 "",
         "quantity": itemCount.toString(),
-        "imageUrl": product?.image1Url ?? '',
-        "mrp": product?.mrp,
-        "discount": product?.discount
+        "imageUrl": product?.variant?.first.image ?? '',
+        "mrp": product?.variant?.first.mrp,
+        "discount": product?.variant?.first.discount
       };
 
       var response = await http.post(addToCartUrl, body: reqBody);
@@ -623,7 +625,8 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   getTotalPrice() {
-    double itemTotal = double.parse(product?.mrp ?? "") * itemCount;
+    double itemTotal =
+        double.parse(product?.variant?.first.mrp ?? "") * itemCount;
     return itemTotal.toString();
   }
 
@@ -704,8 +707,8 @@ class _ProductScreenState extends State<ProductScreen> {
         "name": product?.name,
         "category": product?.category,
         "subCategory": product?.subCategory,
-        "MRP": product?.mrp,
-        "sellingPrice": product?.mrp,
+        "MRP": product?.variant?.first.mrp,
+        "sellingPrice": product?.variant?.first.sellingPrice,
         "description": product?.description,
       };
 

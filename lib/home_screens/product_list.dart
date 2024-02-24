@@ -241,7 +241,7 @@ class _ProductListState extends State<ProductList> {
                                     Row(
                                       children: [
                                         Text(
-                                          '₹ ${product.mrp ?? ""}',
+                                          '₹ ${product.variant?.first.mrp ?? ""}',
                                           style: const TextStyle(fontSize: 26),
                                         ),
                                       ],
@@ -299,8 +299,8 @@ class _ProductListState extends State<ProductList> {
         "name": product.name,
         "category": product.category,
         "subCategory": product.subCategory,
-        "MRP": product.mrp,
-        "sellingPrice": product.mrp,
+        "MRP": product.variant?.first.mrp,
+        "sellingPrice": product.variant?.first.sellingPrice,
         "description": product.description,
       };
 

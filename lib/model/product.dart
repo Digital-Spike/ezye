@@ -3,22 +3,12 @@ class Product {
   String? name;
   String? category;
   String? subCategory;
-  String? mrp;
-  String? sellingPrice;
   String? productId;
   String? description;
   String? fullDescription;
-  String? image1Url;
-  String? image2Url;
-  String? image3Url;
-  String? image4Url;
-  String? image5url;
-  String? size;
-  String? color;
-  String? stockStatus;
-  String? stockNumber;
+  String? createAt;
+  String? tags;
   bool isSaved;
-  String? discount;
   List<ProductVariant>? variant;
 
   Product(
@@ -27,22 +17,12 @@ class Product {
       this.category,
       this.description,
       this.fullDescription,
-      this.image1Url,
-      this.image2Url,
-      this.image3Url,
-      this.image4Url,
-      this.image5url,
-      this.mrp,
       this.productId,
-      this.sellingPrice,
       this.subCategory,
-      this.color,
-      this.size,
-      this.stockNumber,
-      this.stockStatus,
-      this.isSaved = false,
+      this.createAt,
+      this.tags,
       this.variant,
-      this.discount});
+      this.isSaved = false});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -51,22 +31,12 @@ class Product {
         category: json['category'],
         description: json['description'],
         fullDescription: json['fullDescription'],
-        image1Url: json['image1Url'],
-        image2Url: json['image2Url'],
-        image3Url: json['image3Url'],
-        image4Url: json['image4Url'],
-        image5url: json['image5url'],
-        mrp: json['MRP'],
         productId: json['productId'],
-        sellingPrice: json['sellingPrice'],
         subCategory: json['subCategory'],
-        color: json['color'],
-        size: json['size'],
-        stockNumber: json['stock_status'],
-        stockStatus: json['stock_number'],
-        discount: json['discount'],
-        variant: json['varientDetails'] != null
-            ? (json['varientDetails'] as List)
+        createAt: json['product_created'],
+        tags: json['tags'],
+        variant: json['varients'] != null
+            ? (json['varients'] as List)
                 .map((variant) => ProductVariant.fromJson(variant))
                 .toList()
             : null);
@@ -83,31 +53,41 @@ class ProductVariant {
   String? stockNumber;
   String? variantId;
   String? image;
+  String? mrp;
+  String? sellingPrice;
+  String? discount;
+  String? variantCreated;
 
   ProductVariant(
-      {this.size,
-      this.id,
+      {this.id,
       this.amount,
       this.color,
       this.image,
       this.productId,
       this.stockNumber,
       this.stockStatus,
-      this.variantId});
+      this.variantId,
+      this.discount,
+      this.mrp,
+      this.size,
+      this.sellingPrice,
+      this.variantCreated});
 
   factory ProductVariant.fromJson(Map<String, dynamic> json) {
     return ProductVariant(
       id: json['id'],
       productId: json['productId'],
-      size: json['size'],
       color: json['color'],
       amount: json['amount'],
       stockStatus: json['stock_status'],
       stockNumber: json['stock_number'],
       variantId: json['varientId'],
       image: json['image'],
+      discount: json['discount'],
+      mrp: json['mrp'],
+      size: json['size'],
+      sellingPrice: json['sellingPrice'],
+      variantCreated: json['varient_created'],
     );
   }
 }
-
-//productId:ezysp001

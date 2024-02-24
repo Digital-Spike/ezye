@@ -297,7 +297,7 @@ class _GridItemsState extends State<GridItems> {
                                         Container(
                                           margin: EdgeInsets.only(left: 5),
                                           child: Text(
-                                            '₹ ${product.mrp ?? ""}',
+                                            '₹ ${product.variant?.first.mrp ?? ""}',
                                             style:
                                                 const TextStyle(fontSize: 16),
                                           ),
@@ -357,8 +357,8 @@ class _GridItemsState extends State<GridItems> {
         "name": product.name,
         "category": product.category,
         "subCategory": product.subCategory,
-        "MRP": product.mrp,
-        "sellingPrice": product.mrp,
+        "MRP": product.variant?.first.mrp,
+        "sellingPrice": product.variant?.first.sellingPrice,
         "description": product.description,
       };
 
