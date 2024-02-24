@@ -18,9 +18,9 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class GridItems extends StatefulWidget {
-  final String category;
+  final String tags;
 
-  const GridItems({super.key, required this.category});
+  const GridItems({super.key, required this.tags});
 
   @override
   State<GridItems> createState() => _GridItemsState();
@@ -325,9 +325,9 @@ class _GridItemsState extends State<GridItems> {
 
   Future<bool> getItems() async {
     try {
-      var productsUrl = Uri.parse('${ApiService.url}globalSearch.php');
+      var productsUrl = Uri.parse('${ApiService.url}getItems.php');
       var productsResponse =
-          await http.post(productsUrl, body: {'key': widget.category});
+          await http.post(productsUrl, body: {'tags': widget.tags});
 
       products = (json.decode((productsResponse.body)
               .toString()

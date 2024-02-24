@@ -50,7 +50,7 @@ class HomeListViewState extends State<HomeListView> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                GridItems(category: homeItem.tags ?? '')));
+                                GridItems(tags: homeItem.tags ?? '')));
                   },
                   child: Column(
                     children: [

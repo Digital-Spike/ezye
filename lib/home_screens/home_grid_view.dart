@@ -55,7 +55,7 @@ class HomeGridViewState extends State<HomeGridView> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              GridItems(category: homeItem.tags ?? '')));
+                              GridItems(tags: homeItem.tags ?? '')));
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
